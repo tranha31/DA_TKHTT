@@ -1,0 +1,108 @@
+.header{
+    background-color: #fff;
+    width: 100vw;
+    height: 60px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    z-index: 1000;
+    align-items: center;
+}
+
+.header .logo{
+    background-image: url(../../assets/imgs/Image/logo.png);
+    width: 60px;
+    height: 60px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    margin-left: 10px;
+}
+
+.header-container{
+    justify-content: flex-end;
+    padding-right: 50px;
+    height: 100%;
+}
+
+.header-container .header-item-list{
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.router-link{
+    text-decoration: none;
+    color: #000;
+    display: flex;
+}
+
+.header-container .header-item-list .router-link{
+    width: 100px;
+    height: 75%;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+}
+
+.header-container .header-item-list .router-link:hover{
+    background-color: #e89327;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.header-container .header-item-list .router-link.link-user:hover{
+    background-color: unset;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.header .user{
+    background-image: url(../../assets/imgs/Image/guest-32.png);
+    background-size: contain;
+    height: 25px;
+    width: 25px;
+    background-repeat: no-repeat;
+}
+
+.header .small-header{
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.header .menu-image{
+    background-position: -847px -35px;
+    margin-left: 20px;
+}
+
+.header .small-header .menu-item{
+    position: absolute;
+    top: 40px;
+    width: 200px;
+    z-index: 1000;
+    background-color: #fff;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 4px;
+}
+
+.header .small-header .menu-item .router-link{
+    padding: 10px 20px;
+}
+
+.header .small-header .menu-item .router-link:hover{
+    background-color: #e89327;
+    color: #fff;
+}
+
+@media only screen and (max-width: 800px) {
+    .header-container{
+        padding-right: 15px;
+    }
+
+    .header .header-container .header-item-list{
+        display: none;
+    }
+
+    .header .small-header{
+        display: flex;
+        position: relative;
+    }
+
+}

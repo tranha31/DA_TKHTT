@@ -1,0 +1,114 @@
+#toast{
+    position: fixed;
+    top: 50px;
+    right: 32px;
+    z-index: 99999;
+}
+.toast-message{
+    display: flex;
+    align-items: center;
+    background-color: #ffffff;
+    border-radius: 4px;
+    height: 48px;
+    /* border: 1px solid #e5e5e5; */
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.09);
+    width: 300px;
+    transition: all linear .3s;
+}
+@keyframes slideInLeft {
+
+    from{
+        opacity: 0;
+        transform: translateX(calc(100% + 32px));
+    }
+    to{
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+@keyframes fadeOut {
+    to{
+        opacity: 0;
+    }
+}
+.toast-success{
+    color: #01B075 !important;
+}
+.toast-info{
+    color: #2f86eb !important;
+}
+.toast-warning{
+    color: #ffc021 !important;
+}
+.toast-error{
+    color: #FF4747 !important;
+}
+
+.icon-toast{
+    font-size: 24px;
+    margin-left: 16px;
+    height: 24px;
+    width: 24px;
+}
+.icon-toast-success{
+    background-image: url(../../assets/icons/success.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.icon-toast-info{
+    background-image: url(../../assets/icons/info.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.icon-toast-warning{
+    background-image: url(../../assets/icons/warning-toast.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.icon-toast-error{
+    background-image: url(../../assets/icons/danger.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.delete-toast{
+    font-size: 24px;
+    opacity: 0.8;
+    cursor: pointer;
+    height: 24px;
+    width: 24px;
+    position: absolute;
+    right: 16px;
+}
+.delete-toast:hover{
+    opacity: 0.8;
+}
+.delete-toast-success{
+    background-image: url(../../assets/icons/x-success.png) !important;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.delete-toast-info{
+    background-image: url(../../assets/icons/x-info.png) !important;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.delete-toast-warning{
+    background-image: url(../../assets/icons/x-warnnig.png) !important;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.delete-toast-error{
+    background-image: url(../../assets/icons/x-danger.png) !important;
+    background-repeat: no-repeat;
+    background-size: contain;
+}
+.toast-message + .toast-message{
+    margin-top: 24px;
+}
+.content-toast{
+    font-size: 13px;
+    width: calc(100% - 102px);
+    margin-left: 16px;
+    margin-right: 16px;
+}
+
