@@ -116,7 +116,12 @@ export default {
         },
 
         sendData(){
-            this.$emit("changeData", this.contents);
+            if(this.isNumber){
+                this.$emit("changeData", this.contents.replaceAll(".", ""));
+            }
+            else{
+                this.$emit("changeData", this.contents);
+            }
         }
     }
 }
