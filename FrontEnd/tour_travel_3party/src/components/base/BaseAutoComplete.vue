@@ -48,7 +48,7 @@ export default {
          */
         blurCbb(){
             var e = new Error();
-            if(this.msrequire){
+            if(this.notNull){
                 if(!this.contents){
                     this.error = true;
                     this.message = e.NotNull;
