@@ -12,30 +12,35 @@
                 is-editing="true"
                 placeholder="Email"
                 input-type="text"
+                v-model="email"
             />
             <InputInfoTemplate
                 item="Password"
                 is-editing="true"
                 placeholder="Password"
                 input-type="password"
+                v-model="password"
             />
             <InputInfoTemplate
                 item="Confirm Password"
                 is-editing="true"
                 placeholder="Confirm Password"
                 input-type="password"
+                v-model="confirmPassword"
             />
             <InputInfoTemplate
                 item="Username"
                 is-editing="true"
                 placeholder="Username"
                 input-type="text"
+                v-model="username"
             />
             <InputInfoTemplate
                 item="Phone Number"
                 is-editing="true"
                 placeholder="Phone number"
                 input-type="number"
+                v-model="phoneNumber"
             />
           </div>
           <div class="form-info-action d-flex flex-column">
@@ -58,6 +63,15 @@ export default {
   name: 'Register',
   components: {
     InputInfoTemplate
+  },
+  data() {
+    return {
+      email: null,
+      password: null,
+      confirmPassword: null,
+      username: null,
+      phoneNumber: null
+    }
   }
 }
 

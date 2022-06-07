@@ -8,16 +8,18 @@
         <div class="form-info d-flex flex-column">
           <div class="form-info-input">
             <InputInfoTemplate
-                item="Username"
+                item="Email"
                 is-editing="true"
-                placeholder="Username"
+                placeholder="Email"
                 input-type="text"
+                v-model="email"
             />
             <InputInfoTemplate
                 item="Password"
                 is-editing="true"
                 placeholder="Password"
                 input-type="password"
+                v-model="password"
             />
           </div>
           <div class="form-info-action d-flex flex-column">
@@ -41,6 +43,12 @@ export default {
   name: 'LogIn',
   components: {
     InputInfoTemplate
+  },
+  data() {
+    return {
+      email: null,
+      password: null
+    }
   }
 }
 
