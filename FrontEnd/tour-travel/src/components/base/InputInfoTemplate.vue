@@ -1,7 +1,7 @@
 <template>
   <div class="item-cbb">
     <span>{{ item }}</span>
-    <div v-if="isEditing">
+    <div v-if="canEditing">
       <input
           :type="inputType"
           v-model="input"
@@ -18,9 +18,9 @@ export default {
     item: {
       required: true
     },
-    isEditing: {
-      type: Boolean,
-      default: false
+    canEditing: {
+      type: String,
+      default: "true"
     },
     visible: {
       type: Boolean,

@@ -14,14 +14,14 @@
           <div class="form-info-input">
             <InputInfoTemplate
                 item="Email"
-                is-editing="true"
+                can-editing="true"
                 placeholder="Email"
                 input-type="text"
                 v-model="email"
             />
             <InputInfoTemplate
                 item="Password"
-                is-editing="true"
+                can-editing="true"
                 placeholder="Password"
                 input-type="password"
                 v-model="password"

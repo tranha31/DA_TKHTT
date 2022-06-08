@@ -166,6 +166,11 @@ input[type="text"], input[type="password"], input[type="number"] {
 }
 .btn-default{
     margin-right: 12px;
+    background-color: #e89327;
+    border: none;
+    border-radius: 2px;
+    padding: 4px 16px 4px 16px;
+    cursor: pointer;
 }
 
 .pb-6{
