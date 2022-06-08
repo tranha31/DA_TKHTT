@@ -122,7 +122,7 @@
 }
 
 .btn:hover{
-    background-color: #01B075;
+    background-color: #e89327;
 }
 
 .btn-save{
@@ -141,8 +141,8 @@ input[type=checkbox]:checked + label .div-checkbox{
 
 input[type="text"], input[type="password"], input[type="number"] {
     padding: 5px 15px;
-    border: 1px solid #01B075;
-    border-radius: 18px;
+    border: 1px solid #e89327;
+    border-radius: 7px;
     background-color: #f8f9fa;
     width: 70%;
     height: 36px;

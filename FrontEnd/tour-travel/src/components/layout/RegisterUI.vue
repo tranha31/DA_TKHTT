@@ -2,8 +2,13 @@
   <div class="login-page d-flex">
     <div class="login-form-container d-flex">
       <div class="form-container d-flex flex-column">
-        <div class="form-label">
-          <label>Register new account</label>
+        <div class="form-label d-flex">
+          <div>
+            <label>Sign in</label>
+          </div>
+          <div class="label-focus">
+            <label>Register</label>
+          </div>
         </div>
         <div class="form-info d-flex flex-column">
           <div class="form-info-input">
@@ -45,9 +50,6 @@
           </div>
           <div class="form-info-action d-flex flex-column">
             <button class="btn">Register new account</button>
-            <div>
-              <router-link to="/login">You have an account</router-link>
-            </div>
           </div>
         </div>
       </div>
@@ -111,14 +113,25 @@ img {
 }
 
 .form-label {
-  border-bottom: solid 2px #01B075;
-  padding: 6px 0px 6px 20px;
+  padding: 0px;
+  justify-content: space-around;
+}
+
+.form-label > div {
+  width: 50%;
+  text-align: center;
+  border-bottom: solid 2px #babec5;
 }
 
 label {
   width: 100%;
   height: 96px;
-  font-size: 32px;
+  font-size: 28px;
+  cursor: pointer;
+}
+
+.label-focus {
+  border-bottom: solid 4px #e89327 !important;
 }
 
 .form-info {
@@ -134,11 +147,10 @@ label {
 }
 
 .btn {
-  border: 1px solid #01B075;
+  border: 1px solid #e89327;
   padding: 8px 20px;
-  border-radius: 18px;
+  border-radius: 7px;
   cursor: pointer;
-  background-color: #ffffff;
   font-size: 16px;
 }
 </style>

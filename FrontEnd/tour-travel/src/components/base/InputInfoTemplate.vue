@@ -89,12 +89,11 @@ export default {
 .item-cbb{
   height: 32px;
   padding: 16px 0px 6px 20px;
-  color: #01B075;
   margin-bottom: 40px;
 }
 
 .item-cbb span {
-  font-size: 20px;
+  font-size: 16px;
 }
 
 
