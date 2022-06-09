@@ -1,81 +1,84 @@
 <template>
   <div class="user-page-container d-flex flex-column">
     <div class="user-detail-container d-flex">
-      <div class="left-content">
-        <div class="left-content-header">
-          <div>
-            <img src="../../assets/imgs/Image/guest-32.png" />
-          </div>
-          <span>Username</span>
+      <div class="left-content d-flex flex-column">
+        <div class="left-content-header d-flex">
+          <div></div>
+          <label>Username</label>
         </div>
         <div class="left-content-body">
-          <div class="profile-items">
-            <div>
-              <div>
-                <img src="../../assets/imgs/Image/guest-32.png" />
-              </div>
-              <span>My Account</span>
+          <div class="profile-items d-flex flex-column">
+            <div class="d-flex">
+              <div class="profile-items-icon"></div>
+              <label>My Account</label>
             </div>
             <div class="list-items">
-              <div>Profile</div>
-              <div>Change Password</div>
+              <div :style="{'font-weight': editProfile ? 'bold' : 'lighter'}" class="choose-edit" @click="chooseEditProfile">Profile</div>
+              <div class="choose-edit" @click="chooseEditPassword()" :style="{'font-weight': editPassword ? 'bold' : 'lighter'}">Change Password</div>
             </div>
           </div>
-          <div class="history-items">
-            <div>
-              <div>
-                <img src="../../assets/imgs/Image/list-ingredients-32.png" />
-              </div>
-              <span>Purchase Order</span>
+          <div class="history-items d-flex flex-column">
+            <div class="d-flex">
+              <div class="history-items-icon"></div>
+              <label>Purchase Order</label>
             </div>
             <div class="list-items">
-              <div>Cart</div>
+              <div class="choose-edit" @click="chooseEditCart" :style="{'font-weight': editCart? 'bold' : 'lighter'}">Cart</div>
             </div>
           </div>
         </div>
       </div>
       <div class="right-content">
-        <div class="profile-detail-container" v-if="editProfile">
-          <div class="profile-detail-header">
+        <div class="edit-profile detail-container" v-if="editProfile">
+          <div class="detail-header">
             <label>My Current Profile</label>
             <h3>Manage profile information for account security</h3>
           </div>
           <div class="profile-detail-body">
             <InputInfoTemplate
                 item="Username"
-                can-editing="false"
+                :can-editing="false"
                 input-type="text"
+                value="Team2"
+                :is-only-alpha="false"
+                :is-only-numeric="false"
+                display-inline="inline-block"
             />
             <InputInfoTemplate
                 item="Email"
-                can-editing="true"
+                :can-editing="true"
                 input-type="text"
+                display-inline="inline-block"
             />
             <InputInfoTemplate
                 item="Phone number"
-                can-editing="true"
+                :can-editing="true"
                 input-type="number"
+                display-inline="inline-block"
             />
             <InputInfoTemplate
                 item="Citizen identification"
-                can-editing="true"
+                :can-editing="true"
                 input-type="number"
+                display-inline="inline-block"
             />
             <div>
+              <span style="margin-right: 115px; padding: 16px 0px 6px 20px; font-size: 16px;">Gender</span>
               <input type="radio" id="male" value="male" v-model="gender" />
-              <label for="male">Male</label>
+              <label for="male" class="gender">Male</label>
               <input type="radio" id="female" value="female" v-model="gender" />
-              <label for="female">Female</label>
+              <label for="female" class="gender">Female</label>
               <input type="radio" id="other" value="other" v-model="gender" />
-              <label for="other">Other</label>
+              <label for="other" class="gender">Other</label>
             </div>
             <InputInfoTemplate
                 item="Birthday"
-                can-editing="true"
+                :can-editing="true"
+                display-inline="inline-block"
             />
-            <div>
-              <img src="../../assets/imgs/Image/guest-32.png" />
-            </div>
+            <div class="profile-detail-img"></div>
+          </div>
+          <div class="profile-detail-footer">
             <div>
               <button
                   class="btn-default"
@@ -86,40 +89,42 @@
             </div>
           </div>
         </div>
-        <div v-if="editPassword">
-          <div class="password-detail-header">
+        <div class="edit-password detail-container" v-if="editPassword">
+          <div class="detail-header">
             <label>Password</label>
             <h3>Please do not reveal your password</h3>
           </div>
           <div class="password-detail-body">
             <InputInfoTemplate
                 item="Current Password"
-                can-editing="true"
+                :can-editing="true"
                 input-type="password"
+                display-inline="inline-block"
             />
             <InputInfoTemplate
                 item="New Password"
-                can-editing="true"
+                :can-editing="true"
                 input-type="number"
+                display-inline="inline-block"
             />
             <InputInfoTemplate
                 item="Confirm New Password"
-                can-editing="true"
+                :can-editing="true"
                 input-type="number"
+                display-inline="inline-block"
             />
-            <div>
-              <button
-                  class="btn-default"
-                  @click="receiveCode()"
-              >
-                Get code
-              </button>
-            </div>
             <InputInfoTemplate
                 item="Verify code"
-                can-editing="true"
+                :can-editing="allowEnterCode"
                 input-type="text"
+                display-inline="inline-block"
             />
+            <button
+                class="btn-default"
+                @click="receiveCode()"
+            >
+              Get code
+            </button>
           </div>
         </div>
         <div v-if="editCart"></div>
@@ -142,7 +147,8 @@ export default {
       editProfile: false,
       editPassword: false,
       editCart: false,
-      gender: null
+      gender: null,
+      allowEnterCode: false
     }
   },
   methods: {
@@ -150,14 +156,178 @@ export default {
 
     },
     receiveCode() {
-
+      this.allowEnterCode = true
+    },
+    chooseEditPassword() {
+      this.editPassword = true
+      this.editProfile = false
+      this.editCart = false
+    },
+    chooseEditProfile() {
+      this.editPassword = false
+      this.editProfile = true
+      this.editCart = false
+    },
+    chooseEditCart() {
+      this.editPassword = false
+      this.editProfile = false
+      this.editCart = true
     }
   },
-  created() {
+  mounted() {
     this.editProfile = true
   }
 }
 </script>
 <style>
+.user-page-container {
+  width: 100vw;
+  height: 93%;
+  margin-top: 3%;
+  align-items: center;
+  justify-content: space-between;
+}
 
+.user-page-footer {
+  width: 100%;
+  height: 150px;
+  background-color: #2c0a7a;
+}
+
+.choose-edit {
+  cursor: pointer;
+}
+
+label {
+  font-weight: bold;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+h3 {
+  margin-left: 10px;
+  font-weight: lighter;
+}
+.user-detail-container {
+  width: 80%;
+  height: 60%;
+  justify-content: space-between;
+}
+
+.right-content {
+  width: 75%;
+}
+
+.left-content {
+  width: 20%;
+  padding: 40px 0px 40px 0px;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.left-content-header {
+  width: 100%;
+  height: 25%;
+  justify-content: center;
+  align-items: center;
+  border-bottom: solid 2px #babec5;
+  margin-bottom: 10%;
+}
+.left-content-header div {
+  background-image: url(../../assets/imgs/Image/guest-32.png);
+  height: 50px;
+  width: 50px;
+  border:  #949494 solid 1px;
+  border-radius: 50%;
+  margin-right: 25px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.left-content-header label {
+  font-size: 18px;
+}
+
+.profile-detail-body {
+  height: 370px;
+}
+
+.profile-items > :first-child, .history-items > :first-child {
+  width: 100%;
+  height: 25%;
+  justify-content: flex-start;
+  align-items: center;
+}
+.profile-items-icon {
+  background-image: url(../../assets/imgs/Image/guest-32.png);
+  height: 24px;
+  width: 24px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.history-items-icon {
+  background-image: url(../../assets/imgs/Image/list-ingredients-32.png);
+  height: 24px;
+  width: 24px;
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.list-items {
+  width: fit-content;
+  margin-left: 30px;
+}
+
+.list-items > div {
+  font-size: 14px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.detail-container {
+  padding: 6px 20px 6px 6px;
+  border: solid 2px #babec5;
+  border-radius: 7px;
+}
+.detail-header {
+  border-bottom: solid 2px #babec5;
+}
+
+.profile-detail-img {
+  background-image: url(../../assets/imgs/Image/guest-32.png);
+  height: 100px;
+  width: 100px;
+  background-size: contain;
+  background-repeat: no-repeat;
+  border: #949494 solid 1px;
+  border-radius: 50%;
+  position: relative;
+  left: 75%;
+  bottom: 270px;
+  cursor: pointer;
+}
+
+.profile-detail-img::after {
+  content: "Image limit 1MB, JPG, PNG";
+  position: absolute;
+  bottom: -50px;
+  left: -30px;
+  width: 200px;
+}
+
+.gender {
+  font-weight: lighter;
+  margin-right: 10%;
+}
+
+.profile-detail-footer {
+  margin-left: 10px;
+}
+
+.btn-default {
+  position: relative;
+  left: 60%;
+  bottom: 43px;
+}
 </style>

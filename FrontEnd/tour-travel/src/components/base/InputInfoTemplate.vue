@@ -1,11 +1,19 @@
 <template>
-  <div class="item-cbb">
+  <div class="item-cbb" :style="{'margin-bottom': displayInline === 'block' ? '40px' : '32px'}">
     <span>{{ item }}</span>
-    <div v-if="canEditing">
+    <div v-if="canEditing" :style="{'display':  displayInline }">
       <input
           :type="inputType"
           v-model="input"
           :placeholder="placeholder"
+      />
+    </div>
+    <div v-else :style="{'display':  displayInline }">
+      <input
+          :type="inputType"
+          v-model="input"
+          disabled="true"
+          :placeholder="value"
       />
     </div>
   </div>
@@ -19,8 +27,8 @@ export default {
       required: true
     },
     canEditing: {
-      type: String,
-      default: "true"
+      type: Boolean,
+      default: false
     },
     visible: {
       type: Boolean,
@@ -57,6 +65,10 @@ export default {
     isOnlyNumeric: {
       type: Boolean,
       default: true
+    },
+    displayInline: {
+      type: String,
+      default: 'block'
     }
   },
   computed: {
@@ -89,11 +101,16 @@ export default {
 .item-cbb{
   height: 32px;
   padding: 16px 0px 6px 20px;
-  margin-bottom: 40px;
+}
+
+.item-cbb div {
+  width: 50%;
 }
 
 .item-cbb span {
   font-size: 16px;
+  display: inline-block;
+  width: 190px;
 }
 
 
