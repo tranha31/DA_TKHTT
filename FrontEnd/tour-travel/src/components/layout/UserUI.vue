@@ -155,17 +155,17 @@
         </div>
       </div>
     </div>
-    <div class="user-page-footer">
-
-    </div>
+    <Footer />
   </div>
 </template>
 <script>
 import InputInfoTemplate from "@/components/base/InputInfoTemplate";
+import Footer from "@/components/layout/TheFooter";
 export default {
   name: 'User',
   components: {
-    InputInfoTemplate
+    InputInfoTemplate,
+    Footer
   },
   data() {
     return {
@@ -222,12 +222,6 @@ export default {
   margin-top: 3%;
   align-items: center;
   justify-content: space-between;
-}
-
-.user-page-footer {
-  width: 100%;
-  height: 150px;
-  background-color: #2c0a7a;
 }
 
 .choose-edit {
