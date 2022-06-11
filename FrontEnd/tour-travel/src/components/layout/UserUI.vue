@@ -127,7 +127,32 @@
             </button>
           </div>
         </div>
-        <div v-if="editCart"></div>
+        <div class="edit-cart detail-container" v-if="editCart">
+          <div class="edit-cart-list d-flex flex-column" v-for="item in historyTour" :key="item.id">
+            <div class="tour-img" :style="{'background-image': item.img}"></div>
+            <div class="cart-action d-flex flex-column">
+              <label class="tour-info">{{ item.info }}</label>
+              <div>
+                <div>
+                  <button
+                      class="btn-default"
+                      @click="showHistoryTourDetail(item)"
+                  >
+                    Detail
+                  </button>
+                </div>
+                <div>
+                  <button
+                      class="btn-default"
+                      @click="removeHistoryTour(item)"
+                  >
+                    Remove
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="user-page-footer">
@@ -148,7 +173,8 @@ export default {
       editPassword: false,
       editCart: false,
       gender: null,
-      allowEnterCode: false
+      allowEnterCode: false,
+      historyTour: []
     }
   },
   methods: {
@@ -172,10 +198,20 @@ export default {
       this.editPassword = false
       this.editProfile = false
       this.editCart = true
+    },
+    getHistoryTour() {
+      // call api get history tour of this user and assign to historyTour array
+    },
+    showHistoryTourDetail(tour) {
+      console.log(tour)
+    },
+    removeHistoryTour(tour) {
+      console.log(tour)
     }
   },
   mounted() {
     this.editProfile = true
+    this.getHistoryTour()
   }
 }
 </script>
@@ -329,5 +365,9 @@ h3 {
   position: relative;
   left: 60%;
   bottom: 43px;
+}
+
+.edit-cart-list {
+
 }
 </style>
