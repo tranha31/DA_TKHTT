@@ -83,6 +83,7 @@
               <button
                   class="btn-default"
                   @click="handleUpdateProfile()"
+                  style="position: relative; left: 1%; bottom: 20px;"
               >
                 SAVE
               </button>

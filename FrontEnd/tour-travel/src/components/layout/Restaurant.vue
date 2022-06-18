@@ -75,11 +75,13 @@
                 item="Number of person"
                 :can-editing="true"
                 input-type="number"
+                width-input="100%"
             />
             <InputInfoTemplate
                 item="Time"
                 :can-editing="true"
                 input-type="text"
+                width-input="100%"
             />
           </div>
           <div>

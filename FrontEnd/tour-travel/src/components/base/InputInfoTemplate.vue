@@ -1,14 +1,14 @@
 <template>
   <div class="item-cbb" :style="{'margin-bottom': displayInline === 'block' ? '40px' : '32px'}">
     <span>{{ item }}</span>
-    <div v-if="canEditing" :style="{'display':  displayInline }">
+    <div v-if="canEditing" :style="{'display':  displayInline, 'width': widthInput }">
       <input
           :type="inputType"
           v-model="input"
           :placeholder="placeholder"
       />
     </div>
-    <div v-else :style="{'display':  displayInline }">
+    <div v-else :style="{'display':  displayInline, 'width': widthInput }">
       <input
           :type="inputType"
           v-model="input"
@@ -69,6 +69,10 @@ export default {
     displayInline: {
       type: String,
       default: 'block'
+    },
+    widthInput: {
+      type: String,
+      default: '50%'
     }
   },
   computed: {
@@ -103,15 +107,9 @@ export default {
   padding: 16px 0px 6px 20px;
 }
 
-.item-cbb div {
-  width: 100%;
-}
-
 .item-cbb span {
   font-size: 16px;
   display: inline-block;
   width: 190px;
 }
-
-
 </style>
