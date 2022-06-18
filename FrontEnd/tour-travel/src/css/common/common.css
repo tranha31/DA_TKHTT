@@ -181,8 +181,16 @@ input[type="text"], input[type="password"], input[type="number"] {
     margin-right: 12px;
 }
 
+.mr-20{
+    margin-right: 20px;
+}
+
 .mb-12{
     margin-bottom: 12px;
+}
+
+.mt-12{
+    margin-top: 12px;
 }
 
 .mx-datepicker .mx-input-wrapper input:focus{

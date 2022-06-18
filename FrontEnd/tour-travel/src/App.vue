@@ -22,6 +22,7 @@ export default {
 <style>
 @import url(css/common/common.css);
 @import url(css/common/toast.css);
+@import url(css/common/color.css);
 #app{
   position: relative;
 }

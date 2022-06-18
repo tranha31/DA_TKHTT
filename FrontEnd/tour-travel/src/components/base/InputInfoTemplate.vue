@@ -104,7 +104,7 @@ export default {
 }
 
 .item-cbb div {
-  width: 50%;
+  width: 100%;
 }
 
 .item-cbb span {
