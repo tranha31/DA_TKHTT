@@ -3,3 +3,18 @@
     background-repeat: no-repeat;
 }
 
+.location-icon {
+    background-image: url(../../assets/imgs/Image/white-place.png);
+}
+
+.phone-icon {
+    background-image: url(../../assets/imgs/Image/phone.png);
+}
+
+.rate-icon {
+    background-image: url(../../assets/imgs/Image/star.png);
+}
+
+.mail-icon {
+    background-image: url(../../assets/imgs/Image/gmail.png);
+}

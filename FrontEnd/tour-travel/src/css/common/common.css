@@ -177,6 +177,10 @@ input[type="text"], input[type="password"], input[type="number"] {
     padding-bottom: 6px;
 }
 
+.pb-36{
+    padding-bottom: 36px;
+}
+
 .mr-12{
     margin-right: 12px;
 }
