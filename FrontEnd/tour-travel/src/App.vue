@@ -9,11 +9,6 @@
 
 <script>
 import TheHeader from './components/layout/TheHeader.vue'
-<<<<<<< HEAD
-
-=======
-import TheTestUI from './components/layout/TheTestUI.vue'
->>>>>>> ac9f382dc489a5caece0ca988b82d46718c8347b
 export default {
   name: 'App',
   components: {
