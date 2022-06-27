@@ -2,8 +2,11 @@
     <div :class="clas">
         <div v-if="hasTitle" class="title-input">{{title}}&nbsp;&nbsp;<span v-if="msrequire">*</span></div>
         <div class="main-autocomplete" :class="error? 'error' : ''" :title="message" v-title>
-            <ejs-autocomplete :dataSource='dataItem' :fields='dataFields' 
+            <div v-if="hasImage" class="img" :class="classImage"></div>
+            <input v-if="disable" disabled class="w-full" style="height:33px; border:unset; border-radius: 0;padding-left: 10px;" v-model="contents"/>
+            <ejs-autocomplete v-else :dataSource='dataItem' :fields='dataFields' 
             v-model="contents"
+            :placeholder="placeholder"
             @blur="blurCbb">
             </ejs-autocomplete>
         </div>
@@ -29,6 +32,9 @@ export default {
         isNumber: Boolean,
         notNull : Boolean,
         read : Boolean,
+        hasImage: Boolean,
+        classImage: String,
+        disable: Boolean,
     },
     data(){
         return{
@@ -67,4 +73,24 @@ export default {
 
 <style>
 @import url(https://cdn.syncfusion.com/ej2/material.css);
+
+.main-autocomplete{
+    position: relative;
+}
+
+.main-autocomplete .img{
+    position: absolute;
+    left: 5px;
+    top: 25%;
+}
+
+.e-autocomplete::placeholder{
+    color: #949494;
+    font-family: notosans-italic;
+}
+
+.e-autocomplete{
+    padding-left: 10px !important;
+    height: 23px !important;
+}
 </style>

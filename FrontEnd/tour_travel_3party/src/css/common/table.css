@@ -1,0 +1,76 @@
+.grid-detail{
+    width: 100%;
+}
+
+.grid-detail .tabel-detail{
+    width: 100%;
+}
+
+.tabel-detail th, td{
+    border: 1px solid #babec5;
+    border-top: unset;
+    border-right: unset;
+    padding: 0 5px;
+}
+
+.tabel-detail thead th{
+    height: 40px;
+    border-top: 1px solid #babec5;
+    
+}
+
+.tabel-detail tr th:last-child,td:last-child{
+    border-right: 1px solid #babec5;
+}
+
+.tabel-detail td.order, td.time{
+    text-align: center;
+}
+
+.tabel-detail .order{
+    width: 50px;
+}
+
+.tabel-detail .number{
+    text-align: right;
+}
+.tabel-detail td.function .lst-option{
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.tabel-detail td.function .lst-option .option{
+    text-align: center;
+    color: blue;
+    padding: 2px;
+    cursor: pointer;
+}
+
+.tabel-detail td.function .lst-option .option:hover{
+    text-decoration: underline;
+}
+
+.tabel-detail thead{
+    display: table;
+    table-layout: fixed;
+    width: calc(100% - 5px);
+    position: sticky;
+    top: 0;
+}
+
+.tabel-detail tbody{
+    display: block;
+    height: calc(100vh - 250px);
+    overflow-y: auto;
+}
+
+.tabel-detail tbody tr{
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.tabel-detail tr input[type=checkbox]{
+    height: 18px;
+    width: 18px;
+}

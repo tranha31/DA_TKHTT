@@ -1,0 +1,229 @@
+.form-container{
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    align-items: center;
+    z-index: 999999;
+}
+
+.form-container .form-background{
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,.4);
+}
+
+.form-container .form-main{
+    margin-right: auto;
+    margin-left: auto;
+    height: 90vh;
+    width: 60%;
+    background-color: #fff;
+    border: 1px solid #babec5;
+    border-radius: 5px;
+    overflow: auto;
+    z-index: 55;
+    position: relative;
+}
+
+.form-container .form-main .header{
+    width: 100%;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 10px 20px;
+    height: auto;
+    position: sticky;
+    top: 0;
+    background-color: #dfe0e3;
+    z-index: 100;
+}
+
+.form-container .form-main .icon-close{
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+}
+
+.form-container .form-main .icon-close:hover{
+    background-color: #babec5;
+    border-radius: 5px;
+}
+
+.form-container .form-main .form-title{
+    width: 100%;
+    padding: 10px 20px;
+    border-bottom: 1px solid #babec5;
+    height: auto;
+    position: sticky;
+    top:47px;
+    background-color: #fff;
+    z-index: 99999;
+}
+
+.form-container .form-main .form-title .title{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.form-container .form-main .common-infor{
+    padding: 10px 20px;
+    border-bottom: 1px solid #babec5;
+}
+
+.form-container .form-main .time-line{
+    padding: 10px 20px;
+    border-bottom: 1px solid #babec5;
+}
+
+.form-container .form-main .time-line .title{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.form-container .form-main .time-line .block-time-line .title{
+    font-size: 14px;
+}
+
+.form-container .form-main .time-line .block-time-line{
+    width: 100%;
+    height: auto;
+    padding-left: 30px;
+    padding-bottom: 10px;
+    border-bottom: 1px dotted #babec5;
+}
+
+.form-container .form-main .time-line .block-time-line:last-child{
+    border-bottom: unset;
+    padding-bottom: unset;
+}
+
+.form-container table{
+    width: 80%;
+    border-spacing: 0;
+    border-top: 1px solid #babec5;
+    border-left: 1px solid #babec5;
+}
+
+.form-container td, th{
+    border: 1px solid #babec5;
+    padding: 10px;
+    border-left: unset;
+    border-top: unset;
+}
+
+.form-container table .location{
+    width: 350px;
+}
+
+.form-container table td.function{
+    color: blue;
+    cursor: pointer;
+    width: 40px;
+}
+
+.form-container table td.function:hover{
+    text-decoration: underline;
+}
+
+.add-new{
+    margin-top: 12px;
+    height: 40px;
+    width: 200px;
+    align-items: center;
+    cursor: pointer;
+}
+
+.add-new:hover{
+    font-weight: 600;
+}
+
+.add-new div:first-child{
+    height: 34px;
+    width: 34px;
+    background-color: #e89327;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    color: #fff;
+    margin-right: 12px;
+}
+
+.form-container .form-main .request-customer{
+    padding: 10px 20px;
+    border-bottom: 1px solid #babec5;
+}
+
+.form-container .form-main .request-customer .title{
+    font-weight: 600;
+    font-size: 18px;
+    
+}
+
+.form-container .form-main .other-infor{
+    padding: 10px 20px 50px 20px;
+}
+
+.form-container .form-main .other-infor .title{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.form-container .form-main .other-infor .other-infor-item{
+    width: 50%;
+}
+
+.form-container .form-main .other-infor .other-infor-item table.disable{
+    margin-bottom: 12px;
+    background-color: #dfe0e3;
+}
+
+.form-container .form-main table.disable{
+    background-color: #dfe0e3;
+}
+
+.form-container .form-main .action{
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    padding: 20px 30px 20px 10px;
+    background-color: #fff;
+    border-top: 1px solid #babec5;
+}
+
+.form-container .form-main .action .btn{
+    height: 40px;
+    width: auto;
+    margin-left: 20px;
+}
+
+.form-container .form-main .note{
+    border-top: 1px solid #babec5;
+    padding: 10px 20px 50px 20px;
+}
+
+.form-container .form-main .note .title{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.form-container .form-main .note textarea{
+    padding: 10px;
+    height: 200px;
+    border: 1px solid #babec5;
+    border-radius: 5px;
+    resize: none;
+}
+
+.form-container .form-main .note textarea:focus{
+    border-color: #e89327;
+}

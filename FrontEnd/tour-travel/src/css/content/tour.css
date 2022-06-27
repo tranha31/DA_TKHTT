@@ -1,0 +1,160 @@
+.tour-contain{
+    width: 100vw;
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+.tour-contain .grid-content{
+    position: relative;
+    justify-content: center;
+    padding-top: 30px;
+    padding-bottom: 200px;
+}
+
+.tour-contain .grid-content .filter{
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    left: 15px;
+    top: 15px;
+    background-color: #fff;
+    background-position: -1593px -80px;
+    border: 1px solid #babec5;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.tour-contain .grid-content .filter.active{
+    background-position: -1593px -136px;
+    border-color: blue;
+}
+
+.tour-contain .grid-content .filter-form{
+    position: absolute;
+    width: 300px;
+    height: 400px;
+    top: 60px;
+    left: 15px;
+    border: 1px solid #babec5;
+    border-radius: 5px;
+    padding: 20px;
+    background-color: #fff;
+    z-index: 500;
+}
+
+.tour-contain .grid-content .filter-form .title{
+    width: 100%;
+    height: 40px;
+    font-size: 18px;
+    font-weight: 600;
+    position: relative;
+}
+
+.tour-contain .grid-content .filter-form .title .icon-close{
+    position: absolute;
+    right: -15px;
+    top: -15px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tour-contain .grid-content .filter-form .title .icon-close:hover{
+    background-color: #babec5;
+    border-radius: 5px;
+}
+
+.tour-contain .grid-content .filter-form .function{
+    height: 40px;
+}
+
+.tour-contain .grid-content .filter-form .function .btn{
+    min-width: 80px;
+    margin-left: 10px;
+    text-align: center;
+}
+
+.tour-contain .grid-content .grid-item{
+    margin-left: auto;
+    margin-right: auto;
+    width: 900px;
+    height: 300px;
+    border: 1px solid #babec5;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.tour-contain .grid-content .grid-item .item-image{
+    height: 100%;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    background-color: aqua;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.tour-contain .grid-content .grid-item .item-info{
+    padding: 20px;
+}
+
+.tour-contain .grid-content .grid-item .item-info .item-title{
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+}
+
+.tour-contain .grid-content .grid-item .item-info .item-title:hover{
+    text-decoration: underline;
+}
+
+.tour-contain .grid-content .grid-item .item-info .item-code{
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.tour-contain .grid-content .grid-item .item-info .option{
+    padding: 10px;
+    background-color: #69aef5;
+    width: 100px;
+    text-align: center;
+    border-radius: 5px;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.tour-contain .grid-content .grid-item .item-info .item-action-info{
+    background-image: url(../../assets/imgs/Image/order.png);
+    background-repeat: no-repeat;
+    background-size: 20px;
+    padding-left: 25px;
+}
+
+@media only screen and (max-width: 1000px) {
+    .tour-contain .grid-content .grid-item{
+        width: 400px;
+        height: 300px;
+    }
+
+}
+
+@media only screen and (max-width: 400px) {
+    .tour-contain .grid-content .grid-item{
+        width: 300px;
+        height: auto;
+    }
+    .tour-contain .grid-content .grid-item .item-image{
+        height: auto;
+    }
+
+    .tour-contain .grid-content .grid-item .item-info .item-title{
+        font-size: 14px;
+    }
+
+    .tour-contain .grid-content .grid-item .item-info .item-code{
+        padding-top: 0px;
+    }
+    
+}
