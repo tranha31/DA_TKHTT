@@ -1,21 +1,20 @@
 <template>
   <div id="app">
-    <TheHeader></TheHeader>
+    <TheMenu/>
     <div class="main-content">
-      <TheTestUI></TheTestUI>
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script>
-import TheHeader from './components/layout/TheHeader.vue'
-import TheTestUI from './components/layout/TheTestUI.vue'
+import TheMenu from './components/layout/TheMenu.vue'
+
 
 export default {
   name: 'App',
   components: {
-    TheHeader,
-    TheTestUI
+    TheMenu
   }
 }
 </script>
@@ -28,9 +27,9 @@ export default {
 }
 .main-content{
   position: absolute;
-  top: 60px;
-  left: 0px;
-  width: 100vw;
-  height: calc(100vh - 60px);
+  top: 0px;
+  left: 200px;
+  width: calc(100vw - 200px);
+  height: 100vh;
 }
 </style>

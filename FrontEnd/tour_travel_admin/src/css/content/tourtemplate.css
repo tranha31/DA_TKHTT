@@ -1,0 +1,40 @@
+.list-template{
+    padding: 20px;
+}
+
+.list-template .header{
+    align-items: center;
+    padding-top: 30px;
+    padding-bottom: 50px;
+}
+
+.list-template .header input[type=checkbox]{
+    margin-left: 40px;
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+}
+
+.list-template .header .option-button{
+    align-items: center;
+}
+
+.list-template .header .reload{
+    width: 20px;
+    height: 20px;
+    background-image: url(../../assets/imgs/Image/refresh-2-32.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    margin-right: 35px;
+    cursor: pointer;
+}
+
+.list-template .cancel-multi{
+    margin-left: 20px;
+    color: blue;
+}
+
+.list-template .cancel-multi:hover{
+    cursor: pointer;
+    text-decoration: underline;
+}

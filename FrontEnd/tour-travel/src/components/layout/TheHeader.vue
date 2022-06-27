@@ -7,7 +7,7 @@
           <router-link class="router-link" to="/test">
             <div class="item-link">Danh lam</div>
           </router-link>
-          <router-link class="router-link" to="/test">
+          <router-link class="router-link" to="/tour">
             <div class="item-link">Tour</div>
           </router-link>
           <router-link class="router-link" to="/test">
@@ -30,7 +30,7 @@
             <router-link class="router-link" to="/test">
               <div class="item-link">Danh lam</div>
             </router-link>
-            <router-link class="router-link" to="/test">
+            <router-link class="router-link" to="/tour">
               <div class="item-link">Tour</div>
             </router-link>
             <router-link class="router-link" to="/test">

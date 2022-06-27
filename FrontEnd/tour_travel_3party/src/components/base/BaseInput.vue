@@ -1,12 +1,14 @@
 <template>
-    <div :class="clas" >
+    <div class="main-input" :class="clas" >
         <div v-if="hasTitle" class="title-input">{{title}}&nbsp;&nbsp;<span v-if="msrequire">*</span></div>
+        <div v-if="hasImage" class="img" :class="classImage"></div>
         <input type="text"
         class="base-input"
         :class="[isNumber? 'input-right':'', error? 'error' : '', read? 'read' : '']"
         :placeholder="placeholder"
         :readonly="read"
         :title="message" v-title
+        :disabled="disabled"
         autocomplete="off"
         v-model="contents"
         @keypress="input($event)"
@@ -32,6 +34,9 @@ export default {
         isNumber: Boolean,
         notNull : Boolean,
         read : Boolean,
+        hasImage: Boolean,
+        classImage: String,
+        disabled : Boolean
     },
     data(){
         return{
@@ -128,6 +133,17 @@ export default {
 </script>
 
 <style>
+    .main-input{
+        position: relative;
+    }
+
+    .main-input .img{
+        position: absolute;
+        left: 5px;
+        top: 25%;
+        z-index: 1;
+    }
+
     .title-input{
         font-weight: 600;
         font-size: 12px;
@@ -139,7 +155,7 @@ export default {
     .base-input{
         border: 1px solid #babec5;
         width: 100%;
-        height: 32px;
+        height: 34px;
         font-size: 13px;
         color: inherit;
         position: relative;
