@@ -9,7 +9,11 @@
 
 <script>
 import TheHeader from './components/layout/TheHeader.vue'
+<<<<<<< HEAD
 
+=======
+import TheTestUI from './components/layout/TheTestUI.vue'
+>>>>>>> ac9f382dc489a5caece0ca988b82d46718c8347b
 export default {
   name: 'App',
   components: {
@@ -21,6 +25,7 @@ export default {
 <style>
 @import url(css/common/common.css);
 @import url(css/common/toast.css);
+@import url(css/common/color.css);
 #app{
   position: relative;
   overflow-x: hidden;

@@ -345,7 +345,7 @@ input[name=date]::placeholder{
 }
 
 .btn:hover{
-    background-color: #d2d3d6;
+    background-color: #e89327;
 }
 
 .btn-save{
@@ -361,7 +361,18 @@ input[name=date]::placeholder{
 input[type=checkbox]:checked + label .div-checkbox{
     background-position: -1224px -361px;
     border-color: #2ca01c !important;
-} 
+}
+
+input[type="text"], input[type="password"], input[type="number"] {
+    padding: 5px 15px;
+    border: 1px solid #e89327;
+    border-radius: 7px;
+    background-color: #f8f9fa;
+    width: 70%;
+    height: 36px;
+    font-size: 16px;
+}
+
 .div-checkbox{
     border: 1px solid #afafaf;
     border-radius: 2px;
@@ -379,20 +390,34 @@ input[type=checkbox]:checked + label .div-checkbox{
 }
 .btn-default{
     margin-right: 12px;
+    background-color: #e89327;
+    border: none;
+    border-radius: 2px;
+    padding: 4px 16px 4px 16px;
+    cursor: pointer;
 }
 
 .pb-6{
     padding-bottom: 6px;
 }
 
+.pb-36{
+    padding-bottom: 36px;
+}
+
 .mr-12{
     margin-right: 12px;
+}
+
+.mr-20{
+    margin-right: 20px;
 }
 
 .mb-12{
     margin-bottom: 12px;
 }
 
+<<<<<<< HEAD
 .mb-20{
     margin-bottom: 20px;
 }
@@ -400,6 +425,12 @@ input[type=checkbox]:checked + label .div-checkbox{
 .mb-30{
     margin-bottom: 30px;
 }
+=======
+.mt-12{
+    margin-top: 12px;
+}
+
+>>>>>>> ac9f382dc489a5caece0ca988b82d46718c8347b
 .mx-datepicker .mx-input-wrapper input:focus{
     border-color: #e89327;
 }
