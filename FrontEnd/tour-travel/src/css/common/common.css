@@ -602,6 +602,10 @@ input[type="text"], input[type="password"], input[type="number"] {
     font-size: 25px;
 }
 
+.show-detail {
+    color: #e89327;
+}
+
 .slide{
     display: none;
 }

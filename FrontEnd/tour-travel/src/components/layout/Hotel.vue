@@ -260,7 +260,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 @import url(../../css/common/icon.css);
 .restaurant-page-container {
 }
