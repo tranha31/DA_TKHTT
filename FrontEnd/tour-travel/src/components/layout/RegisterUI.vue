@@ -2,10 +2,10 @@
   <div class="login-page-container">
     <div class="login-page d-flex">
       <div class="login-form-container d-flex">
-        <div class="form-container d-flex flex-column">
+        <div class="d-flex flex-column">
           <div class="form-label d-flex">
             <div>
-              <label>Sign in</label>
+              <label @click="directToLogin">Sign in</label>
             </div>
             <div class="label-focus">
               <label>Register</label>
@@ -15,38 +15,43 @@
             <div class="form-info-input">
               <InputInfoTemplate
                   item="Email"
-                  can-editing="true"
+                  :can-editing="true"
                   placeholder="Email"
                   input-type="text"
                   v-model="email"
+                  width-input="400px"
               />
               <InputInfoTemplate
                   item="Password"
-                  can-editing="true"
+                  :can-editing="true"
                   placeholder="Password"
                   input-type="password"
                   v-model="password"
+                  width-input="400px"
               />
               <InputInfoTemplate
                   item="Confirm Password"
-                  can-editing="true"
+                  :can-editing="true"
                   placeholder="Confirm Password"
                   input-type="password"
                   v-model="confirmPassword"
+                  width-input="400px"
               />
               <InputInfoTemplate
                   item="Username"
-                  can-editing="true"
+                  :can-editing="true"
                   placeholder="Username"
                   input-type="text"
                   v-model="username"
+                  width-input="400px"
               />
               <InputInfoTemplate
                   item="Phone Number"
-                  can-editing="true"
+                  :can-editing="true"
                   placeholder="Phone number"
                   input-type="number"
                   v-model="phoneNumber"
+                  width-input="400px"
               />
               <div @click="showUploadSign = true" style="padding: 16px 0px 6px 20px;">
                 Upload Signature
@@ -59,7 +64,7 @@
         </div>
       </div>
       <div class="login-background d-flex flex-column">
-        <img src="../../assets/imgs/Image/bg_login.jpg">
+<!--        <img src="../../assets/imgs/Image/bg_login.jpg">-->
       </div>
     </div>
     <Modal v-if="showUploadSign" :actions="[]">
@@ -68,13 +73,13 @@
       </div>
       <template slot="body">
         <div class="upload-container">
-          <div class="upload-display d-flex pb-6 mr-12">
+          <div class="upload-display d-flex pb-6 mr-12 mb-20">
             <div>Display area</div>
             <div>
               <button class="btn-default" @click="handleUploadSign()">Upload</button>
             </div>
           </div>
-          <div class="upload-commit">
+          <div class="upload-commit mb-20">
             <input type="checkbox" id="checkbox" v-model="commitSignature" />
             <label for="checkbox">I commit that the signature is legally valid</label>
           </div>
@@ -128,13 +133,15 @@ export default {
     },
     handleSaveUploadSign() {
       this.showUploadSign = false
+    },
+    directToLogin() {
+      this.$router.push({ path: '/login'})
     }
-
   }
 }
 
 </script>
-<style>
+<style scoped>
 @import url(../../css/common/common.css);
 .login-page-container {
   width: 100vw;
@@ -142,88 +149,86 @@ export default {
 }
 
 .login-page {
-  width: 100vw;
+  width: 100%;
   height: 100%;
 }
 
 .login-form-container {
   width: 50%;
-  height: 100%;
   justify-content: center;
   align-items: center;
+}
+
+.login-form-container > div:first-child {
+  justify-content: center;
+  border: solid 3px #ffc021;
+  border-radius: 10px;
+  padding: 20px 20px;
+}
+
+.form-label {
+  justify-content: space-around;
+
+}
+
+.form-label > div {
+  width: 50%;
+  text-align: center;
+}
+
+label {
+  cursor: pointer;
+  font-size: 24px;
+}
+
+.label-focus {
+  border-bottom: 2px solid #ffc021;
+}
+
+.label-focus > label {
+  color: #ffc021;
+  font-weight: bold;
+}
+
+.form-info-input {
+  margin-top: 30px;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.btn {
+  margin-top: 15px;
+  border-radius: 8px;
+  background-color: #ffc021;
+  font-size: 16px;
+  font-weight: bolder;
 }
 
 .login-background {
   width: 50%;
   height: 100%;
   justify-content: center;
+  background-image: url(../../assets/imgs/Image/bg_login.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-img {
-  max-width: 100%;
-  max-height: 100%;
-  min-height: 99.5%;
+.upload-display {
+  justify-content: space-between;
 }
 
-.form-container {
+.upload-display > div:first-child {
   width: 70%;
-  height: 90%;
-  border-radius: 14px;
-  background-color: #ffffff;
-  justify-content: flex-start;
+  height: 200px;
+  background-color: #949494;
 }
 
-.form-label {
-  padding: 0px;
-  justify-content: space-around;
-}
-
-.form-label > div {
-  width: 50%;
-  text-align: center;
-  border-bottom: solid 2px #babec5;
-}
-
-.form-label label {
-  width: 100%;
-  height: 96px;
-  font-size: 28px;
-  cursor: pointer;
-}
-
-.label-focus {
-  border-bottom: solid 4px #e89327 !important;
-}
-
-.form-info {
-  justify-content: space-around;
-  height: 100%;
-}
-
-.form-info-action {
-  padding: 16px 20px 6px 20px;
-  width: 100%;
-  height: 100px;
-  /*justify-content: space-around;*/
-}
-
-.btn {
-  border: 1px solid #e89327;
-  padding: 8px 20px;
-  border-radius: 7px;
-  cursor: pointer;
+.upload-commit > label {
   font-size: 16px;
 }
 
-.upload-display > :first-child {
-  background-color: #949494;
-  height: 200px;
-  width: 200px;
-  margin-right: 50px;
-}
-
 .list-buttons {
-  margin-top: 20px;
   justify-content: flex-end;
 }
+
 </style>

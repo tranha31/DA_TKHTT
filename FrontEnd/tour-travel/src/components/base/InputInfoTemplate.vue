@@ -81,13 +81,13 @@ export default {
     },
     input: {
       get() {
-        if (this.isOnlyAlpha) {
-          let checkedText = this.value !== null ? this.value.replace(/[a-zA-Z]+/g, '') : this.value
-          return checkedText
-        } else if (this.isOnlyNumeric) {
-          let checkedText = this.value !== null ? this.value.replace(/[0-9]+/g, '') : this.value
-          return checkedText
-        }
+        // if (this.isOnlyAlpha) {
+        //   let checkedText = this.value !== null ? this.value.replace(/[a-zA-Z]+/g, '') : this.value
+        //   return checkedText
+        // } else if (this.isOnlyNumeric) {
+        //   let checkedText = this.value !== null ? this.value.replace(/[0-9]+/g, '') : this.value
+        //   return checkedText
+        // }
         return this.value
       },
       set(value) {
@@ -104,7 +104,7 @@ export default {
 <style>
 .item-cbb{
   height: 32px;
-  padding: 16px 0px 6px 20px;
+  padding: 16px 0px 6px 0px;
 }
 
 .item-cbb span {
