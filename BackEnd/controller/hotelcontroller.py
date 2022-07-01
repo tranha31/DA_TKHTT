@@ -2,7 +2,7 @@ from flask import Blueprint, request
 from flask.wrappers import Response
 from bussiness.hotelservice import HotelService
 
-hotel = Blueprint("auth", __name__)
+hotel = Blueprint("hotel", __name__)
 cors = CORS(test, resources={r"/api/*": {"origins": "*"}})
 hotelservice = HotelService()
 
