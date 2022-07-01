@@ -19,7 +19,7 @@
           <router-link class="router-link" to="/login">
             <div class="item-link">Đăng nhập</div>
           </router-link>
-          <router-link class="router-link link-user" to="/test">
+          <router-link class="router-link link-user" to="/user">
             <div class="item-link user"></div>
           </router-link>
         </div>

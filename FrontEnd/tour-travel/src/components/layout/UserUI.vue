@@ -281,6 +281,7 @@ h3 {
 
 .profile-detail-body {
   height: 370px;
+  padding: 10px 20px;
 }
 
 .profile-items > :first-child, .history-items > :first-child {
@@ -358,11 +359,15 @@ h3 {
 
 .btn-default {
   position: relative;
-  left: 60%;
+  left: 65%;
   bottom: 43px;
 }
 
 .edit-cart-list {
 
+}
+
+.password-detail-body {
+  padding: 10px 20px;
 }
 </style>

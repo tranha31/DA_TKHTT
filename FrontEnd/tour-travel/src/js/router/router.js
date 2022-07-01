@@ -5,6 +5,7 @@ import VHotel from "@/views/hotel/VHotel"
 import Hotel from "@/components/layout/Hotel"
 import LogInUI from "@/components/layout/LogInUI"
 import RegisterUI from "@/components/layout/RegisterUI"
+import UserUI from "@/components/layout/UserUI"
 
 export default class Router {
     routes = [
@@ -15,5 +16,6 @@ export default class Router {
         { path: '/hotel', name: 'hotel', component: VHotel },
         { path: '/login', name: 'login', component: LogInUI },
         { path: '/register', name: 'register', component: RegisterUI },
+        { path: '/user', name: 'user', component: UserUI },
     ]
 }
