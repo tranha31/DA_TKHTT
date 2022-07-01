@@ -27,5 +27,5 @@ def registerNewUser():
     phone = _json['phone']
 
     result = authservice.register(email, password, username, phone)
-    
+
     return Response(response=result, status=200, mimetype="application/json")
