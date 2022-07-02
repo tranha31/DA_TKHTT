@@ -1,9 +1,11 @@
 from flask import Blueprint, request
 from flask.wrappers import Response
 from bussiness.restaurantservice import RestaurantService
+from flask_cors import CORS
+from flask_cors.decorator import cross_origin
 
 restaurant = Blueprint("restaurant", __name__)
-cors = CORS(test, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(restaurant, resources={r"/api/*": {"origins": "*"}})
 restaurantservice = RestaurantService()
 
 @restaurant.route("/searchAll", methods=['GET'])

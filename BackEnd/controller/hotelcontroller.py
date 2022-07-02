@@ -1,9 +1,11 @@
 from flask import Blueprint, request
 from flask.wrappers import Response
 from bussiness.hotelservice import HotelService
+from flask_cors import CORS
+from flask_cors.decorator import cross_origin
 
 hotel = Blueprint("hotel", __name__)
-cors = CORS(test, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(hotel, resources={r"/api/*": {"origins": "*"}})
 hotelservice = HotelService()
 
 @hotel.route("/searchAll", methods=['GET'])
@@ -15,7 +17,7 @@ def searchAll():
 
 @hotel.route("/searchHotel", methods=['GET'])
 @cross_origin()
-def searchAll():
+def searchByAmount():
     _json = request.json
     amount = _json['amount']
 

@@ -11,7 +11,7 @@ class HotelRepository(DLBase):
         hotels = cursor.fetchall()
         return hotels
 
-    def getHotelByAmount(self):
+    def getHotelByAmount(self, amount):
         sql = "Select * from hotel limit %d;"
         cursor = self.conn.cursor(dictionary=True)
         cursor.execute(sql, (amount))

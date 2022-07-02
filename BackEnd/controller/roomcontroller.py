@@ -1,9 +1,11 @@
 from flask import Blueprint, request
 from flask.wrappers import Response
 from bussiness.roomservice import RoomService
+from flask_cors import CORS
+from flask_cors.decorator import cross_origin
 
 room = Blueprint("room", __name__)
-cors = CORS(test, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(room, resources={r"/api/*": {"origins": "*"}})
 roomservice = RoomService()
 
 
