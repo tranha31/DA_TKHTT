@@ -15,3 +15,4 @@ class UserRepository(DLBase):
         sql = "insert into user values (%s, %s, %s, %s);"
         cursor = self.conn.cursor(dictionary=True)
         cursor.execute(sql, (username, password, email, phone))
+        self.conn.commit()

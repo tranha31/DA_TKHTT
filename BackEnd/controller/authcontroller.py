@@ -1,9 +1,11 @@
 from flask import Blueprint, request
 from flask.wrappers import Response
 from bussiness.authservice import AuthService
+from flask_cors import CORS
+from flask_cors.decorator import cross_origin
 
 auth = Blueprint("auth", __name__)
-cors = CORS(test, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(auth, resources={r"/api/*": {"origins": "*"}})
 authservice = AuthService()
 
 @auth.route("/login", methods=['POST'])
