@@ -10,16 +10,16 @@
           <router-link class="router-link" to="/tour">
             <div class="item-link">Tour</div>
           </router-link>
-          <router-link class="router-link" to="/test">
+          <router-link class="router-link" to="/hotel">
             <div class="item-link">Khách sạn</div>
           </router-link>
-          <router-link class="router-link" to="/test">
+          <router-link class="router-link" to="/register">
             <div class="item-link">Đăng ký</div>
           </router-link>
-          <router-link class="router-link" to="/test">
+          <router-link class="router-link" to="/login">
             <div class="item-link">Đăng nhập</div>
           </router-link>
-          <router-link class="router-link link-user" to="/test">
+          <router-link class="router-link link-user" to="/user">
             <div class="item-link user"></div>
           </router-link>
         </div>
@@ -33,13 +33,13 @@
             <router-link class="router-link" to="/tour">
               <div class="item-link">Tour</div>
             </router-link>
-            <router-link class="router-link" to="/test">
+            <router-link class="router-link" to="/hotel">
               <div class="item-link">Khách sạn</div>
             </router-link>
-            <router-link class="router-link" to="/test">
+            <router-link class="router-link" to="/register">
               <div class="item-link">Đăng ký</div>
             </router-link>
-            <router-link class="router-link" to="/test">
+            <router-link class="router-link" to="/login">
               <div class="item-link">Đăng nhập</div>
             </router-link>
           </div>
