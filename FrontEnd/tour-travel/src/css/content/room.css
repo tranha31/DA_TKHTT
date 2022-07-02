@@ -1,0 +1,276 @@
+.hotel-container{
+    width: 100vw;
+    min-height: 100vh;
+    background-color: #fff;
+}
+
+.search .chooseAmount{
+    height: 34px;
+    border: 1px solid #babec5;
+    border-radius: 5px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.hotel-container .room-main{
+    width: 100%;
+    padding: 20px 0 ;
+}
+
+.hotel-container .room-main .hotel-info{
+    margin-left: auto;
+    margin-right: auto;
+    width: 900px;
+    height: 300px;
+    border: 1px solid #babec5;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.hotel-container .room-main .hotel-info .image{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    margin-right: 20px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.hotel-container .room-main .hotel-info .title{
+    font-size: 20px;
+    font-weight: 600;
+    padding-bottom: 10px;
+}
+
+.hotel-container .room-main .hotel-info .place{
+    background-image: url(../../assets/imgs/Image/location.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 12px;
+    width: 12px;
+    margin-right: 10px;
+}
+
+.hotel-container .room-main .hotel-info .other-info .info{
+    padding: 10px;
+    border: 1px solid #e89327;
+    border-radius: 5px;
+    margin-right: 10px;
+    color: #e89327;
+}
+
+.hotel-container .room-main .hotel-info .star .star-item{
+    height: 32px;
+    width: 32px;
+    background-image: url(../../assets/imgs/Image/star.png);
+}
+
+.hotel-container .room-main .hotel-info .describe{
+    max-height: 100px;
+    overflow: hidden;
+}
+
+.hotel-container .room-main .linkHotel{
+    color: #e89327 !important;
+}
+
+.hotel-container .room-main .linkHotel:hover{
+    text-decoration: underline;
+}
+
+.hotel-container .room-main .note{
+    margin-left: auto;
+    margin-right: auto;
+    width: 900px;
+    border: 1px solid #babec5;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.hotel-container .room-main .rooms{
+    margin-left: auto;
+    margin-right: auto;
+    width: 900px;
+    border-bottom: 1px solid #babec5;
+    margin-bottom: 20px;
+}
+
+.hotel-container .room-main .rooms .room-item-title{
+    margin-right: 20px;
+    padding: 0 10px;
+    cursor: pointer;
+}
+
+.hotel-container .room-main .rooms .room-item-title.active{
+    color: #e89327;
+    font-weight: 600;
+    border-bottom: 1px solid #e89327;
+}
+
+.hotel-container .room-main .grid-room{
+    margin-left: auto;
+    margin-right: auto;
+    width: 900px;
+    margin-bottom: 20px;
+}
+
+.hotel-container .room-main .grid-room .room-item .item{
+    border: 1px solid #babec5;
+    border-radius: 5px;
+    height: auto;
+}
+
+.hotel-container .room-main .grid-room .room-item .item .info{
+    height: 250px;
+    padding: 10px;
+}
+
+.room-main .grid-room .room-item .item .info .image{
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    margin-right: 20px;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.room-main .grid-room .room-item .item .info .title{
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.room-main .grid-room .payment-div{
+    height: 550px;
+    border: 1px solid #babec5;
+    border-radius: 5px;
+    margin-left: 40px;
+    padding: 20px;
+}
+
+.room-main .grid-room .payment-div .title{
+    font-size: 20px;
+    font-weight: 600;
+    border-bottom: 1px solid #babec5;
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+.room-main .grid-room .payment-div .sub-title{
+    font-size: 15px;
+    font-weight: 600;
+    padding-bottom: 10px;
+}
+
+
+
+@media only screen and (max-width: 1000px) {
+    .hotel-container .room-main .hotel-info{
+        width: 400px;
+        height: 300px;
+    }
+
+    .hotel-container .room-main .note{
+        width: 400px;
+    }
+
+    .hotel-container .room-main .rooms{
+        width: 400px;
+    }
+
+    .hotel-container .room-main .grid-room{
+        width: 400px;
+    }
+
+    .hotel-container .room-main .grid-room .room-item .item .info{
+        flex-direction: column;
+    }
+
+    .hotel-container .room-main .grid-room .room-item .item .info .price{
+        font-size: 14px !important;
+    }
+
+    .hotel-container .room-main .grid-room .room-item .item .info .image{
+        width: 100%;
+        height: 60px;
+    }
+
+    .hotel-container .room-main .grid-room .room-item .item .info .image + div{
+        width: 100%;
+        height: 60px;
+    }
+    .room-main .grid-room .payment-div{
+        padding: 0;
+        min-height: 580px;
+    }
+}
+
+@media only screen and (max-width: 400px) {
+    .hotel-container .room-main .hotel-info{
+        width: 300px;
+        height: auto;
+        flex-direction: column;
+    }
+
+    .hotel-container .room-main .hotel-info .image{
+        height: 150px;
+        width: 100%;
+    }
+
+    .hotel-container .room-main .hotel-info .infos{
+        width: 100%;
+        padding: 5px;
+    }
+
+    .hotel-container .room-main .hotel-info .describe{
+        max-height: 200px;
+        overflow: auto;
+    }
+
+    .hotel-container .room-main .rooms{
+        width: 300px;
+    }
+
+    .hotel-container .room-main .note{
+        width: 300px;
+    }
+    
+    .hotel-container .room-main .grid-room{
+        width: 300px;
+    }
+
+    .hotel-container .room-main .grid-room .room-item .item .info{
+        flex-direction: column;
+    }
+
+    .hotel-container .room-main .grid-room .room-item .item .info .price{
+        font-size: 14px !important;
+    }
+
+    .hotel-container .room-main .grid-room .room-item .item .info .image{
+        width: 100%;
+        height: 150px;
+    }
+
+    .hotel-container .room-main .grid-room .room-item .item .info .image + div{
+        width: 100%;
+        height: 60px;
+    }
+
+    .room-main .grid-room .payment-div{
+        padding: 0;
+        min-height: 680px;
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .room-main .grid-room{
+        flex-direction: column;
+    }
+    
+    .room-main .room-item {
+        width: 100%;
+    }
+
+    
+}

@@ -2,19 +2,17 @@
   <div id="app">
     <TheHeader></TheHeader>
     <div class="main-content">
-      <TheTestUI></TheTestUI>
+      <router-view></router-view>
     </div>
   </div>
 </template>
 
 <script>
 import TheHeader from './components/layout/TheHeader.vue'
-import TheTestUI from './components/layout/TheTestUI.vue'
 export default {
   name: 'App',
   components: {
-    TheHeader,
-    TheTestUI
+    TheHeader
   }
 }
 </script>
@@ -25,6 +23,8 @@ export default {
 @import url(css/common/color.css);
 #app{
   position: relative;
+  overflow-x: hidden;
+  height: 100vh;
 }
 .main-content{
   position: absolute;

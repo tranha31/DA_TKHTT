@@ -1,30 +1,32 @@
 <template>
   <div class="login-page d-flex">
     <div class="login-form-container d-flex">
-      <div class="form-container d-flex flex-column">
+      <div class="d-flex flex-column">
         <div class="form-label d-flex">
           <div class="label-focus">
             <label>Sign in</label>
           </div>
           <div>
-            <label>Register</label>
+            <label @click="directToRegister">Register</label>
           </div>
         </div>
         <div class="form-info d-flex flex-column">
           <div class="form-info-input">
             <InputInfoTemplate
                 item="Email"
-                can-editing="true"
+                :can-editing="true"
                 placeholder="Email"
                 input-type="text"
                 v-model="email"
+                width-input="400px"
             />
             <InputInfoTemplate
                 item="Password"
-                can-editing="true"
+                :can-editing="true"
                 placeholder="Password"
                 input-type="password"
                 v-model="password"
+                width-input="400px"
             />
           </div>
           <div class="form-info-action d-flex flex-column">
@@ -37,7 +39,7 @@
       </div>
     </div>
     <div class="login-background d-flex flex-column">
-      <img src="../../assets/imgs/Image/bg_login.jpg">
+<!--      <img src="../../assets/imgs/Image/bg_login.jpg">-->
     </div>
   </div>
 </template>
@@ -53,11 +55,16 @@ export default {
       email: null,
       password: null
     }
+  },
+  methods: {
+    directToRegister() {
+      this.$router.push({ path: '/register'})
+    }
   }
 }
 
 </script>
-<style>
+<style scoped>
 @import url(../../css/common/common.css);
 .login-page {
   width: 100vw;
@@ -65,71 +72,62 @@ export default {
 }
 
 .login-form-container {
-  flex: 4;
-  height: 100%;
+  width: 50%;
   justify-content: center;
   align-items: center;
 }
 
-.login-background {
-  flex: 6;
-  height: 100%;
+.login-form-container > div:first-child {
   justify-content: center;
-}
-
-img {
-  max-width: 100%;
-  max-height: 100%;
-  min-height: 99.5%;
-}
-
-.form-container {
-  width: 60%;
-  height: 70%;
-  border-radius: 14px;
-  background-color: #ffffff;
-  justify-content: flex-start;
+  border: solid 3px #ffc021;
+  border-radius: 10px;
+  padding: 20px 20px;
 }
 
 .form-label {
-  padding: 6px 0px 6px 0px;
   justify-content: space-around;
+
 }
 
 .form-label > div {
   width: 50%;
   text-align: center;
-  border-bottom: solid 2px #babec5;
 }
 
 label {
-  width: 100%;
-  height: 96px;
-  font-size: 28px;
   cursor: pointer;
+  font-size: 24px;
 }
 
 .label-focus {
-  border-bottom: solid 4px #e89327 !important;
+  border-bottom: 2px solid #ffc021;
 }
 
-.form-info {
-  justify-content: space-around;
-  height: 80%;
+.label-focus > label {
+  color: #ffc021;
+  font-weight: bold;
 }
 
-.form-info-action {
-  padding: 16px 20px 6px 20px;
+.form-info-input {
+  margin-top: 30px;
+  margin-bottom: 40px;
   width: 100%;
-  height: 140px;
 }
 
 .btn {
-  border: 1px solid #e89327;
-  padding: 8px 20px;
-  border-radius: 7px;
-  cursor: pointer;
+  margin-top: 15px;
+  border-radius: 8px;
+  background-color: #ffc021;
   font-size: 16px;
-  margin-top: 10px;
+  font-weight: bolder;
+}
+
+.login-background {
+  width: 50%;
+  height: 100%;
+  justify-content: center;
+  background-image: url(../../assets/imgs/Image/bg_login.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 </style>

@@ -1,6 +1,7 @@
 <template>
-    <div :class="clas" >
+    <div class="main-input" :class="clas" >
         <div v-if="hasTitle" class="title-input">{{title}}&nbsp;&nbsp;<span v-if="msrequire">*</span></div>
+        <div v-if="hasImage" class="img" :class="classImage"></div>
         <input type="text"
         class="base-input"
         :class="[isNumber? 'input-right':'', error? 'error' : '', read? 'read' : '']"
@@ -32,6 +33,8 @@ export default {
         isNumber: Boolean,
         notNull : Boolean,
         read : Boolean,
+        hasImage: Boolean,
+        classImage: String,
     },
     data(){
         return{
@@ -128,6 +131,17 @@ export default {
 </script>
 
 <style>
+    .main-input{
+        position: relative;
+    }
+
+    .main-input .img{
+        position: absolute;
+        left: 5px;
+        top: 25%;
+        z-index: 1;
+    }
+
     .title-input{
         font-weight: 600;
         font-size: 12px;

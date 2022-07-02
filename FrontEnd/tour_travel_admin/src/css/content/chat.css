@@ -1,0 +1,99 @@
+.chat-container{
+    height: 100%;
+    width: 100%;
+}
+
+.chat-container .list-user{
+    height: 100%;
+    overflow-y: auto;
+    width: 280px;
+    border-right: 1px solid #babec5;
+    padding: 10px;
+}
+
+.chat-container .list-user .user{
+    width: 100%;
+    height: auto;
+    align-items: center;
+    margin-bottom: 25px;
+    background-color: #fff;
+    padding: 10px;
+}
+
+.chat-container .list-user .user:hover{
+    background-color: azure;
+    cursor: pointer;
+}
+
+.chat-container .list-user .user .icon{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #babec5;
+}
+
+.chat-container .list-user .user .username{
+    padding-left: 10px;
+}
+
+.chat-container .content-chat{
+    height: 100%;
+    position: relative;
+}
+
+.chat-container .content-chat .input-message{
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100px;
+    align-items: center;
+    padding: 20px;
+    border-top: 1px solid #babec5;
+}
+
+.chat-container .content-chat .input-message .attach{
+    height: 24px;
+    width: 24px;
+    background-image: url(../../assets/imgs/Image/paper-clip-2-24.png);
+    cursor: pointer;
+}
+
+.chat-container .content-chat .input-message input{
+    height: 40px;
+    border: 1px solid #babec5;
+    border-radius: 5px;
+    padding: 10px;
+    width: 90%;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+.chat-container .content-chat .input-message .send{
+    height: 40px;
+    width: 40px;
+    background-image: url(../../assets/imgs/Image/send.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    transform: rotate(-90deg);
+    cursor: pointer;
+}
+.chat-container .content-chat .content{
+    overflow-y: auto;
+}
+
+.chat-container .content-chat .content .message {
+    padding: 20px;
+    margin: 10px 0;
+}
+
+.chat-container .content-chat .content .message .content{
+    padding: 20px;
+}
+
+.chat-container .content-chat .content .user-message .content{
+    background-color: #babec5;
+}
+
+.chat-container .content-chat .content .admin-message .content{
+    background-color: #6464ed;
+}
