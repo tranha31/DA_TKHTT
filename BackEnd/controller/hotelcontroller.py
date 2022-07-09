@@ -5,17 +5,19 @@ from flask_cors import CORS
 from flask_cors.decorator import cross_origin
 
 hotel = Blueprint("hotel", __name__)
-cors = CORS(hotel, resources={r"/api/*": {"origins": "*"}})
+cors = CORS(hotel, resources={
+            r"/api/*": {"origins": "*"}})
 hotelservice = HotelService()
 
-@hotel.route("/searchAll", methods=['GET'])
+
+@hotel.route("/hotel/searchAll", methods=['GET'])
 @cross_origin()
 def searchAll():
     result = hotelservice.getAllHotel()
     return Response(response=result, status=200, mimetype="application/json")
 
 
-@hotel.route("/searchHotel", methods=['GET'])
+@hotel.route("/hotel/searchHotel", methods=['GET'])
 @cross_origin()
 def searchByAmount():
     _json = request.json
@@ -23,4 +25,3 @@ def searchByAmount():
 
     result = hotelservice.getHotelByAmount(amount)
     return Response(response=result, status=200, mimetype="application/json")
-
