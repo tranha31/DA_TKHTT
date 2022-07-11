@@ -61,7 +61,7 @@
 .tabel-detail tbody{
     display: block;
     height: calc(100vh - 250px);
-    overflow-y: auto;
+    overflow-y: scroll;
 }
 
 .tabel-detail tbody tr{

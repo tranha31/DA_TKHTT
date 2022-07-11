@@ -11,7 +11,7 @@
                 </div>
                 
                 <div class="content">
-                    <div class="title">{{ title }}</div>
+                    <div class="title" style="font-size:20px">{{ title }}</div>
                     <div>{{ message }}</div>
                 </div>
             </div>

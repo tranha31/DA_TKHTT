@@ -1,0 +1,41 @@
+<Contract>
+    <ProviderName>Công ty du lịch Tourguide</ProviderName>
+    <ProviderPhone>0964938140</ProviderPhone>
+	<ProviderAddress>Số 1 ngách 12/12 Nguyễn Phúc Lai, Ô Chợ Dừa, Đống Đa, Hà Nội</ProviderAddress>
+	<ProviderEmail>ha.tq183520@sis.hust.edu.vn</ProviderEmail>
+	<Represent>Trần Quang Hà</Represent>
+	<RepresentIdentity>164672557</RepresentIdentity>
+	<RepresentPhone>0969566899</RepresentPhone>
+	<RepresentPost>Giám đốc</RepresentPost>
+    <ContractInfo>
+        <NumberAdult>5</NumberAdult>
+        <NumberChild>3</NumberChild>
+        <NumberBaby>1</NumberBaby>
+        <StartTime>2022-07-01 08:00:00</StartTime>
+		<EndTime>2022-07-03 08:00:00</EndTime>
+        <TotalHour>48</TotalHour>
+    </ContractInfo>
+    <ContractCode>0002</ContractCode>
+    <CreatedTime>2022-07-02 23:05:00</CreatedTime>
+    <CustomerName>Trần Thị Huyền Trang</CustomerName>
+    <CustomerIdentity>123456789</CustomerIdentity>
+    <CustomerPhone>0964697979</CustomerPhone>
+	<CustomerAddress>174 Lê Thanh Nghị</CustomerAddress>
+    <TotalCost>9240000</TotalCost>
+	<TotalCostInWord>Chín triệu hai trăm bốn mươi nghìn đồng</TotalCostInWord>
+	<TourName>Hà Nội - Ninh Bình 02</TourName>
+    <ContractData>
+        <DestinationItem>
+            <Destination><Name>Tam Cốc - Bích Động</Name><Address>Ninh Hải, Hoa Lư, Ninh Bình</Address><TicketPrice><Adult>500000</Adult><Child>100000</Child><Baby>20000</Baby></TicketPrice><DestinationID>1a67af62-fa24-11ec-b831-34e6d760b36f</DestinationID></Destination><Destination><Name>Chùa Bái Đính</Name><Address>Gia Sinh, Gia Viễn, Ninh Bình</Address><TicketPrice><Adult>500000</Adult><Child>100000</Child><Baby>0</Baby></TicketPrice><DestinationID>453f3baa-fa24-11ec-b831-34e6d760b36f</DestinationID></Destination></DestinationItem>
+        <Schedule>
+            <Day><SortOrder>1</SortOrder><Morning><Activity><StartTime>2022-07-01 08:00:00</StartTime><Destination>Công viên Yên Sở</Destination><Action>Lên xe di chuyển</Action></Activity><Activity><StartTime>2022-07-01 09:30:00</StartTime><Destination>Tam Cốc - Bích Động</Destination><Action>Chèo thuyền</Action></Activity><Activity><StartTime>2022-07-01 11:00:00</StartTime><Destination>Tam Cốc - Bích Động</Destination><Action>Chụp ảnh</Action></Activity></Morning><Afternoon><Activity><StartTime>2022-07-01 15:00:00</StartTime><Destination>Tam Cốc - Bích Động</Destination><Action>Teambuilding</Action></Activity></Afternoon><Evening><Activity><StartTime>2022-07-01 20:00:00</StartTime><Destination>Tam Cốc - Bích Động</Destination><Action>BBQ</Action></Activity></Evening></Day><Day><SortOrder>2</SortOrder><Morning><Activity><StartTime>2022-07-02 08:00:00</StartTime><Destination>Chùa Bái Đính</Destination><Action>Ngắm cảnh</Action></Activity><Activity><StartTime>2022-07-02 09:30:00</StartTime><Destination>Chùa Bái Đính</Destination><Action>Dâng hương</Action></Activity><Activity><StartTime>2022-07-02 11:00:00</StartTime><Destination>Chùa Bái Đính</Destination><Action>Chụp ảnh</Action></Activity></Morning><Afternoon><Activity><StartTime>2022-07-02 11:00:00</StartTime><Destination>Chùa Bái Đính</Destination><Action>Dùng cơm chay</Action></Activity><Activity><StartTime>2022-07-02 12:00:00</StartTime><Destination>Chùa Bái Đính</Destination><Action>Nghỉ ngơi tại chùa</Action></Activity></Afternoon><Evening /></Day></Schedule>
+        <CustomerRequest>
+            <Item><SortOrder>1</SortOrder><Content>Bên B tổ chức trò chơi cho Teambuilding</Content></Item></CustomerRequest>
+        <AttachOption>
+            <Item><SortOrder>1</SortOrder><Content>Bảo hiểm du lịch</Content><Cost>300000</Cost></Item><Item><SortOrder>2</SortOrder><Content>Phí hướng dẫn viên</Content><Cost>4000000</Cost></Item><Item><SortOrder>3</SortOrder><Content>Chi phí di chuyển</Content><Cost>1000000</Cost></Item></AttachOption>
+        <RefundPolicy>
+            <Item><SortOrder>1</SortOrder><Content>Hai bên cam kết thực hiện hợp đồng, nếu một trong hai bên có thay đổi, hủy bỏ phải báo trước cho bên kia 10 ngày trước khi khởi hành.</Content></Item><Item><SortOrder>2</SortOrder><Content>Trong trường hợp báo huỷ trước 8 đến 10 ngày trước khi khởi hành, bên báo hủy phải chịu phạt 30% tổng giá trị hợp đồng; báo hủy trước 5 đến 7 ngày, thì phải chịu phạt 50% tổng giá trị hợp đồng; Báo hủy trước 2 đến 4 ngày thì phải chịu phạt 70% tổng giá trị hợp đồng; Báo hủy trong vòng 24h trước giờ khởi hành thì phải chịu phạt 100% tổng giá trị hợp đồng. Mọi thay đổi, báo hủy phải được thông báo bằng văn bản và được sự chấp thuận của bên kia.</Content></Item><Item><SortOrder>3</SortOrder><Content>Trong trường hợp vì một lý do bất khả kháng nào đó (bão lụt, hoả hoạn, thiên tai, chiến tranh,...) hợp đồng không thể thực hiện thì các bên cùng nhau bàn bạc giải quyết trên tinh thần bình đẳng giữa hai bên.</Content></Item></RefundPolicy>
+        <Tutorial>
+            <Item><SortOrder>1</SortOrder><Content>Bên A có trách nhiệm thông báo chi tiết và xác nhận về lượng khách kèm theo danh sách trích ngang, địa điểm, thời gian, và thông tin liên quan của đoàn khách trước 03 ngày khởi hành cho bên B. Bên B có trách nhiệm đưa đón, phục vụ đoàn khách của bên A đúng như trong lộ trình chi tiết của phụ lục kèm theo hợp đồng, bảo đảo chất lượng dịch vụ theo hợp đồng.</Content></Item><Item><SortOrder>2</SortOrder><Content>Bên A thanh toán đầy đủ, đúng hạn cho bên B tổng giá trị hợp đồng theo phương thức đã nêu trên. Nếu phát sinh chi phí cho việc làm hay yêu cầu của bên A thì bên A phải thanh toán thêm khoản chi phí đó cho bên B.</Content></Item><Item><SortOrder>3</SortOrder><Content>Trong quá trình thực hiện hợp đồng, mọi phát sinh tranh chấp đều được hai bên cùng nhau bàn bạc và giải quyết trên tinh thần bình đẳng hai bên đều có lợi.</Content></Item><Item><SortOrder>4</SortOrder><Content>Hai bên cam kết thực hiện đúng những điều khoản như trong hợp đồng, bên nào thực hiện sai gây tổn hại về thời gian, vật chất cho bên kia thì phải chịu trách nhiệm bồi hoàn phần tổn hại đó cho bên kia theo quy định trước pháp luật.</Content></Item><Item><SortOrder>5</SortOrder><Content>Hợp đồng này gồm được lập 02 bản, mỗi bên giữ 01 bản có giá trị pháp lý như nhau và có hiệu lực kể từ ngày ký.</Content></Item></Tutorial>
+    </ContractData>
+</Contract>

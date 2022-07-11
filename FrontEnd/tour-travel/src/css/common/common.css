@@ -363,7 +363,7 @@ input[type=checkbox]:checked + label .div-checkbox{
     border-color: #2ca01c !important;
 }
 
-input[type="text"], input[type="password"], input[type="number"] {
+/* input[type="text"], input[type="password"], input[type="number"] {
     padding: 5px 15px;
     border: 1px solid #e89327;
     border-radius: 7px;
@@ -371,7 +371,7 @@ input[type="text"], input[type="password"], input[type="number"] {
     width: 70%;
     height: 36px;
     font-size: 16px;
-}
+} */
 
 .div-checkbox{
     border: 1px solid #afafaf;

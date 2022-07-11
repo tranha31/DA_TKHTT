@@ -4,6 +4,7 @@ from .authcontroller import auth
 from .hotelcontroller import hotel
 from .restaurantcontroller import restaurant
 from .roomcontroller import room
+from .destinationcontroller import destination
 
 def create_app():
     app = Flask(__name__)
@@ -12,4 +13,5 @@ def create_app():
     app.register_blueprint(hotel)
     app.register_blueprint(restaurant)
     app.register_blueprint(room)
+    app.register_blueprint(destination)
     return app

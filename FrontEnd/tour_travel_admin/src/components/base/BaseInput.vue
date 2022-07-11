@@ -1,5 +1,5 @@
 <template>
-    <div class="main-input" :class="clas" >
+    <div class="main-input" :class="clas" :style="stylE">
         <div v-if="hasTitle" class="title-input">{{title}}&nbsp;&nbsp;<span v-if="msrequire">*</span></div>
         <div v-if="hasImage" class="img" :class="classImage"></div>
         <input type="text"
@@ -9,12 +9,15 @@
         :readonly="read"
         :title="message" v-title
         :disabled="disabled"
+        :maxlength="maxLengtH"
+        :notNull="notNull"
         autocomplete="off"
         v-model="contents"
         @keypress="input($event)"
         @input="sendContent"
         @blur="checkValidate"
         @change="sendData"
+        v-on:keyup.enter="sendData"
         ref="Input"
         >
     </div>
@@ -24,6 +27,8 @@
 import Error from '../../js/entity/error.js'
 import Vue from"vue"
 export default {
+    created(){
+    },
     props:{
         clas: String,
         placeholder: String,
@@ -36,16 +41,23 @@ export default {
         read : Boolean,
         hasImage: Boolean,
         classImage: String,
-        disabled : Boolean
+        disabled : Boolean,
+        maxLength : Number,
+        stylE : String,
+        index: Number,
     },
     data(){
         return{
             contents : this.content,
             error : false,
             message : "",
+            maxLengtH : 200,
         }
     },
     watch:{
+        maxLength: function(){
+            this.maxLengtH = this.maxLength;
+        },
         content: function(){
             this.contents = this.content;
         },
@@ -106,6 +118,7 @@ export default {
                     this.message = "";
                 }
             }
+            
         },
         /**
          * Đặt nội dung lỗi
@@ -122,7 +135,22 @@ export default {
 
         sendData(){
             if(this.isNumber){
-                this.$emit("changeData", this.contents.replaceAll(".", ""));
+                if(this.index != undefined){
+                    if(this.contents){
+                        this.$emit("changeData", this.contents.replaceAll(".", ""), this.index);
+                    }
+                    else{
+                        this.$emit("changeData", this.contents, this.index);
+                    }
+                }
+                else{
+                    if(this.contents){
+                        this.$emit("changeData", this.contents.replaceAll(".", ""));
+                    }
+                    else{
+                        this.$emit("changeData", this.contents);
+                    }
+                }
             }
             else{
                 this.$emit("changeData", this.contents);
