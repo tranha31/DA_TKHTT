@@ -4,7 +4,6 @@ from .authcontroller import auth
 from .hotelcontroller import hotel
 from .restaurantcontroller import restaurant
 from .roomcontroller import room
-from .testcontroller import test
 
 
 def create_app():
