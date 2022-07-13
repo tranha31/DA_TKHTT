@@ -58,7 +58,7 @@
               </div>
             </div>
             <div class="form-info-action d-flex flex-column">
-              <button class="btn">Register new account</button>
+              <button class="btn" @click="handleRegisterNewUser()">Register new account</button>
             </div>
           </div>
         </div>
@@ -74,9 +74,13 @@
       <template slot="body">
         <div class="upload-container">
           <div class="upload-display d-flex pb-6 mr-12 mb-20">
-            <div>Display area</div>
+            <div class="display-area d-flex">
+              <img v-if="signatureUrl" :src="signatureUrl" />
+              <div v-else>Display area</div>
+            </div>
             <div>
-              <button class="btn-default" @click="handleUploadSign()">Upload</button>
+              <input type="file" @change="selectSignature" style="display: none" ref="signatureInput"/>
+              <button class="btn-default" @click="$refs.signatureInput.click()">Upload</button>
             </div>
           </div>
           <div class="upload-commit mb-20">
@@ -87,16 +91,16 @@
         <div class="list-buttons d-flex">
           <button
               slot="footer"
-              class="btn-default"
               style="background-color: #949494 !important"
               @click="showUploadSign = false"
+              class="button-default"
           >
             CLOSE
           </button>
           <button
               slot="footer"
-              class="btn-default"
               @click="handleSaveUploadSign()"
+              class="button-default"
           >
             SAVE
           </button>
@@ -108,6 +112,7 @@
 <script>
 import InputInfoTemplate from "@/components/base/InputInfoTemplate";
 import Modal from "@/components/base/Modal";
+import AuthApi from "@/js/api/AuthApi";
 export default {
   name: 'Register',
   components: {
@@ -122,20 +127,50 @@ export default {
       username: null,
       phoneNumber: null,
       showUploadSign: false,
-      commitSignature: false
+      commitSignature: false,
+      signatureObject: null,
+      signatureUrl: null
     }
   },
   watch: {
   },
   methods: {
-    handleUploadSign() {
-
-    },
     handleSaveUploadSign() {
       this.showUploadSign = false
     },
     directToLogin() {
       this.$router.push({ path: '/login'})
+    },
+    async handleRegisterNewUser() {
+      if (!this.email || !this.password || !this.confirmPassword || !this.username || !this.phoneNumber) {
+        console.log('fullfill all input')
+      } else if (!this.email.toLowerCase().match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )) {
+        console.log('email not valid')
+      } else if (this.password !== this.confirmPassword) {
+        console.log('confirm password not match')
+      } else if (!this.signatureObject || !this.commitSignature) {
+        console.log('must upload your signature and commit it')
+      } else {
+        const registerResponse = await AuthApi.register({
+          email: this.email,
+          password: this.password,
+          username: this.username,
+          phone: this.phoneNumber
+        })
+
+        if (registerResponse === 'Account with email already existed!') {
+          console.log('push notification error')
+        } else {
+          console.log('push notification success')
+        }
+      }
+    },
+    async selectSignature(event) {
+      this.signatureObject = event.target.files[0]
+      this.signatureUrl = URL.createObjectURL(this.signatureObject)
+      console.log(this.signatureUrl)
     }
   }
 }
@@ -220,7 +255,6 @@ label {
 .upload-display > div:first-child {
   width: 70%;
   height: 200px;
-  background-color: #949494;
 }
 
 .upload-commit > label {
@@ -231,4 +265,24 @@ label {
   justify-content: flex-end;
 }
 
+.button-default {
+  margin-left: 8px;
+  background-color: #e89327;
+  border: none;
+  border-radius: 2px;
+  padding: 4px 16px 4px 16px;
+  cursor: pointer;
+}
+
+.display-area {
+  border: solid #949494 1px;
+  border-radius: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.display-area > img {
+  width: 90%;
+  height: 90%;
+}
 </style>
