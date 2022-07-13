@@ -1,7 +1,9 @@
 from repository.userrepository import UserRepository
 
+
 class AuthService:
     dl = None
+
     def __init__(self) -> None:
         self.dl = UserRepository()
 
@@ -13,7 +15,7 @@ class AuthService:
         else:
             user = result[0]
             if (user.password.__eq__(password)):
-                return "Login success!"
+                return user
             else:
                 return "Wrong password!"
 
@@ -25,4 +27,3 @@ class AuthService:
         else:
             self.dl.insertNewUser(email, password, username, phone)
             return "Register new user success!"
-

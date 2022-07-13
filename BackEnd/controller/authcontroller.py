@@ -8,7 +8,8 @@ auth = Blueprint("auth", __name__)
 cors = CORS(auth, resources={r"/api/*": {"origins": "*"}})
 authservice = AuthService()
 
-@auth.route("/login", methods=['POST'])
+
+@auth.route("/auth/login", methods=['POST'])
 @cross_origin()
 def loginUser():
     _json = request.json
@@ -19,7 +20,7 @@ def loginUser():
     return Response(response=result, status=200, mimetype="application/json")
 
 
-@auth.route("/register", methods=['POST'])
+@auth.route("/auth/register", methods=['POST'])
 @cross_origin()
 def registerNewUser():
     _json = request.json

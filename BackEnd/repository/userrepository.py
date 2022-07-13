@@ -1,13 +1,14 @@
 from .dlbase import DLBase
 
+
 class UserRepository(DLBase):
     def __init__(self) -> None:
         super().__init__()
 
     def getUserByEmail(self, email):
-        sql = "Select * from user where Email like %s;"
+        sql = "Select * from user where Email = %s;"
         cursor = self.conn.cursor(dictionary=True)
-        cursor.execute(sql, (email))
+        cursor.execute(sql, (email, ))
         users = cursor.fetchall()
         return users
 

@@ -33,7 +33,7 @@
             <div>
               <a href="#">Forgot password?</a>
             </div>
-            <button class="btn">Sign In</button>
+            <button class="btn" @click="handleSignIn()">Sign In</button>
           </div>
         </div>
       </div>
@@ -45,6 +45,7 @@
 </template>
 <script>
 import InputInfoTemplate from "@/components/base/InputInfoTemplate";
+import AuthApi from "@/js/api/AuthApi";
 export default {
   name: 'LogIn',
   components: {
@@ -59,6 +60,28 @@ export default {
   methods: {
     directToRegister() {
       this.$router.push({ path: '/register'})
+    },
+    async handleSignIn() {
+      if (!this.email || !this.password) {
+        console.log('fill email or password')
+      } else {
+        if (!this.email.toLowerCase().match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            )) {
+          console.log('email not valid')
+        } else {
+          let signInResponse = await AuthApi.signIn({
+            email: this.email,
+            password: this.password
+          })
+
+          if (signInResponse === 'No account with email existed!' || signInResponse === 'Wrong password!') {
+            console.log('push notification error')
+          } else {
+            console.log('push notification success and store user')
+          }
+        }
+      }
     }
   }
 }
