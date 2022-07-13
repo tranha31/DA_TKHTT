@@ -6,7 +6,6 @@ const SEARCH_BY_ID = 'searchById'
 
 const HOTEL = '/hotel'
 const RESTAURANT = '/restaurant'
-// const AUTH = '/auth'
 const ROOM = '/room'
 
 function getSearchPath(basePath, segment = SEARCH) {
