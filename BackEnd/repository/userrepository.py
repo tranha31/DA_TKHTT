@@ -13,7 +13,7 @@ class UserRepository(DLBase):
         return users
 
     def insertNewUser(self, email, password, username, phone):
-        sql = "insert into user values (%s, %s, %s, %s);"
+        sql = "insert into user values (UUID(), %s, %s, %s, %s, LEFT(UUID(), 20));"
         cursor = self.conn.cursor(dictionary=True)
-        cursor.execute(sql, (username, password, email, phone))
+        cursor.execute(sql, (username, password, email, phone, ))
         self.conn.commit()
