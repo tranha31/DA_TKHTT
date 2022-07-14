@@ -3,6 +3,7 @@ import App from './App.vue'
 import VueRouter from 'vue-router'
 import vTitle from 'vuejs-title'
 import Notifications from 'vue-notification'
+import store from "@/js/store/store"
 
 
 Vue.config.productionTip = false
@@ -39,4 +40,5 @@ Vue.directive("click-outside", {
 new Vue({
   render: h => h(App),
   router,
+  store,
 }).$mount('#app')
