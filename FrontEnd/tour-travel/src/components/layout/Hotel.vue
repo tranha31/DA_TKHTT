@@ -94,10 +94,10 @@
                 </div>
               </div>
             </div>
-            <div>
+            <div class="action-overview d-flex">
               <button
-                  class="btn-default white mt-12"
-                  style="margin-left: 45%; margin-top: 50px; font-weight: bold"
+                  class="btn-default-overview white"
+                  style="margin-top: 20px; font-weight: bold;"
               >
                 Book now
               </button>
@@ -140,7 +140,7 @@
                 <div class="mt-12">Price: {{ room.price }}</div>
                 <div>
                   <button
-                      class="btn-default white mt-12"
+                      class="btn-default-overview white mt-12"
                       style="margin-left: 70%"
                   >
                     Book now
@@ -399,5 +399,19 @@ h3 {
   background-size: cover;
   width: 40%;
   height: 240px;
+}
+
+.action-overview {
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-default-overview {
+  margin-right: 0px;
+  background-color: #e89327;
+  border: none;
+  border-radius: 2px;
+  padding: 4px 16px 4px 16px;
+  cursor: pointer;
 }
 </style>
