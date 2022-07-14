@@ -114,7 +114,7 @@
         <div class="tab-room d-flex flex-column" v-if="showRoom">
           <div>
             <label>Room Category</label>
-            <h3>Nghỉ dưỡng tiện nghi và thời thượng trong những căn hộ khách sạn có đầy đủ tiện ích từ phòng nghỉ, phòng khách, bàn làm việc, phòng bếp, bàn ăn...và đặc biệt là tầm nhìn toàn cảnh thành phố sôi động khiến kỳ nghỉ dù ngắn hay dài, dù là chuyến du lịch khám phá hay công tác đều có những trải nghiệm Nha Trang thật thoải mái và đáng nhớ</h3>
+            <h3>{{ hotelRoomDescription }}</h3>
           </div>
           <div class="room-room-info d-flex flex-column">
             <div
@@ -169,6 +169,7 @@
 // import knife from '../../assets/imgs/Image/knife.png'
 // import InputInfoTemplate from "@/components/base/InputInfoTemplate"
 import Footer from "@/components/layout/TheFooter"
+import InfotypeApi from "@/js/api/InfotypeApi"
 
 export default {
   name: 'Hotel',
@@ -180,16 +181,16 @@ export default {
   },
   data() {
     return {
-      hotelName: 'Khach san ABC',
-      hotelAddr: '12 HBT, HN',
-      hotelPhone: '0987765320',
-      hotelMail: 'ksABC@gmail.com',
-      hotelRate: '5',
+      hotelName: null,
+      hotelAddr: null,
+      hotelPhone: null,
+      hotelMail: null,
+      hotelRate: null,
       hotelDescription: 'Là sản phẩm căn hộ khách sạn sang trọng và đẳng cấp, ABC mang đến cho khách hàng không gian lưu trú tiện nghi và hiện đại của khách sạn 5 sao với những trải nghiệm nghỉ dưỡng đỉnh cao ngay trong thành phố biển. Tòa nhà 41 tầng kiêu hãnh tọa lạc giữa trung tâm thành phố giúp cho việc di chuyển thăm quan, mua sắm trở nên hết sức thuận tiện và mang lại cho du khách cảm nhận trọn vẹn về nhịp sống hiện đại đầy sôi động.',
       showOverview: false,
       showRoom: false,
       showCulinary: false,
-      hotelArea: '360 m2',
+      hotelArea: null,
       hotelTotalRooms: '50',
       hotelImages: [
         {
@@ -234,7 +235,8 @@ export default {
           description: 'Với diện tích 32-37m², Phòng Studio, 2 giường đơn là phòng khách sạn thiết kế hiện đại, sang trọng, tích hợp đầy đủ tiện nghi cho kỳ lưu trú của bạn. Vị trí thuận tiện, du khách có thể thoải mái tham quan, khám phá các điểm du lịch nổi tiếng, là lựa chọn lý tưởng'
         }
       ],
-      hotelCulinaryDescription: 'Với ba nhà hàng và quán bar sang trọng, tầm nhìn toàn cảnh thành phố Hà Nộ năng động, các đầu bếp 5 sao tài ba và dịch vụ khách hàng chuyên nghiệp, ABC mang đến cho thực khách những trải nghiệm khó quên, đánh thức vị giác với ẩm thực biển và địa phương đặc sắc, ẩm thực quốc tế tinh hoa, những loại rượu vang thượng hạng và nhiều thức uống hấp dẫn, sáng tạo khác.'
+      hotelCulinaryDescription: 'Với ba nhà hàng và quán bar sang trọng, tầm nhìn toàn cảnh thành phố Hà Nộ năng động, các đầu bếp 5 sao tài ba và dịch vụ khách hàng chuyên nghiệp, ABC mang đến cho thực khách những trải nghiệm khó quên, đánh thức vị giác với ẩm thực biển và địa phương đặc sắc, ẩm thực quốc tế tinh hoa, những loại rượu vang thượng hạng và nhiều thức uống hấp dẫn, sáng tạo khác.',
+      hotelRoomDescription: 'Nghỉ dưỡng tiện nghi và thời thượng trong những căn hộ khách sạn có đầy đủ tiện ích từ phòng nghỉ, phòng khách, bàn làm việc, phòng bếp, bàn ăn...và đặc biệt là tầm nhìn toàn cảnh thành phố sôi động khiến kỳ nghỉ dù ngắn hay dài, dù là chuyến du lịch khám phá hay công tác đều có những trải nghiệm Nha Trang thật thoải mái và đáng nhớ'
     }
   },
   methods: {
@@ -252,10 +254,28 @@ export default {
       this.showOverview = false
       this.showRoom = false
       this.showCulinary = true
+    },
+    async initData() {
+      const currentHotel = await InfotypeApi.getHotelById({
+        HotelID: this.$route.params.id
+      })
+
+      if (currentHotel) {
+        this.hotelName = currentHotel[0].Name
+        this.hotelAddr = currentHotel[0].Address
+        this.hotelDescription = currentHotel[0].Described
+        this.hotelPhone = currentHotel[0].PhoneNumber
+        this.hotelMail = currentHotel[0].Email
+        this.hotelRate = currentHotel[0].Rank
+        this.hotelArea = currentHotel[0].Acreage
+        this.hotelCulinaryDescription = currentHotel[0].DescribedRestaurant
+        this.hotelRoomDescription = currentHotel[0].DescribedRoom
+      }
     }
   },
-  mounted() {
+  async mounted() {
     this.showOverview = true
+    await this.initData()
   }
 }
 </script>
