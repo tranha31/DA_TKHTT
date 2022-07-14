@@ -63,22 +63,49 @@ export default {
     },
     async handleSignIn() {
       if (!this.email || !this.password) {
-        console.log('fill email or password')
+        this.$notify({
+          group: 'default',
+          title: 'Error',
+          text: 'Please full email and password',
+          duration: 3000,
+          type: 'error',
+          position: 'bottom right'
+        })
       } else {
         if (!this.email.toLowerCase().match(
                 /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
             )) {
-          console.log('email not valid')
+          this.$notify({
+            group: 'default',
+            title: 'Error',
+            text: 'Email was not valid!',
+            duration: 4000,
+            type: 'error',
+            position: 'bottom right'
+          })
         } else {
           let signInResponse = await AuthApi.signIn({
             email: this.email,
             password: this.password
           })
-
-          if (signInResponse === 'No account with email existed!' || signInResponse === 'Wrong password!') {
-            console.log('push notification error')
+          if (signInResponse === 'No account with email existed!' || signInResponse === 'Wrong password!' || !signInResponse) {
+            this.$notify({
+              group: 'default',
+              title: 'Error',
+              text: signInResponse,
+              duration: 4000,
+              type: 'error',
+              position: 'bottom right'
+            })
           } else {
-            console.log('push notification success and store user')
+            this.$notify({
+              group: 'default',
+              title: 'Success',
+              text: 'Log in success!',
+              duration: 4000,
+              type: 'success',
+              position: 'bottom right'
+            })
           }
         }
       }
