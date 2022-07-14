@@ -108,14 +108,14 @@
             <InputInfoTemplate
                 item="New Password"
                 :can-editing="true"
-                input-type="number"
+                input-type="password"
                 display-inline="inline-block"
                 v-model="editPasswordNew"
             />
             <InputInfoTemplate
                 item="Confirm New Password"
                 :can-editing="true"
-                input-type="number"
+                input-type="password"
                 display-inline="inline-block"
                 v-model="editPasswordConf"
             />
@@ -132,6 +132,14 @@
             >
               Get code
             </button>
+            <div>
+              <button
+                  class="btn-save-pass"
+                  @click="handleUpdatePassword()"
+              >
+                Save
+              </button>
+            </div>
           </div>
         </div>
         <div class="edit-cart detail-container" v-if="editCart">
@@ -184,6 +192,7 @@ export default {
       allowEnterCode: false,
       historyTour: [],
       userInfos: null,
+      userInfosClone: null,
       editPasswordOld: null,
       editPasswordNew: null,
       editPasswordConf: null,
@@ -191,8 +200,70 @@ export default {
     }
   },
   methods: {
-    handleUpdateProfile() {
+    async handleUpdateProfile() {
+      if (JSON.stringify(this.userInfos) !== JSON.stringify(this.userInfosClone)) {
+        let updateResponse = await AuthApi.updateGeneralInfos({
+          UserID: this.userInfos.UserID,
+          Email: this.userInfos.Email,
+          PhoneNumber: this.userInfos.PhoneNumber
+        })
+        if (updateResponse) {
+          this.$notify({
+            group: 'default',
+            title: 'Success',
+            text: updateResponse,
+            duration: 3000,
+            type: 'success',
+            position: 'bottom right'
+          })
+        }
+      }
+    },
+    async handleUpdatePassword() {
+      if (this.editPasswordNew !== this.editPasswordConf) {
+        this.$notify({
+          group: 'default',
+          title: 'Error',
+          text: 'Confirm password not match!',
+          duration: 3000,
+          type: 'error',
+          position: 'bottom right'
+        })
+      } else if (this.editPasswordOld !== this.userInfos.Password) {
+        this.$notify({
+          group: 'default',
+          title: 'Error',
+          text: 'Current password not true!',
+          duration: 3000,
+          type: 'error',
+          position: 'bottom right'
+        })
+      } else if (this.editPasswordOld === this.editPasswordNew) {
+        this.$notify({
+          group: 'default',
+          title: 'Error',
+          text: 'Old and New Password must be different!',
+          duration: 3000,
+          type: 'error',
+          position: 'bottom right'
+        })
+      } else {
+        let updatePasswordResponse = await AuthApi.updatePassword({
+          UserID: this.userInfos.UserID,
+          Password: this.editPasswordNew
+        })
 
+        if (updatePasswordResponse) {
+          this.$notify({
+            group: 'default',
+            title: 'Success',
+            text: updatePasswordResponse,
+            duration: 3000,
+            type: 'success',
+            position: 'bottom right'
+          })
+        }
+      }
     },
     receiveCode() {
       this.allowEnterCode = true
@@ -225,6 +296,8 @@ export default {
       this.userInfos = await AuthApi.getUserInformation({
         UserID: this.$store.state.account.currentUser.UserID
       })
+
+      this.userInfosClone = JSON.parse(JSON.stringify(this.userInfos))
     }
   },
   async mounted() {
@@ -399,5 +472,13 @@ h3 {
 
 .password-detail-body {
   padding: 10px 20px;
+}
+
+.btn-save-pass {
+  background-color: #e89327;
+  border: none;
+  border-radius: 2px;
+  padding: 4px 16px 4px 16px;
+  cursor: pointer;
 }
 </style>
