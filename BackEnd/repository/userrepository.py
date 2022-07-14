@@ -17,3 +17,10 @@ class UserRepository(DLBase):
         cursor = self.conn.cursor(dictionary=True)
         cursor.execute(sql, (username, password, email, phone, ))
         self.conn.commit()
+
+    def getUserInformationsById(self, UserID):
+        sql = "select * from user where UserID = %s;"
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute(sql, (UserID, ))
+        users = cursor.fetchall()
+        return users

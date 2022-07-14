@@ -37,3 +37,14 @@ def registerNewUser():
     result = authservice.register(email, password, username, phone)
 
     return Response(response=result, status=200, mimetype="application/json")
+
+
+@auth.route("/auth/getUserById", methods=['POST'])
+@cross_origin()
+def getUserById():
+    _json = request.json
+    UserID = _json['UserID']
+
+    result = authservice.getUserInformationsById(UserID)
+
+    return jsonify(result)

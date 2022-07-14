@@ -14,7 +14,6 @@ class AuthService:
             return "No account with email existed!"
         else:
             user = result[0]
-            print(user)
             if (user['Password'].__eq__(password)):
                 return user
             else:
@@ -28,3 +27,12 @@ class AuthService:
         else:
             self.dl.insertNewUser(email, password, username, phone)
             return "Register new user success!"
+
+    def getUserInformationsById(self, UserID):
+        result = self.dl.getUserInformationsById(UserID)
+
+        if result is None or len(result) <= 0:
+            return None
+        else:
+            user = result[0]
+            return user
