@@ -14,3 +14,7 @@ class HotelService:
     def getHotelByAmount(self, amount=30):
         result = self.dl.getHotelByAmount(amount)
         return result
+
+    def getHotelById(self, hotelId):
+        result = self.dl.getHotelById(hotelId)
+        return result

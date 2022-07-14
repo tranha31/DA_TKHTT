@@ -26,3 +26,13 @@ def searchByAmount():
 
     result = hotelservice.getHotelByAmount(amount)
     return jsonify(result)
+
+
+@hotel.route("/hotel/searchById", methods=['POST'])
+@cross_origin()
+def searchById():
+    _json = request.json
+    hotelId = _json['HotelID']
+
+    result = hotelservice.getHotelById(hotelId)
+    return jsonify(result)

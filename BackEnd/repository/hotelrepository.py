@@ -18,3 +18,10 @@ class HotelRepository(DLBase):
         cursor.execute(sql, (amount, ))
         hotels = cursor.fetchall()
         return hotels
+
+    def getHotelById(self, hotelId):
+        sql = "Select * from hotel where HotelID = %s;"
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute(sql, (hotelId, ))
+        hotels = cursor.fetchall()
+        return hotels
