@@ -1,5 +1,5 @@
 import axios from 'axios'
-import Vue from 'vue'
+// import Vue from 'vue'
 
 const localhost_URL = 'http://localhost:5000'
 
@@ -27,12 +27,13 @@ http.interceptors.response.use(
             msg = error.response.data.message || error.response.data
         }
 
-        Vue.notify({
-            group: 'default',
-            type: 'error',
-            title: 'Error',
-            text: msg
-        })
+        // Vue.notify({
+        //     group: 'default',
+        //     type: 'error',
+        //     title: 'Error',
+        //     text: msg
+        // })
+        console.log('msg: ', msg)
         return Promise.reject(error)
     }
 )
