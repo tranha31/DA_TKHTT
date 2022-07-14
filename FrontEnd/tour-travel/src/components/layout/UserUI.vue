@@ -4,7 +4,7 @@
       <div class="left-content d-flex flex-column">
         <div class="left-content-header d-flex">
           <div></div>
-          <label>Username</label>
+          <label>{{ userInfos ? userInfos.UserName : 'Username'}}</label>
         </div>
         <div class="left-content-body">
           <div class="profile-items d-flex flex-column">
@@ -39,22 +39,24 @@
                 item="Username"
                 :can-editing="false"
                 input-type="text"
-                value="Team2"
                 :is-only-alpha="false"
                 :is-only-numeric="false"
                 display-inline="inline-block"
+                v-model="userInfos.UserName"
             />
             <InputInfoTemplate
                 item="Email"
                 :can-editing="true"
                 input-type="text"
                 display-inline="inline-block"
+                v-model="userInfos.Email"
             />
             <InputInfoTemplate
                 item="Phone number"
                 :can-editing="true"
                 input-type="number"
                 display-inline="inline-block"
+                v-model="userInfos.PhoneNumber"
             />
             <InputInfoTemplate
                 item="Citizen identification"
@@ -101,24 +103,28 @@
                 :can-editing="true"
                 input-type="password"
                 display-inline="inline-block"
+                v-model="editPasswordOld"
             />
             <InputInfoTemplate
                 item="New Password"
                 :can-editing="true"
                 input-type="number"
                 display-inline="inline-block"
+                v-model="editPasswordNew"
             />
             <InputInfoTemplate
                 item="Confirm New Password"
                 :can-editing="true"
                 input-type="number"
                 display-inline="inline-block"
+                v-model="editPasswordConf"
             />
             <InputInfoTemplate
                 item="Verify code"
                 :can-editing="allowEnterCode"
                 input-type="text"
                 display-inline="inline-block"
+                v-model="verityCode"
             />
             <button
                 class="btn-default"
@@ -162,6 +168,7 @@
 <script>
 import InputInfoTemplate from "@/components/base/InputInfoTemplate";
 import Footer from "@/components/layout/TheFooter";
+import AuthApi from "@/js/api/AuthApi";
 export default {
   name: 'User',
   components: {
@@ -175,7 +182,12 @@ export default {
       editCart: false,
       gender: null,
       allowEnterCode: false,
-      historyTour: []
+      historyTour: [],
+      userInfos: null,
+      editPasswordOld: null,
+      editPasswordNew: null,
+      editPasswordConf: null,
+      verityCode: null
     }
   },
   methods: {
@@ -208,9 +220,27 @@ export default {
     },
     removeHistoryTour(tour) {
       console.log(tour)
+    },
+    async loadUserInformation() {
+      this.userInfos = await AuthApi.getUserInformation({
+        UserID: this.$store.state.account.currentUser.UserID
+      })
     }
   },
-  mounted() {
+  async mounted() {
+    if (!this.$store.state.account.currentUser || (this.$store.state.account.currentUser && !this.$store.state.account.currentUser.UserID)) {
+      this.$notify({
+        group: 'default',
+        title: 'Error',
+        text: 'Please completed login first!',
+        type: 'error',
+        position: 'bottom right'
+      })
+      this.$router.push({ path: '/login'})
+      return
+    }
+    await this.loadUserInformation()
+
     this.editProfile = true
     this.getHistoryTour()
   }

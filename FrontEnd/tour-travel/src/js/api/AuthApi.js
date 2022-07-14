@@ -18,5 +18,13 @@ export default {
             data: data
         })
         return response.data
+    },
+    async getUserInformation(data) {
+        const response = await http.request({
+            method: 'post',
+            url: `${AUTH}/getUserById`,
+            data: data
+        })
+        return response.data
     }
 }
