@@ -26,5 +26,21 @@ export default {
             data: data
         })
         return response.data
+    },
+    async updateGeneralInfos(data) {
+        const response = await http.request({
+            method: 'post',
+            url: `${AUTH}/updateUserInfos`,
+            data: data
+        })
+        return response.data
+    },
+    async updatePassword(data) {
+        const response = await http.request({
+            method: 'post',
+            url: `${AUTH}/updatePassword`,
+            data: data
+        })
+        return response.data
     }
 }
