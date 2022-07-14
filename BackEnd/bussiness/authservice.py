@@ -36,3 +36,13 @@ class AuthService:
         else:
             user = result[0]
             return user
+
+    def updateGeneralInformations(self, UserID, Email, PhoneNumber):
+        self.dl.updateUserInformations(UserID, Email, PhoneNumber)
+
+        return "Update profile success!"
+
+    def updatePassword(self, UserID, Password):
+        self.dl.updatePassword(UserID, Password)
+
+        return "Update password success!"

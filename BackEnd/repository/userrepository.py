@@ -24,3 +24,13 @@ class UserRepository(DLBase):
         cursor.execute(sql, (UserID, ))
         users = cursor.fetchall()
         return users
+
+    def updateUserInformations(self, UserID, Email, PhoneNumber):
+        sql = "update user set Email = %s, PhoneNumber = %s where UserID = %s;"
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute(sql, (Email, PhoneNumber, UserID, ))
+
+    def updatePassword(self, UserID, Password):
+        sql = "update user set Password = %s where UserID = %s;"
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute(sql, (Password, UserID, ))

@@ -48,3 +48,28 @@ def getUserById():
     result = authservice.getUserInformationsById(UserID)
 
     return jsonify(result)
+
+
+@auth.route("/auth/updateUserInfos", methods=['POST'])
+@cross_origin()
+def updateUserInfos():
+    _json = request.json
+    UserID = _json['UserID']
+    Email = _json['Email']
+    PhoneNumber = _json['PhoneNumber']
+
+    result = authservice.updateGeneralInformations(UserID, Email, PhoneNumber)
+
+    return Response(response=result, status=200, mimetype="application/json")
+
+
+@auth.route("/auth/updatePassword", methods=['POST'])
+@cross_origin()
+def updatePassword():
+    _json = request.json
+    UserID = _json['UserID']
+    Password = _json['Password']
+
+    result = authservice.updatePassword(UserID, Password)
+
+    return Response(response=result, status=200, mimetype="application/json")
