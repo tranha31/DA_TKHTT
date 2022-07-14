@@ -14,7 +14,8 @@ class AuthService:
             return "No account with email existed!"
         else:
             user = result[0]
-            if (user.password.__eq__(password)):
+            print(user)
+            if (user['Password'].__eq__(password)):
                 return user
             else:
                 return "Wrong password!"
