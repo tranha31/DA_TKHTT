@@ -106,6 +106,11 @@ export default {
               type: 'success',
               position: 'bottom right'
             })
+            this.$store.commit('account/setAccounts', {
+              UserID: signInResponse.UserID,
+              UserName: signInResponse.UserName
+            })
+            this.$router.push({ path: '/tour'})
           }
         }
       }
