@@ -158,6 +158,7 @@
             </h3>
           </div>
         </div>
+        <ChatBox />
       </div>
     </div>
     <Footer />
@@ -170,6 +171,7 @@
 // import InputInfoTemplate from "@/components/base/InputInfoTemplate"
 import Footer from "@/components/layout/TheFooter"
 import InfotypeApi from "@/js/api/InfotypeApi"
+import ChatBox from '@/components/base/ChatBox'
 
 export default {
   name: 'Hotel',
@@ -177,7 +179,8 @@ export default {
     // PerfectScrollbar,
     // knife
     // InputInfoTemplate,
-    Footer
+    Footer,
+    ChatBox
   },
   data() {
     return {
