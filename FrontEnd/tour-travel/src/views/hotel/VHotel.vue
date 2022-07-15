@@ -107,6 +107,7 @@
         </div>
 
       </div>
+      <ChatBox />
     </div>
     <ThePageInfo/>
   </div>
@@ -119,10 +120,11 @@ import BaseInput from '../../components/base/BaseInput.vue'
 import ThePageInfo from '../../components/layout/ThePageInfo.vue'
 import BaseNavigationPage from '../../components/base/BaseNavigationPage.vue'
 import InfotypeApi from "@/js/api/InfotypeApi"
+import ChatBox from "@/components/base/ChatBox";
 
 export default {
   name: 'VHotel',
-  components: { ThePageInfo, BaseInput, BaseAutoComplete, BaseNavigationPage, },
+  components: { ThePageInfo, BaseInput, BaseAutoComplete, BaseNavigationPage, ChatBox },
   data(){
     return{
       showFilter: false,

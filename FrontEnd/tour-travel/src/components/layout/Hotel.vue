@@ -98,6 +98,7 @@
               <button
                   class="btn-default-overview white"
                   style="margin-top: 20px; font-weight: bold;"
+                  @click="showBookHotelModal = true"
               >
                 Book now
               </button>
@@ -158,10 +159,43 @@
             </h3>
           </div>
         </div>
-        <ChatBox />
+        <ChatBox v-if="showOverview"/>
       </div>
     </div>
     <Footer />
+    <Modal
+        :actions="[]"
+        v-if="showBookHotelModal"
+    >
+      <div slot="header" class="d-flex">
+        <div>
+          <h5>Date Start</h5>
+          <DatePicker v-model="dateStart" class="date-picker mr-12"/>
+        </div>
+        <div>
+          <h5>Date End</h5>
+          <DatePicker v-model="dateEnd" class="date-picker"/>
+        </div>
+
+      </div>
+      <template slot="body">
+        <div class="form-action d-flex">
+          <button
+              class="btn-confirm-book"
+              @click="handleConfirmBookHotel()"
+          >
+            Confirm
+          </button>
+          <button
+              class="btn-confirm-book"
+              style="background-color: #949494"
+              @click="handleCloseConfirmBookModal()"
+          >
+            Close
+          </button>
+        </div>
+      </template>
+    </Modal>
   </div>
 </template>
 
@@ -172,6 +206,8 @@
 import Footer from "@/components/layout/TheFooter"
 import InfotypeApi from "@/js/api/InfotypeApi"
 import ChatBox from '@/components/base/ChatBox'
+import Modal from "@/components/base/Modal"
+import DatePicker from "vue2-datepicker";
 
 export default {
   name: 'Hotel',
@@ -180,7 +216,9 @@ export default {
     // knife
     // InputInfoTemplate,
     Footer,
-    ChatBox
+    ChatBox,
+    Modal,
+    DatePicker
   },
   data() {
     return {
@@ -239,7 +277,10 @@ export default {
         }
       ],
       hotelCulinaryDescription: 'Với ba nhà hàng và quán bar sang trọng, tầm nhìn toàn cảnh thành phố Hà Nộ năng động, các đầu bếp 5 sao tài ba và dịch vụ khách hàng chuyên nghiệp, ABC mang đến cho thực khách những trải nghiệm khó quên, đánh thức vị giác với ẩm thực biển và địa phương đặc sắc, ẩm thực quốc tế tinh hoa, những loại rượu vang thượng hạng và nhiều thức uống hấp dẫn, sáng tạo khác.',
-      hotelRoomDescription: 'Nghỉ dưỡng tiện nghi và thời thượng trong những căn hộ khách sạn có đầy đủ tiện ích từ phòng nghỉ, phòng khách, bàn làm việc, phòng bếp, bàn ăn...và đặc biệt là tầm nhìn toàn cảnh thành phố sôi động khiến kỳ nghỉ dù ngắn hay dài, dù là chuyến du lịch khám phá hay công tác đều có những trải nghiệm Nha Trang thật thoải mái và đáng nhớ'
+      hotelRoomDescription: 'Nghỉ dưỡng tiện nghi và thời thượng trong những căn hộ khách sạn có đầy đủ tiện ích từ phòng nghỉ, phòng khách, bàn làm việc, phòng bếp, bàn ăn...và đặc biệt là tầm nhìn toàn cảnh thành phố sôi động khiến kỳ nghỉ dù ngắn hay dài, dù là chuyến du lịch khám phá hay công tác đều có những trải nghiệm Nha Trang thật thoải mái và đáng nhớ',
+      showBookHotelModal: false,
+      dateStart: null,
+      dateEnd: null
     }
   },
   methods: {
@@ -274,6 +315,14 @@ export default {
         this.hotelCulinaryDescription = currentHotel[0].DescribedRestaurant
         this.hotelRoomDescription = currentHotel[0].DescribedRoom
       }
+    },
+    handleConfirmBookHotel() {
+      this.showBookHotelModal = false
+    },
+    handleCloseConfirmBookModal() {
+      this.showBookHotelModal = false
+      this.dateStart = null
+      this.dateEnd = null
     }
   },
   async mounted() {
@@ -317,7 +366,7 @@ label {
 }
 
 .body-hotel-container {
-  padding: 20px 180px 80px 180px;
+  padding: 20px 180px 10px 180px;
 }
 
 h3 {
@@ -416,5 +465,31 @@ h3 {
   border-radius: 2px;
   padding: 4px 16px 4px 16px;
   cursor: pointer;
+}
+
+.form-book-container {
+  width: 300px;
+  height: 300px;
+}
+
+.date-picker > div > input[type='text'] {
+  width: 100%;
+}
+
+h5 {
+  font-weight: lighter;
+}
+
+.btn-confirm-book {
+  margin-right: 12px;
+  background-color: #e89327;
+  border: none;
+  border-radius: 2px;
+  padding: 4px 16px 4px 16px;
+  cursor: pointer;
+}
+
+.form-action {
+  justify-content: flex-end;
 }
 </style>

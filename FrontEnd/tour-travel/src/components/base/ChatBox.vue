@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-box-container d-flex">
+  <div class="chat-box-container d-flex" :style="{'left': positionLeft, 'top': positionTop}">
     <div v-if="showChatBox" class="chat-box mr-12">
       <div class="chat-box-header d-flex">
         <label>Admin</label>
@@ -28,6 +28,16 @@ export default {
   name: 'ChatBox',
   components: {
     PerfectScrollbar
+  },
+  props: {
+    positionLeft: {
+      type: String,
+      default: '90%'
+    },
+    positionTop: {
+      type: String,
+      default: '1220px'
+    }
   },
   data() {
     return {
@@ -97,8 +107,6 @@ export default {
 <style scoped>
 .chat-box-container {
   position: absolute;
-  left: 90%;
-  top: 1220px;
   cursor: pointer;
 }
 
