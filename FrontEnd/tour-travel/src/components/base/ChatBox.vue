@@ -64,7 +64,7 @@ export default {
           TypeOfContent: '0',
           RoleInConversation: '1'
         }
-      ]
+      ],
     }
   },
   methods: {
@@ -76,11 +76,20 @@ export default {
         TypeOfContent: '0',
         RoleInConversation: '1'
       })
+      this.$socket.emit('msg', this.currentMsg)
       this.currentMsg = null
     },
     async addFile() {
 
+    },
+    handleReceivedMsg(msg) {
+      console.log(msg)
     }
+  },
+  mounted() {
+    this.sockets.subscribe('msg', msg => {
+      this.handleReceivedMsg(msg)
+    })
   }
 }
 </script>
