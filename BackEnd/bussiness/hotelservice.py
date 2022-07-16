@@ -18,3 +18,8 @@ class HotelService:
     def getHotelById(self, hotelId):
         result = self.dl.getHotelById(hotelId)
         return result
+
+    def addNewHotel(self, Name, HotelCode, Acreage, Address, PhoneNumber, Rank, Email, Solgan, Described, SortDescribed, DescribedRoom):
+        result = self.dl.insertNewHotel(Name, HotelCode, Acreage, Address, PhoneNumber,
+                                        Rank, Email, Solgan, Described, SortDescribed, DescribedRoom)
+        return result
