@@ -64,6 +64,7 @@
     <TheHotelForm
     v-if="showForm"
     v-on:closeForm="closeForm"
+    @response-action="handleAfterSaveNewHotel($event)"
     />
   </div>
 </template>
@@ -134,6 +135,28 @@ export default {
         async initData() {
           const hotelResponse = await HotelAPI.getAll()
           this.loadedHotelDatas = hotelResponse.data
+        },
+        handleAfterSaveNewHotel(val) {
+          this.showForm = false;
+          if (val === 'Insert New Hotel Success!') {
+            this.$notify({
+              group: 'default',
+              title: 'Success',
+              text: val,
+              duration: 3000,
+              type: 'success',
+              position: 'bottom right'
+            })
+          } else {
+            this.$notify({
+              group: 'default',
+              title: 'Error',
+              text: 'Error occur when insert new hotel',
+              duration: 3000,
+              type: 'error',
+              position: 'bottom right'
+            })
+          }
         }
     },
     async mounted() {
