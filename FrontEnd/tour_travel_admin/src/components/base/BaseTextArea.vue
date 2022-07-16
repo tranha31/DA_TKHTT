@@ -9,6 +9,8 @@
             :readonly="read"
             :title="message" v-title
             :disabled="disabled"
+            :maxlength="maxLength"
+            :notNull="notNull"
             autocomplete="off"
             v-model="contents"
             @keypress="input($event)"
@@ -37,6 +39,9 @@ export default {
         hasImage: Boolean,
         classImage: String,
         disabled : Boolean,
+        maxLength : Number,
+        index: Number,
+        index2: Number,
     },
     data(){
         return{
@@ -125,7 +130,13 @@ export default {
                 this.$emit("changeData", this.contents.replaceAll(".", ""));
             }
             else{
-                this.$emit("changeData", this.contents);
+                if(this.index != undefined && this.index2 != undefined){
+                    this.$emit("changeData", this.contents, this.index, this.index2);
+                }
+                else{
+                    this.$emit("changeData", this.contents);
+                }
+                
             }
         }
     }
@@ -182,5 +193,8 @@ export default {
     }
     .input-right{
         text-align: right;
+    }
+    textarea:disabled{
+        background-color: #dfe0e3;
     }
 </style>
