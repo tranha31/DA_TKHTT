@@ -24,7 +24,7 @@
 
 <script>
 import {PerfectScrollbar} from 'vue2-perfect-scrollbar'
-// import ChatApi from "@/js/api/ChatApi";
+import ChatApi from "@/js/api/ChatApi";
 export default {
   name: 'ChatBox',
   components: {
@@ -79,35 +79,36 @@ export default {
     }
   },
   methods: {
-    sendMsg() {
-      // if (this.sentMsg.length <= 0) {
-      //   if (!this.$store.state.account.currentUser.ChatRoomID) {
-      //     let newRoomResponse = ChatApi.createNewChat(this.$store.state.account.currentUser.UserID)
-      //
-      //     if (newRoomResponse) {
-      //       this.$store.commit('account/setAccounts', {
-      //         UserID: this.$store.state.account.currentUser.UserID,
-      //         UserName: this.$store.state.account.currentUser.UserName,
-      //         ChatRoomID: newRoomResponse ? newRoomResponse.RefID : null
-      //       })
-      //
-      //       this.$socket.emit('requireConnect', newRoomResponse.RefID)
-      //       this.sentMsg.push(this.currentMsg)
-      //     } else {
-      //       this.$notify({
-      //         group: 'default',
-      //         title: 'Error',
-      //         text: 'Error when chat with Admin',
-      //         duration: 4000,
-      //         type: 'error',
-      //         position: 'bottom right'
-      //       })
-      //     }
-      //   } else {
-      //     this.$socket.emit('userConnected', this.$store.state.account.currentUser.UserID)
-      //     this.sentMsg.push(this.currentMsg)
-      //   }
-      // }
+    async sendMsg() {
+      if (this.sentMsg.length <= 0) {
+        if (!this.$store.state.account.currentUser.ChatRoomID) {
+          await ChatApi.createNewChat({ UserID: this.$store.state.account.currentUser.UserID })
+          let newRoomResponse = await ChatApi.getUserChatRoom({ UserID: this.$store.state.account.currentUser.UserID })
+
+          if (newRoomResponse) {
+            this.$store.commit('account/setAccounts', {
+              UserID: this.$store.state.account.currentUser.UserID,
+              UserName: this.$store.state.account.currentUser.UserName,
+              ChatRoomID: newRoomResponse ? newRoomResponse.RefID : null
+            })
+
+            this.$socket.emit('requireConnect', newRoomResponse.RefID)
+            this.sentMsg.push(this.currentMsg)
+          } else {
+            this.$notify({
+              group: 'default',
+              title: 'Error',
+              text: 'Error when chat to Admin!',
+              duration: 4000,
+              type: 'error',
+              position: 'bottom right'
+            })
+          }
+        } else {
+          this.$socket.emit('userConnected', this.$store.state.account.currentUser.UserID)
+          this.sentMsg.push(this.currentMsg)
+        }
+      }
 
       this.allMsg.push({
         Content: this.currentMsg,

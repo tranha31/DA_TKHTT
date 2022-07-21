@@ -107,7 +107,7 @@ export default {
               type: 'success',
               position: 'bottom right'
             })
-            let chatRoomResponse = ChatApi.getUserChatRoom({ UserID: signInResponse.UserID })
+            let chatRoomResponse = await ChatApi.getUserChatRoom({ UserID: signInResponse.UserID })
             this.$store.commit('account/setAccounts', {
               UserID: signInResponse.UserID,
               UserName: signInResponse.UserName,
