@@ -38,6 +38,14 @@ def registerNewUser():
 
     return Response(response=result, status=200, mimetype="application/json")
 
+@auth.route("/info", methods=['POST'])
+@cross_origin()
+def getInfo():
+    r = request
+    r = r.args
+    id = r.get("id")
+    result = authservice.getInfo(id)
+    return Response(response=result, status=200, mimetype="application/json")
 
 @auth.route("/auth/getUserById", methods=['POST'])
 @cross_origin()
