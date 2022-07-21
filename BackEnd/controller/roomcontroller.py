@@ -9,7 +9,7 @@ cors = CORS(room, resources={r"/api/*": {"origins": "*"}})
 roomservice = RoomService()
 
 
-@room.route("/searchRoomByHotel", methods=['GET'])
+@room.route("/room/searchRoomByHotel", methods=['GET'])
 @cross_origin()
 def searchAll():
     _json = request.json
@@ -17,4 +17,3 @@ def searchAll():
 
     result = roomservice.getRoomByHotelId(HotelID)
     return Response(response=result, status=200, mimetype="application/json")
-

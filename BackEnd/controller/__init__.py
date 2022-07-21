@@ -6,6 +6,7 @@ from .restaurantcontroller import restaurant
 from .roomcontroller import room
 from .destinationcontroller import destination
 
+
 def create_app():
     app = Flask(__name__)
     app.register_blueprint(tour)

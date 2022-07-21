@@ -33,7 +33,7 @@
             <div>
               <a href="#">Forgot password?</a>
             </div>
-            <button class="btn">Sign In</button>
+            <button class="btn" @click="handleSignIn()">Sign In</button>
           </div>
         </div>
       </div>
@@ -45,6 +45,7 @@
 </template>
 <script>
 import InputInfoTemplate from "@/components/base/InputInfoTemplate";
+import AuthApi from "@/js/api/AuthApi";
 export default {
   name: 'LogIn',
   components: {
@@ -59,6 +60,60 @@ export default {
   methods: {
     directToRegister() {
       this.$router.push({ path: '/register'})
+    },
+    async handleSignIn() {
+      if (!this.email || !this.password) {
+        this.$notify({
+          group: 'default',
+          title: 'Error',
+          text: 'Please full email and password',
+          duration: 3000,
+          type: 'error',
+          position: 'bottom right'
+        })
+      } else {
+        if (!this.email.toLowerCase().match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+            )) {
+          this.$notify({
+            group: 'default',
+            title: 'Error',
+            text: 'Email was not valid!',
+            duration: 4000,
+            type: 'error',
+            position: 'bottom right'
+          })
+        } else {
+          let signInResponse = await AuthApi.signIn({
+            email: this.email,
+            password: this.password
+          })
+          if (signInResponse === 'No account with email existed!' || signInResponse === 'Wrong password!' || !signInResponse) {
+            this.$notify({
+              group: 'default',
+              title: 'Error',
+              text: signInResponse,
+              duration: 4000,
+              type: 'error',
+              position: 'bottom right'
+            })
+          } else {
+            this.$notify({
+              group: 'default',
+              title: 'Success',
+              text: 'Log in success!',
+              duration: 4000,
+              type: 'success',
+              position: 'bottom right'
+            })
+            this.$store.commit('account/setAccounts', {
+              UserID: signInResponse.UserID,
+              UserName: signInResponse.UserName
+            })
+            this.$router.push({ path: '/tour'})
+          }
+        }
+      }
     }
   }
 }

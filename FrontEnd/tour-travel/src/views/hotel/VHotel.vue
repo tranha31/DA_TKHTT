@@ -71,16 +71,16 @@
         <div v-for="(content, index) in contents" v-bind:key="index" class="grid-item d-flex">
           <div class="item-image w-40" :style="content.imageUrl"></div>
           <div class="item-info d-flex flex-column w-60">
-            <router-link class="item-title" :to="{ name: 'hotel-infor', params: { id: content.id }}" >{{content.title}}</router-link>
-            <div class="item-code">{{content.address}}</div>
+            <label style="font-size: 24px;">{{content.Name}}</label>
+            <div class="item-code">{{content.Address}}</div>
             <div class="flex-1"></div>
             <div class="d-flex more-info">
-              <div v-for="(o, i) in content.otherInfo" v-bind:key="i" class="more">{{o}}</div>
+              <div v-for="(o, i) in content.SortDescribed" v-bind:key="i" class="more">{{o}}</div>
             </div>
             <div class="flex-1"></div>
             <div class="item-price d-flex">
               <div>
-                <div class="icon rate-icon d-flex" v-for="index in content.rate" :key="index"></div>
+                <div class="icon rate-icon d-flex" v-for="index in content.Rank" :key="index"></div>
               </div>
               <div class="flex-1"></div>
               <div>Chỉ từ</div>
@@ -89,7 +89,7 @@
             </div>
             <div class="flex-1"></div>
             <div class="item-action d-flex">
-              <div class="show-detail" @click="directToDetailHotel(content.id)">Xem chi tiết</div>
+              <div class="show-detail" @click="directToDetailHotel(content.HotelID)">Xem chi tiết</div>
               <div class="flex-1"></div>
               <div class="btn btn-save" @click="showFormOrderHotel">Đặt ngay</div>
             </div>
@@ -107,6 +107,7 @@
         </div>
 
       </div>
+      <ChatBox />
     </div>
     <ThePageInfo/>
   </div>
@@ -118,43 +119,17 @@ import BaseAutoComplete from '../../components/base/BaseAutoComplete.vue'
 import BaseInput from '../../components/base/BaseInput.vue'
 import ThePageInfo from '../../components/layout/ThePageInfo.vue'
 import BaseNavigationPage from '../../components/base/BaseNavigationPage.vue'
+import InfotypeApi from "@/js/api/InfotypeApi"
+import ChatBox from "@/components/base/ChatBox";
 
 export default {
   name: 'VHotel',
-  components: { ThePageInfo, BaseInput, BaseAutoComplete, BaseNavigationPage, },
+  components: { ThePageInfo, BaseInput, BaseAutoComplete, BaseNavigationPage, ChatBox },
   data(){
     return{
       showFilter: false,
       priceRange: 50,
-      contents: [
-        {
-          id: '12113',
-          imageUrl: "background-image: url('https://booking-static.vinpearl.com/tours/b018892921a94fa0b344a28fc2db0a99_DGH_2236_summer2.jpg')",
-          title: 'Khách sạn ABC',
-          address: '1, HBT, HN',
-          otherInfo: ["Bể bơi bốn mùa", "Gần trung tâm", "Tầm nhìn toàn cảnh"],
-          price: "8.000.000đ",
-          rate: 5
-        },
-        {
-          id: '12113',
-          imageUrl: "background-image: url('https://booking-static.vinpearl.com/tours/b018892921a94fa0b344a28fc2db0a99_DGH_2236_summer2.jpg')",
-          title: 'Khách sạn ABC',
-          address: '1, HBT, HN',
-          otherInfo: ["Bể bơi bốn mùa", "Gần trung tâm", "Tầm nhìn toàn cảnh"],
-          price: "8.000.000đ",
-          rate: 5
-        },
-        {
-          id: '12113',
-          imageUrl: "background-image: url('https://booking-static.vinpearl.com/tours/b018892921a94fa0b344a28fc2db0a99_DGH_2236_summer2.jpg')",
-          title: 'Khách sạn ABC',
-          address: '1, HBT, HN',
-          otherInfo: ["Bể bơi bốn mùa", "Gần trung tâm", "Tầm nhìn toàn cảnh"],
-          price: "8.000.000đ",
-          rate: 5
-        },
-      ],
+      contents: [],
       totalRecord : 500,
       totalPage: 5,
       currentPage: 1,
@@ -203,6 +178,20 @@ export default {
     directToDetailHotel(idHotel) {
       this.$router.push({ path: `/hotel/${idHotel}`})
     }
+  },
+  async created() {
+    this.contents = await InfotypeApi.getAllHotels()
+    this.contents.forEach(hotel => {
+      hotel.price = '8.000.000đ'
+      hotel.imageUrl = "background-image: url('https://booking-static.vinpearl.com/tours/b018892921a94fa0b344a28fc2db0a99_DGH_2236_summer2.jpg')"
+
+      let otherInfos = JSON.parse(JSON.stringify(hotel.SortDescribed))
+      hotel.SortDescribed = []
+      otherInfos = otherInfos.replace('{', '').replace('}', '').split(', ')
+      otherInfos.forEach(info => {
+        hotel.SortDescribed.push(info.split(':')[1].trim())
+      })
+    })
   }
 }
 </script>

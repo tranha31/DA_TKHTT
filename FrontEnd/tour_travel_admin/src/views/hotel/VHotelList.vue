@@ -31,13 +31,13 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in 100" v-bind:key="index">
-                    <td class="order">1</td>
-                    <td>SP001</td>
-                    <td>Khách sạn HN</td>
-                    <td>Hà Nội, Việt Nam</td>
-                    <td>0964938140</td>
-                    <td>ha.tq183520@sis.hust.edu.vn</td>
+                <tr v-for="(item, index) in loadedHotelDatas" v-bind:key="index">
+                    <td class="order">{{Number(index) + 1}}</td>
+                    <td>{{item.HotelCode}}</td>
+                    <td>{{item.Name}}</td>
+                    <td>{{item.Address}}</td>
+                    <td>{{item.PhoneNumber}}</td>
+                    <td>{{item.Email}}</td>
                     <td class="number">50</td>
                     <td class="function">
                         <div class="d-flex flex-column lst-option">
@@ -64,6 +64,7 @@
     <TheHotelForm
     v-if="showForm"
     v-on:closeForm="closeForm"
+    @response-action="handleAfterSaveNewHotel($event)"
     />
   </div>
 </template>
@@ -72,6 +73,7 @@
 import BaseInput from '../../components/base/BaseInput.vue'
 import BaseNavigationPage from '../../components/base/BaseNavigationPage.vue'
 import TheHotelForm from '../../components/form/TheHotelForm.vue'
+import HotelAPI from '../../js/api/hotel'
 export default {
     components: { BaseInput, BaseNavigationPage, TheHotelForm },
     data(){
@@ -88,6 +90,7 @@ export default {
             ],
 
             showForm:  false,
+            loadedHotelDatas: []
         }
     },
     methods:{
@@ -129,7 +132,35 @@ export default {
         closeForm(){
             this.showForm = false;
         },
-
+        async initData() {
+          const hotelResponse = await HotelAPI.getAll()
+          this.loadedHotelDatas = hotelResponse.data
+        },
+        handleAfterSaveNewHotel(val) {
+          this.showForm = false;
+          if (val === 'Insert New Hotel Success!') {
+            this.$notify({
+              group: 'default',
+              title: 'Success',
+              text: val,
+              duration: 3000,
+              type: 'success',
+              position: 'bottom right'
+            })
+          } else {
+            this.$notify({
+              group: 'default',
+              title: 'Error',
+              text: 'Error occur when insert new hotel',
+              duration: 3000,
+              type: 'error',
+              position: 'bottom right'
+            })
+          }
+        }
+    },
+    async mounted() {
+      await this.initData()
     }
   
 }
