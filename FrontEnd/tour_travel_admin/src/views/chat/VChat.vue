@@ -30,7 +30,17 @@
 
 <script>
 export default {
-
+  name: 'VChat',
+  methods: {
+    handleReceivedMsg(msg) {
+      console.log(msg)
+    }
+  },
+  mounted() {
+    this.sockets.subscribe('toAdmin', msg => {
+      this.handleReceivedMsg(msg)
+    })
+  }
 }
 </script>
 
