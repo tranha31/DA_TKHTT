@@ -24,6 +24,12 @@
     <TotalCost></TotalCost>
 	<TotalCostInWord></TotalCostInWord>
 	<TourName></TourName>
+    <ProvinceStartID></ProvinceStartID>
+    <ProvinceStartName></ProvinceStartName>
+    <ProvinceDestinationID></ProvinceDestinationID>
+    <ProvinceDestinationName></ProvinceDestinationName>
+    <PickupAdress></PickupAdress>
+    <PickupTime></PickupTime>
     <ContractData>
         <DestinationItem>
             <Destination>
@@ -42,22 +48,25 @@
                 <SortOrder></SortOrder>
                 <Morning>
                     <Activity>
-                        <StartTime></StartTime>
+                        <DestinationID></DestinationID>
                         <Destination></Destination>
+                        <StartTime></StartTime>
 						<Action></Action>
                     </Activity>
                 </Morning>
                 <Afternoon>
                     <Activity>
-                        <StartTime></StartTime>
+                        <DestinationID></DestinationID>
                         <Destination></Destination>
+                        <StartTime></StartTime>
 						<Action></Action>
                     </Activity>
                 </Afternoon>
                 <Evening>
                     <Activity>
-                        <StartTime></StartTime>
+                        <DestinationID></DestinationID>
                         <Destination></Destination>
+                        <StartTime></StartTime>
 						<Action></Action>
                     </Activity>
                 </Evening>

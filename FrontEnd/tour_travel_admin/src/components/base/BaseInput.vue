@@ -153,7 +153,12 @@ export default {
                 }
             }
             else{
-                this.$emit("changeData", this.contents);
+                if(this.index != undefined){
+                    this.$emit("changeData", this.contents, this.index);
+                }
+                else{
+                    this.$emit("changeData", this.contents);
+                }
             }
         }
     }

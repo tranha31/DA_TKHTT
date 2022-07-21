@@ -51,7 +51,6 @@ class DestinationService:
         lstDes = self.dl.getList(search)
         totalPage = 0
         totalRecord = 0
-        print(len(lstDes))
         if len(lstDes) > 0:
             totalRecord = len(lstDes)
             totalPage = math.ceil(totalRecord / size)
