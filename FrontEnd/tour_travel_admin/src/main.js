@@ -2,11 +2,13 @@ import Vue from 'vue'
 import App from './App.vue'
 import VueRouter from 'vue-router'
 import vTitle from 'vuejs-title'
+import Notifications from 'vue-notification'
 
 
 Vue.config.productionTip = false
 Vue.use(VueRouter);
 Vue.use(vTitle);
+Vue.use(Notifications)
 
 import Router from '../src/js/router/router.js'
 var route = new Router();

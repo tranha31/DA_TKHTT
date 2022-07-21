@@ -14,6 +14,7 @@
                     :msrequire="true"
                     :notNull="true"
                     :isNumber="false"
+                    @contentInput="newHotelDatas.Name = $event"
                     />
 
                     <BaseInput
@@ -23,6 +24,7 @@
                     :msrequire="true"
                     :notNull="true"
                     :isNumber="false"
+                    @contentInput="newHotelDatas.HotelCode = $event"
                     />
                 </div>
                 
@@ -34,6 +36,7 @@
                     :msrequire="true"
                     :notNull="true"
                     :isNumber="false"
+                    @contentInput="newHotelDatas.ParnerID = $event"
                     />
 
                     <BaseInput
@@ -43,6 +46,7 @@
                     :msrequire="false"
                     :notNull="false"
                     :isNumber="false"
+                    @contentInput="newHotelDatas.Acreage = $event"
                     />
                 </div>
                     
@@ -54,6 +58,7 @@
                     :msrequire="true"
                     :notNull="true"
                     :isNumber="false"
+                    @contentInput="newHotelDatas.Address = $event"
                     />
                     <BaseInput
                     :clas="'w-20 m-b-20 m-r-20'"
@@ -62,6 +67,7 @@
                     :msrequire="true"
                     :notNull="true"
                     :isNumber="false"
+                    @contentInput="newHotelDatas.PhoneNumber = $event"
                     />
                     <BaseInput
                     :clas="'w-20 m-b-20 m-r-20'"
@@ -70,6 +76,7 @@
                     :msrequire="true"
                     :notNull="true"
                     :isNumber="true"
+                    @contentInput="newHotelDatas.Rank = $event"
                     />
                 </div>
                 <div class="block second-block d-flex ">
@@ -80,6 +87,7 @@
                     :msrequire="true"
                     :notNull="true"
                     :isNumber="false"
+                    @contentInput="newHotelDatas.Email = $event"
                     />
 
                     <BaseInput
@@ -89,6 +97,7 @@
                     :msrequire="false"
                     :notNull="false"
                     :isNumber="false"
+                    @contentInput="newHotelDatas.Solgan = $event"
                     />
 
                     <BaseAutoComplete
@@ -110,6 +119,7 @@
                     :notNull="true"
                     :msrequire="true"
                     :placeholder="'Nhập thông tin mô tả khách sạn'"
+                    @contentInput="newHotelDatas.Described= $event"
                     />
 
                     <div class="d-flex flex-column w-20  m-r-20">
@@ -120,6 +130,7 @@
                         :msrequire="false"
                         :notNull="false"
                         :isNumber="false"
+                        @contentInput="newHotelDatas.SortDes1 = $event"
                         />
 
                         <BaseInput
@@ -129,6 +140,7 @@
                         :msrequire="false"
                         :notNull="false"
                         :isNumber="false"
+                        @contentInput="newHotelDatas.SortDes2 = $event"
                         />
 
                         <BaseInput
@@ -138,6 +150,7 @@
                         :msrequire="false"
                         :notNull="false"
                         :isNumber="false"
+                        @contentInput="newHotelDatas.SortDes3 = $event"
                         />
                     </div>
 
@@ -148,6 +161,7 @@
                     :notNull="true"
                     :msrequire="true"
                     :placeholder="'Nhập mô tả phòng'"
+                    @contentInput="newHotelDatas.DescribedRoom = $event"
                     />
                 </div>
             </div>
@@ -183,7 +197,7 @@
           <div class="action d-flex">
               <div class="flex-1"></div>
               <div class="btn" @click="closeForm">Hủy</div>
-              <div class="btn btn-save">Lưu</div>
+              <div class="btn btn-save" @click="handleSaveNewHotel()">Lưu</div>
           </div>
       </div>
   </div>
@@ -195,12 +209,14 @@ import BaseAutoComplete from '../base/BaseAutoComplete.vue'
 // import 'vue2-datepicker/index.css';
 import BaseInput from '../base/BaseInput.vue';
 import BaseTextArea from '../base/BaseTextArea.vue'
+import HotelAPI from '../../js/api/hotel'
 export default {
   components: { BaseAutoComplete, BaseInput, BaseTextArea },
   data(){
       return{
           startTime: null,
           endTime: null,
+          newHotelDatas: {}
       }
   },
   methods:{
@@ -218,7 +234,33 @@ export default {
         if(file){
             reader.readAsDataURL(file);
         }
-      }
+      },
+      async handleSaveNewHotel() {
+        let allSortDescribed = '{SortDescribed1: ' + this.newHotelDatas.SortDes1 +
+            ', SortDescribed2: ' + this.newHotelDatas.SortDes2 +
+            ', SortDescribed3: ' + this.newHotelDatas.SortDes3 + '}'
+        this.newHotelDatas.SortDescribed = allSortDescribed
+        let addNewHotelResponse = await HotelAPI.addNewHotel(this.newHotelDatas)
+        this.$emit("response-action", addNewHotelResponse.data);
+      },
+  },
+  mounted() {
+    this.newHotelDatas = {
+      Name: null,
+      HotelCode: null,
+      ParnerID: null,
+      Acreage: null,
+      Address: null,
+      PhoneNumber: null,
+      Rank: null,
+      Email: null,
+      Solgan: null,
+      Described: null,
+      SortDes1: null,
+      SortDes2: null,
+      SortDes3: null,
+      DescribedRoom: null
+    }
   }
 }
 </script>

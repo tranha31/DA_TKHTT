@@ -606,6 +606,10 @@ input:disabled{
     animation-duration: 1.5s;
 }
 
+input.error{
+    border-color: #f77;
+}
+
 @keyframes fade {
     from {opacity: .4} 
     to {opacity: 1}

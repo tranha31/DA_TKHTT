@@ -58,7 +58,7 @@
               </div>
             </div>
             <div class="form-info-action d-flex flex-column">
-              <button class="btn">Register new account</button>
+              <button class="btn" @click="handleRegisterNewUser()">Register new account</button>
             </div>
           </div>
         </div>
@@ -74,9 +74,13 @@
       <template slot="body">
         <div class="upload-container">
           <div class="upload-display d-flex pb-6 mr-12 mb-20">
-            <div>Display area</div>
+            <div class="display-area d-flex">
+              <img v-if="signatureUrl" :src="signatureUrl" />
+              <div v-else>Display area</div>
+            </div>
             <div>
-              <button class="btn-default" @click="handleUploadSign()">Upload</button>
+              <input type="file" @change="selectSignature" style="display: none" ref="signatureInput"/>
+              <button class="btn-default" @click="$refs.signatureInput.click()">Upload</button>
             </div>
           </div>
           <div class="upload-commit mb-20">
@@ -87,16 +91,16 @@
         <div class="list-buttons d-flex">
           <button
               slot="footer"
-              class="btn-default"
               style="background-color: #949494 !important"
               @click="showUploadSign = false"
+              class="button-default"
           >
             CLOSE
           </button>
           <button
               slot="footer"
-              class="btn-default"
               @click="handleSaveUploadSign()"
+              class="button-default"
           >
             SAVE
           </button>
@@ -108,6 +112,7 @@
 <script>
 import InputInfoTemplate from "@/components/base/InputInfoTemplate";
 import Modal from "@/components/base/Modal";
+import AuthApi from "@/js/api/AuthApi";
 export default {
   name: 'Register',
   components: {
@@ -122,20 +127,92 @@ export default {
       username: null,
       phoneNumber: null,
       showUploadSign: false,
-      commitSignature: false
+      commitSignature: false,
+      signatureObject: null,
+      signatureUrl: null
     }
   },
   watch: {
   },
   methods: {
-    handleUploadSign() {
-
-    },
     handleSaveUploadSign() {
       this.showUploadSign = false
     },
     directToLogin() {
       this.$router.push({ path: '/login'})
+    },
+    async handleRegisterNewUser() {
+      if (!this.email || !this.password || !this.confirmPassword || !this.username || !this.phoneNumber) {
+        this.$notify({
+          group: 'default',
+          title: 'Error',
+          text: 'Enter all input fields!',
+          duration: 3000,
+          type: 'error',
+          position: 'bottom right'
+        })
+      } else if (!this.email.toLowerCase().match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+      )) {
+        this.$notify({
+          group: 'default',
+          title: 'Error',
+          text: 'Email was not valid!',
+          duration: 3000,
+          type: 'error',
+          position: 'bottom right'
+        })
+      } else if (this.password !== this.confirmPassword) {
+        this.$notify({
+          group: 'default',
+          title: 'Error',
+          text: 'Confirm password not match!',
+          duration: 3000,
+          type: 'error',
+          position: 'bottom right'
+        })
+      } else if (!this.signatureObject || !this.commitSignature) {
+        this.$notify({
+          group: 'default',
+          title: 'Error',
+          text: 'Must upload your signature and commit it!',
+          duration: 3000,
+          type: 'error',
+          position: 'bottom right'
+        })
+      } else {
+        const registerResponse = await AuthApi.register({
+          email: this.email,
+          password: this.password,
+          username: this.username,
+          phone: this.phoneNumber
+        })
+
+        if (registerResponse === 'Account with email already existed!') {
+          this.$notify({
+            group: 'default',
+            title: 'Error',
+            text: registerResponse,
+            duration: 3000,
+            type: 'error',
+            position: 'bottom right'
+          })
+        } else {
+          this.$notify({
+            group: 'default',
+            title: 'Success',
+            text: 'Register new user success!',
+            duration: 4000,
+            type: 'success',
+            position: 'bottom right'
+          })
+        }
+      }
+    },
+    async selectSignature(event) {
+      this.signatureObject = event.target.files[0]
+      this.signatureUrl = URL.createObjectURL(this.signatureObject)
+      console.log(this.signatureUrl)
     }
   }
 }
@@ -220,7 +297,6 @@ label {
 .upload-display > div:first-child {
   width: 70%;
   height: 200px;
-  background-color: #949494;
 }
 
 .upload-commit > label {
@@ -231,4 +307,24 @@ label {
   justify-content: flex-end;
 }
 
+.button-default {
+  margin-left: 8px;
+  background-color: #e89327;
+  border: none;
+  border-radius: 2px;
+  padding: 4px 16px 4px 16px;
+  cursor: pointer;
+}
+
+.display-area {
+  border: solid #949494 1px;
+  border-radius: 8px;
+  justify-content: center;
+  align-items: center;
+}
+
+.display-area > img {
+  width: 90%;
+  height: 90%;
+}
 </style>
