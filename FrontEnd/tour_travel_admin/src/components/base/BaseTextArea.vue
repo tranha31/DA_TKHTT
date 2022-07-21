@@ -133,6 +133,9 @@ export default {
                 if(this.index != undefined && this.index2 != undefined){
                     this.$emit("changeData", this.contents, this.index, this.index2);
                 }
+                else if(this.index != undefined){
+                    this.$emit("changeData", this.contents, this.index);
+                }
                 else{
                     this.$emit("changeData", this.contents);
                 }

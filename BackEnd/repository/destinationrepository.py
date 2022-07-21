@@ -148,7 +148,7 @@ class DestinationRepository(DLBase):
         collection.delete_many(myquery)
 
     def getDestinationInProvince(self, id):
-        sql = "SELECT t.RefID, t.Name, t.TicketPrice FROM tourdestination t WHERE t.ProvinceID = %s"
+        sql = "SELECT t.RefID, t.Name, t.Place, t.TicketPrice FROM tourdestination t WHERE t.ProvinceID = %s"
         cursor = self.conn.cursor(dictionary=True)
         cursor.execute(sql, (id,))
         records = cursor.fetchall()

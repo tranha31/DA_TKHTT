@@ -34,12 +34,12 @@
                 <div v-else class="last" style="color: #e4e4e4">Sau</div>
             </div>
         </div>
-        <div v-else class="empty-value">
+        <!-- <div v-else class="empty-value">
             <div class="notification">
                 <img src="https://actappg1.misacdn.net/img/bg_report_nodata.76e50bd8.svg">
                 <div style="margin-top: 30px">Không có dữ liệu</div>
             </div>
-        </div>
+        </div> -->
     </div>
 </template>
 

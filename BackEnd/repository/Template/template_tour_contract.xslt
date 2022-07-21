@@ -6,7 +6,7 @@
 	<xsl:template match="Contract">
 		<xsl:text disable-output-escaping="yes">&lt;</xsl:text>!DOCTYPE html<xsl:text disable-output-escaping="yes">&gt;</xsl:text><html>
 			<head>
-				<title>Mẫu hợp đồng</title>
+				<title>Hợp đồng du lịch</title>
 				<style>
 					body {
 					padding: 0;
@@ -19,11 +19,13 @@
 					}
 
 					.d-flex{
-					display:flex;
+					display: -webkit-box; /* wkhtmltopdf uses this one */
+					display: flex;
 					}
 					
 					.flex-column{
 					flex-direction: column;
+					-webkit-flex-direction: column;
 					}
 					
 					.container {
@@ -150,15 +152,8 @@
 					}
 
 					.header-invoice{
-					border-top: 1px;
-					border-bottom: 1px;
-					border-left: 0;
-					border-right: 0;
-					border-style: solid;
-					border-color: #CCC;
 					padding-top: 2px;
 					padding-top:20px;
-					border-bottom : none;
 					}
 
 					.other-invoice{
@@ -357,7 +352,7 @@
 							<div class="header-block">
 								<div class="seller-infor d-flex">
 									<div class="logo-template-content" style="margin-right:25px"></div>
-									<div class="d-flex flex-column">
+									<div class="flex-column">
 										<div class="edit-item disable-hiden width-full type-2" data-field="SellerName" style="">
 											<div class="edit-label display-table-cell white-space-nowrap display-none" style="min-width: 0px;">Đơn vị bán hàng</div>
 											<div class="two-dot display-table-cell white-space-nowrap display-none" style="">:</div>
@@ -388,9 +383,9 @@
 										</div>
 									</div>
 								</div>
-								<div class="header-invoice invoice-second highlight-block d-flex flex-column">
+								<div class="header-invoice invoice-second highlight-block flex-column">
 									<div class="width-full d-flex">
-										<div class="d-flex flex-column width-half">
+										<div class="flex-column width-half">
 											<div class="edit-item disable-hiden width-full type-2" data-field="SellerName" style="padding-bottom:10px">
 												<div class="edit-label display-table-cell white-space-nowrap display-none" style="min-width: 0px;">Đơn vị bán hàng</div>
 												<div class="two-dot display-table-cell white-space-nowrap display-none" style="">:</div>
@@ -406,7 +401,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="d-flex flex-column width-half">
+										<div class="flex-column width-half">
 											<div class="font-bold text-center">CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM</div>
 											<div class="font-bold text-center" style="padding-bottom:5px;">Độc lập - Tự do - Hạnh phúc</div>
 											<div class="disable-hiden font-italic text-center" data-field="DateInvoice" style="padding-top:5px">
@@ -445,7 +440,7 @@
 										</span>
 									</div>
 									<div class="font-italic">
-										- Căn cứ Luật thương mại được Quốc hội nước Cộng hòa xã hội chủ nghĩa Việt Nam khóa XI, kỳ họp thứ VII thông qua ngày 14 tháng 06 năm 2005
+										- Căn cứ Luật thương mại được Quốc hội nước Cộng hòa xã hội chủ nghĩa Việt Nam khóa XI, kỳ họp thứ VII thông qua ngày 14 tháng 06 năm 2005.
 									</div>
 									<div class="font-italic">
 										- Căn cứ Bộ luật dân sự được Quốc hội nước cộng hòa xã hội chủ nghĩa Việt Nam khóa XIII thông qua ngày 24 tháng 11 năm 2015.
@@ -486,7 +481,7 @@
 										</xsl:choose>
 									</div>
 									<div>Chúng tôi gồm có:</div>
-									<div class="width-full d-flex flex-column" data-field="SideA">
+									<div class="width-full flex-column" data-field="SideA">
 										<div class="edit-item disable-hiden width-full type-2" style="">
 											<div class="edit-label display-table-cell white-space-nowrap font-bold" style="min-width: 0px;">Bên A</div>
 											<div class="two-dot display-table-cell white-space-nowrap" style="">:</div>
@@ -523,7 +518,7 @@
 											</div>
 										</div>
 									</div>
-									<div class="width-full d-flex flex-column" data-field="SideB">
+									<div class="width-full flex-column" data-field="SideB">
 										<div class="edit-item disable-hiden width-full type-2" style="">
 											<div class="edit-label display-table-cell white-space-nowrap font-bold" style="min-width: 0px;">Bên B</div>
 											<div class="two-dot display-table-cell white-space-nowrap" style="">:</div>
@@ -569,10 +564,10 @@
 										</div>
 									</div>
 								</div>
-								<div class="buyer-qr-infor invoice-third highlight-block width-full d-flex flex-column">
+								<div class="buyer-qr-infor invoice-third highlight-block width-full flex-column">
 									<div class="font-bold">Hai bên thống nhất ký một số điều khoản phục vụ khách du lịch như sau:</div>
 									<div class="font-bold">* Điều 1: Nội dung chương trình.</div>
-									<div class="d-flex flex-column" style="padding-left: 10px">
+									<div class="flex-column" style="padding-left: 10px">
 										<xsl:variable name="startTime" select="ContractInfo/StartTime" />
 										<xsl:variable name="endTime" select="ContractInfo/EndTime" />
 										<div>
@@ -612,7 +607,7 @@
 										<div class="font-bold">2. Danh sách điểm tham quan</div>
 										<div style="padding-left:10px;">
 											<xsl:for-each select="ContractData/DestinationItem/Destination">
-												<div class="d-flex flex-column">
+												<div class="flex-column">
 													<div>
 														* <xsl:value-of select="Name"/>:
 													</div>
@@ -650,10 +645,29 @@
 										</div>
 										<div class="font-bold">3. Lịch trình</div>
 										<div class="font-italic">Để đảm bảo tài sản và sự an toàn của Quý Khách, lái xe của công ty sẽ có trách nhiệm trả khách tại điểm mà xe đón khách lúc đầu.</div>
+										<div class="font-bold">Điểm đón khách: <span><xsl:value-of select="PickupAdress"/></span></div>
+										<div class="font-bold">
+											<span>Thời gian đón khách:</span> 
+											<span class="padding-left-4">
+												<xsl:value-of select="substring(PickupTime, 12, 5)"/>,
+											</span>
+											<span>ngày</span>
+											<span class="padding-left-4">
+												<xsl:value-of select="substring(PickupTime, 9, 2)" />
+											</span>
+											<span class="padding-left-4">tháng</span>
+											<span class="padding-left-4">
+												<xsl:value-of select="substring(PickupTime, 6, 2)" />
+											</span>
+											<span class="padding-left-4">năm</span>
+											<span class="padding-left-4">
+												<xsl:value-of select="substring(PickupTime, 1, 4)" />.
+											</span>
+										</div>
 										<xsl:choose>
 											<xsl:when test="count(ContractData/Schedule/Day) > 0">
 												<xsl:for-each select="ContractData/Schedule/Day">
-													<div class="d-flex flex-column">
+													<div class="flex-column">
 														<div class="font-bold">
 															3.
 															<span>
@@ -664,7 +678,7 @@
 															</span>
 														</div>
 														<div class="font-bold">a. Buổi sáng.</div>
-														<div class="d-flex flex-column" style="padding-left:10px">
+														<div class="flex-column" style="padding-left:10px">
 															<xsl:for-each select="Morning/Activity">
 																<xsl:variable name="startTimeActivity" select="StartTime" />
 																<div>
@@ -695,7 +709,7 @@
 															</xsl:for-each>
 														</div>
 														<div class="font-bold">b. Buổi chiều.</div>
-														<div class="d-flex flex-column" style="padding-left:10px">
+														<div class="flex-column" style="padding-left:10px">
 															<xsl:for-each select="Afternoon/Activity">
 																<xsl:variable name="startTimeActivity" select="StartTime" />
 																<div>
@@ -726,7 +740,7 @@
 															</xsl:for-each>
 														</div>
 														<div class="font-bold">c. Buổi tối.</div>
-														<div class="d-flex flex-column" style="padding-left:10px">
+														<div class="flex-column" style="padding-left:10px">
 															<xsl:for-each select="Evening/Activity">
 																<xsl:variable name="startTimeActivity" select="StartTime" />
 																<div>
@@ -880,31 +894,20 @@
 											</div>
 										</div>								
 									</xsl:for-each>
-									<div class="font-bold" style="margin-top: 10px">* Điều 7: Yêu cầu từ bên A</div>
-									<xsl:for-each select="ContractData/CustomerRequest/Item">
-										<div class="d-flex" style="margin-top:5px;">
-											<div>
-												<xsl:value-of select="SortOrder"/>. 
-											</div>
-											<div style="padding-left: 5px;">
-												<xsl:value-of select="Content"/>
-											</div>
-										</div>								
-									</xsl:for-each>
 								</div>
 							</div>
 
 							<div class="sign-xml-block width-full" style="margin-top: 20px">
 								<div class="d-flex width-full">
-									<div class="d-flex flex-column width-half" data-field="BuyerSign" style="align-items: center">
-										<div class="font-bold">ĐẠI DIỆN BÊN A</div>
-										<div class="sign-content buyer-sign-content">
+									<div class="flex-column width-half" data-field="BuyerSign">
+										<div class="font-bold width-full" style="">ĐẠI DIỆN BÊN A</div>
+										<div class="sign-content buyer-sign-content width-full" style="">
 										
 										</div>
 									</div>
-									<div class="d-flex flex-column width-half" data-field="SellerSign" style="align-items: center">
-										<div class="font-bold">ĐẠI DIỆN BÊN B</div>
-										<div class="sign-content seller-sign-content">
+									<div class="flex-column width-half" data-field="SellerSign" style="margin-left: 50px">
+										<div class="font-bold width-full" style="">ĐẠI DIỆN BÊN B</div>
+										<div class="sign-content seller-sign-content width-full" style="">
 										
 										</div>
 									</div>

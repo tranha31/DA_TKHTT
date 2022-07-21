@@ -7,7 +7,7 @@ class UserRepository(DLBase):
     def getUserByEmail(self, email):
         sql = "Select * from user where Email like %s;"
         cursor = self.conn.cursor(dictionary=True)
-        cursor.execute(sql, (email))
+        cursor.execute(sql, (email,))
         users = cursor.fetchall()
         return users
 
@@ -16,3 +16,10 @@ class UserRepository(DLBase):
         cursor = self.conn.cursor(dictionary=True)
         cursor.execute(sql, (username, password, email, phone))
         self.conn.commit()
+
+    def getInfo(self, id):
+        sql = "SELECT * FROM user WHERE UserID = %s"
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute(sql, (id,))
+        users = cursor.fetchall()
+        return users

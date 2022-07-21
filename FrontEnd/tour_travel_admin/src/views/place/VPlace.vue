@@ -98,8 +98,8 @@ export default {
     components: { BaseInput, BaseNavigationPage, ThePlaceForm, BaseLoad, BasePopUp },
     data(){
         return{
-            totalRecord : 500,
-            totalPage: 5,
+            totalRecord : 0,
+            totalPage: 0,
             currentPage: 1,
             pageSize : 20,
             numberPage: [

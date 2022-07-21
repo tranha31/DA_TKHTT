@@ -26,3 +26,6 @@ class AuthService:
             self.dl.insertNewUser(email, password, username, phone)
             return "Register new user success!"
 
+    def getInfo(self, id):
+        return self.dl.getInfo(id)
+

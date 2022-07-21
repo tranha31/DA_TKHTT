@@ -31,3 +31,12 @@ def registerNewUser():
     result = authservice.register(email, password, username, phone)
 
     return Response(response=result, status=200, mimetype="application/json")
+
+@auth.route("/info", methods=['POST'])
+@cross_origin()
+def getInfo():
+    r = request
+    r = r.args
+    id = r.get("id")
+    result = authservice.getInfo(id)
+    return Response(response=result, status=200, mimetype="application/json")
