@@ -125,13 +125,32 @@ ALTER TABLE tourdestination
 ADD CONSTRAINT FK_TourDestination_ProvinceID FOREIGN KEY (ProvinceID)
 REFERENCES province (ProvinceID);
 
+--
+-- Create table `chatroom`
+--
+CREATE TABLE chatroom (
+  RefID char(36) NOT NULL DEFAULT '',
+  UserID char(36) NOT NULL DEFAULT '',
+  CreationDate datetime DEFAULT NULL,
+  PRIMARY KEY (RefID)
+)
+ENGINE = INNODB,
+CHARACTER SET utf8mb4,
+COLLATE utf8mb4_0900_ai_ci;
+
+--
+-- Create foreign key
+--
+ALTER TABLE chatroom
+ADD CONSTRAINT FK_ChatRoom_UserID FOREIGN KEY (UserID)
+REFERENCES user (UserID);
 
 --
 -- Create table `contentmessagesend`
 --
 CREATE TABLE contentmessagesend (
   RefID char(36) NOT NULL DEFAULT '',
-  UserID char(36) NOT NULL DEFAULT '',
+  RoomID char(36) NOT NULL DEFAULT '',
   Content text NOT NULL,
   SendingTime datetime DEFAULT NULL,
   TypeOfContent int NOT NULL COMMENT '0: tin nhắn văn bảng, 1: hình ảnh',
@@ -146,8 +165,8 @@ COLLATE utf8mb4_0900_ai_ci;
 -- Create foreign key
 --
 ALTER TABLE contentmessagesend
-ADD CONSTRAINT FK_ContentMessageSend_UserID FOREIGN KEY (UserID)
-REFERENCES user (UserID);
+ADD CONSTRAINT FK_ContentMessageSend_RoomID FOREIGN KEY (RoomID)
+REFERENCES chatroom (RefID);
 
 
 --
@@ -156,6 +175,7 @@ REFERENCES user (UserID);
 CREATE TABLE listsendmessagetoadmin (
   RefID char(36) NOT NULL DEFAULT '',
   UserID char(36) NOT NULL DEFAULT '',
+  RoomID char(36) NOT NULL DEFAULT '',
   UserName char(100) DEFAULT NULL,
   LastSendingTime datetime DEFAULT NULL,
   PRIMARY KEY (RefID)
@@ -170,6 +190,10 @@ COLLATE utf8mb4_0900_ai_ci;
 ALTER TABLE listsendmessagetoadmin
 ADD CONSTRAINT FK_ListSendMessageToAdmin_UserID FOREIGN KEY (UserID)
 REFERENCES user (UserID);
+
+ALTER TABLE listsendmessagetoadmin
+ADD CONSTRAINT FK_ListSendMessageToAdmin_RoomID FOREIGN KEY (RoomID)
+REFERENCES chatroom (RefID);
 
 
 --
