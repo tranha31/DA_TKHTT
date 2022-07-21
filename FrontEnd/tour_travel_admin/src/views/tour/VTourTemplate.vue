@@ -62,6 +62,7 @@
 
     <TheCreateTour
     v-if="showForm"
+    :oTour="oTour"
     v-on:closeForm="closeForm"
     />
   </div>
@@ -72,7 +73,7 @@
 import BaseInput from '../../components/base/BaseInput.vue'
 import BaseNavigationPage from '../../components/base/BaseNavigationPage.vue'
 import TheCreateTour from '../../components/form/TheCreateTour.vue'
-
+import Tour from '../../js/entity/tour'
 
 export default {
     components: { BaseInput, BaseNavigationPage, TheCreateTour,},
@@ -90,6 +91,7 @@ export default {
             ],
 
             showForm : false,
+            oTour : new Tour(),
         }
     },
     methods:{
@@ -125,11 +127,13 @@ export default {
          * Show form tạo tour
          */
         showFormCreateTour(){
-        this.showForm = true;
+            var tour = new Tour();
+            this.oTour = tour;
+            this.showForm = true;
         },
 
         closeForm(){
-        this.showForm = false;
+            this.showForm = false;
         },
     }
   

@@ -143,15 +143,43 @@ export default {
     },
     async handleRegisterNewUser() {
       if (!this.email || !this.password || !this.confirmPassword || !this.username || !this.phoneNumber) {
-        console.log('fullfill all input')
+        this.$notify({
+          group: 'default',
+          title: 'Error',
+          text: 'Enter all input fields!',
+          duration: 3000,
+          type: 'error',
+          position: 'bottom right'
+        })
       } else if (!this.email.toLowerCase().match(
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
       )) {
-        console.log('email not valid')
+        this.$notify({
+          group: 'default',
+          title: 'Error',
+          text: 'Email was not valid!',
+          duration: 3000,
+          type: 'error',
+          position: 'bottom right'
+        })
       } else if (this.password !== this.confirmPassword) {
-        console.log('confirm password not match')
+        this.$notify({
+          group: 'default',
+          title: 'Error',
+          text: 'Confirm password not match!',
+          duration: 3000,
+          type: 'error',
+          position: 'bottom right'
+        })
       } else if (!this.signatureObject || !this.commitSignature) {
-        console.log('must upload your signature and commit it')
+        this.$notify({
+          group: 'default',
+          title: 'Error',
+          text: 'Must upload your signature and commit it!',
+          duration: 3000,
+          type: 'error',
+          position: 'bottom right'
+        })
       } else {
         const registerResponse = await AuthApi.register({
           email: this.email,
@@ -161,9 +189,23 @@ export default {
         })
 
         if (registerResponse === 'Account with email already existed!') {
-          console.log('push notification error')
+          this.$notify({
+            group: 'default',
+            title: 'Error',
+            text: registerResponse,
+            duration: 3000,
+            type: 'error',
+            position: 'bottom right'
+          })
         } else {
-          console.log('push notification success')
+          this.$notify({
+            group: 'default',
+            title: 'Success',
+            text: 'Register new user success!',
+            duration: 4000,
+            type: 'success',
+            position: 'bottom right'
+          })
         }
       }
     },

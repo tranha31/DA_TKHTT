@@ -1,4 +1,4 @@
-import { http, prepareParams } from './utils'
+import { http } from './utils'
 
 const SEARCH = 'search'
 const SEARCH_ALL = 'searchAll'

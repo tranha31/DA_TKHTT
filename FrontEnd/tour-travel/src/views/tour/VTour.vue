@@ -101,6 +101,7 @@
           </div>
           
         </div>
+      <ChatBox />
     </div>
 
     <TheCreateTour v-if="showForm"
@@ -118,8 +119,9 @@ import BaseInput from '../../components/base/BaseInput.vue'
 import ThePageInfo from '../../components/layout/ThePageInfo.vue'
 import BaseNavigationPage from '../../components/base/BaseNavigationPage.vue'
 import TheCreateTour from '../../components/form/TheCreateTour.vue'
+import ChatBox from "@/components/base/ChatBox";
 export default {
-  components: { ThePageInfo, BaseInput, BaseAutoComplete, BaseNavigationPage, TheCreateTour },
+  components: { ThePageInfo, BaseInput, BaseAutoComplete, BaseNavigationPage, TheCreateTour, ChatBox },
   data(){
     return{
       showFilter: false,
