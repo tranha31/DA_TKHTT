@@ -24,6 +24,7 @@
 
 <script>
 import {PerfectScrollbar} from 'vue2-perfect-scrollbar'
+// import ChatApi from "@/js/api/ChatApi";
 export default {
   name: 'ChatBox',
   components: {
@@ -79,6 +80,35 @@ export default {
   },
   methods: {
     sendMsg() {
+      // if (this.sentMsg.length <= 0) {
+      //   if (!this.$store.state.account.currentUser.ChatRoomID) {
+      //     let newRoomResponse = ChatApi.createNewChat(this.$store.state.account.currentUser.UserID)
+      //
+      //     if (newRoomResponse) {
+      //       this.$store.commit('account/setAccounts', {
+      //         UserID: this.$store.state.account.currentUser.UserID,
+      //         UserName: this.$store.state.account.currentUser.UserName,
+      //         ChatRoomID: newRoomResponse ? newRoomResponse.RefID : null
+      //       })
+      //
+      //       this.$socket.emit('requireConnect', newRoomResponse.RefID)
+      //       this.sentMsg.push(this.currentMsg)
+      //     } else {
+      //       this.$notify({
+      //         group: 'default',
+      //         title: 'Error',
+      //         text: 'Error when chat with Admin',
+      //         duration: 4000,
+      //         type: 'error',
+      //         position: 'bottom right'
+      //       })
+      //     }
+      //   } else {
+      //     this.$socket.emit('userConnected', this.$store.state.account.currentUser.UserID)
+      //     this.sentMsg.push(this.currentMsg)
+      //   }
+      // }
+
       this.allMsg.push({
         Content: this.currentMsg,
         Owner: 'user',
@@ -86,7 +116,11 @@ export default {
         TypeOfContent: '0',
         RoleInConversation: '1'
       })
-      this.$socket.emit('msg', this.currentMsg)
+      this.$socket.emit('toAdmin', {
+        // UserID: this.$store.state.account.currentUser.UserID,
+        // RoomID: this.$store.state.account.currentUser.RoomID,
+        message: this.currentMsg
+      })
       this.currentMsg = null
     },
     async addFile() {
@@ -97,7 +131,7 @@ export default {
     }
   },
   mounted() {
-    this.sockets.subscribe('msg', msg => {
+    this.sockets.subscribe('toUser', msg => {
       this.handleReceivedMsg(msg)
     })
   }
