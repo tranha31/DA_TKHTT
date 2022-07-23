@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-box-container d-flex" :style="{'left': positionLeft, 'top': positionTop}">
+  <div class="chat-box-container d-flex">
     <div v-if="showChatBox" class="chat-box mr-12">
       <div class="chat-box-header d-flex">
         <label>Admin</label>
@@ -114,8 +114,10 @@ export default {
 
 <style scoped>
 .chat-box-container {
-  position: absolute;
+  position: fixed;
   cursor: pointer;
+  top: 305px;
+  right: 100px;
 }
 
 .chat-action {
