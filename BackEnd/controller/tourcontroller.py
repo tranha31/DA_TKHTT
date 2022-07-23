@@ -66,7 +66,7 @@ def sayMoney():
 
 @tour.route("/tour/filter", methods=['GET'])
 @cross_origin()
-def getAllDestination():
+def getTourFilter():
     r = request
     r = r.args
     search = r.get("search")
@@ -84,9 +84,14 @@ def deleteTemplate():
     r = request
     r = r.args
     id = r.get("id")
-    bl.deleteTemplate(id)
-    result = None
-    return Response(response=result, status=200, mimetype="application/json")
+    result = bl.deleteTemplate(id)
+    serviceResult = {
+        "error" : ""
+    }
+    if result == False:
+        serviceResult["error"] = "ExistInCart"
+    serviceResult = json.dumps(serviceResult)
+    return Response(response=serviceResult, status=200, mimetype="application/json")
 
 @tour.route("/tour/updatestatus", methods=['GET'])
 @cross_origin()
@@ -108,3 +113,89 @@ def getByID():
     result = bl.getByID(id)
     result = json.dumps(result, ensure_ascii=False)
     return Response(response=result, status=200, mimetype="application/json")
+
+@tour.route("/tour/user/filter", methods=['GET'])
+@cross_origin()
+def getTourFilterSideUser():
+    r = request
+    r = r.args
+    search = r.get("search")
+    size = int(r.get("size"))
+    page = int(r.get("page"))
+    destinationID = r.get("destinationID")
+    startID = r.get("startID")
+    timeOfTour = r.get("time")
+    price = r.get("price")
+    result = bl.getListTourSideUser(search, destinationID, startID, timeOfTour, price, size, page)
+    result = json.dumps(result, ensure_ascii=False)
+    return Response(response=result, status=200, mimetype="application/json")
+
+@tour.route("/tour/user/suggest", methods=['GET'])
+@cross_origin()
+def getListTourSuggest():
+    r = request
+    r = r.args
+    tourID = r.get("tourID")
+    destinationID = r.get("toID")
+    result = bl.getListTourSuggest(tourID, destinationID)
+    result = json.dumps(result, ensure_ascii=False)
+    return Response(response=result, status=200, mimetype="application/json")
+
+@tour.route("/tour/updatetour", methods=['POST'])
+@cross_origin()
+def updateCustomerTour():
+    _json = request.json
+    result = bl.updateTour(_json)
+    serviceResult = {
+        "error" : ""
+    }
+    if result == False:
+        serviceResult["error"] = "DupliacteName"
+    serviceResult = json.dumps(serviceResult)
+    return Response(response=serviceResult, status=201, mimetype="application/json")
+
+@tour.route("/tour/addtocart", methods=['POST'])
+@cross_origin()
+def addToCart():
+    r = request.json
+    tourID = r["TourID"]
+    userID = r["UserID"]
+    execute = bl.addToCart(tourID, userID)
+    serviceResult = {
+        "error" : ""
+    }
+    if execute == False:
+        serviceResult["error"] = "ExistInCart"
+    serviceResult = json.dumps(serviceResult)
+    return Response(response=serviceResult, status=201, mimetype="application/json")
+
+@tour.route("/tour/deleteincart", methods=['DELETE'])
+@cross_origin()
+def deleteInCart():
+    r = request
+    r = r.args
+    tourID = r.get("tourID")
+    userID = r.get("userID")
+    bl.deleteInCart(tourID, userID)
+    result = None
+    return Response(response=result, status=201, mimetype="application/json")
+
+@tour.route("/tour/getcart", methods=['GET'])
+@cross_origin()
+def getInCart():
+    r = request
+    r = r.args
+    userID = r.get("userID")
+    result = bl.getTourUserInCart(userID)
+    result = json.dumps(result, ensure_ascii=False)
+    return Response(response=result, status=201, mimetype="application/json")
+
+@tour.route("/tour/getlistorder", methods=['GET'])
+@cross_origin()
+def getListOrder():
+    r = request
+    r = r.args
+    userID = r.get("userID")
+    result = bl.getListOrder(userID)
+    result = json.dumps(result, ensure_ascii=False)
+    return Response(response=result, status=201, mimetype="application/json")

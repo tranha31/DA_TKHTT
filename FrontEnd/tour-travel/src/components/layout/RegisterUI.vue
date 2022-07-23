@@ -53,6 +53,30 @@
                   v-model="phoneNumber"
                   width-input="400px"
               />
+              <InputInfoTemplate
+                  item="Citizen Identification"
+                  :can-editing="true"
+                  placeholder="Citizen identification"
+                  input-type="number"
+                  v-model="identifyNumber"
+                  width-input="400px"
+              />
+              <InputInfoTemplate
+                  item="Name"
+                  :can-editing="true"
+                  placeholder="Name"
+                  input-type="text"
+                  v-model="name"
+                  width-input="400px"
+              />
+              <InputInfoTemplate
+                  item="Address"
+                  :can-editing="true"
+                  placeholder="Address"
+                  input-type="text"
+                  v-model="address"
+                  width-input="400px"
+              />
               <div @click="showUploadSign = true" style="padding: 16px 0px 6px 20px;">
                 Upload Signature
               </div>
@@ -107,17 +131,20 @@
         </div>
       </template>
     </Modal>
+    <BaseLoad :load="showLoad"/>
   </div>
 </template>
 <script>
 import InputInfoTemplate from "@/components/base/InputInfoTemplate";
+import BaseLoad from "@/components/base/BaseLoad";
 import Modal from "@/components/base/Modal";
 import AuthApi from "@/js/api/AuthApi";
 export default {
   name: 'Register',
   components: {
     InputInfoTemplate,
-    Modal
+    Modal,
+    BaseLoad
   },
   data() {
     return {
@@ -126,10 +153,15 @@ export default {
       confirmPassword: null,
       username: null,
       phoneNumber: null,
+      identifyNumber: null,
       showUploadSign: false,
       commitSignature: false,
       signatureObject: null,
-      signatureUrl: null
+      signatureUrl: null,
+      signContent : null,
+      name: null,
+      address: null,
+      showLoad: false,
     }
   },
   watch: {
@@ -142,7 +174,7 @@ export default {
       this.$router.push({ path: '/login'})
     },
     async handleRegisterNewUser() {
-      if (!this.email || !this.password || !this.confirmPassword || !this.username || !this.phoneNumber) {
+      if (!this.email || !this.password || !this.confirmPassword || !this.username || !this.phoneNumber || !this.identifyNumber || !this.name || !this.address) {
         this.$notify({
           group: 'default',
           title: 'Error',
@@ -181,12 +213,18 @@ export default {
           position: 'bottom right'
         })
       } else {
+        this.showLoad = true
         const registerResponse = await AuthApi.register({
           email: this.email,
           password: this.password,
           username: this.username,
-          phone: this.phoneNumber
+          phone: this.phoneNumber,
+          identify : this.identifyNumber,
+          name: this.name,
+          address: this.address,
+          sign : this.signContent
         })
+        this.showLoad = false
 
         if (registerResponse === 'Account with email already existed!') {
           this.$notify({
@@ -213,6 +251,14 @@ export default {
       this.signatureObject = event.target.files[0]
       this.signatureUrl = URL.createObjectURL(this.signatureObject)
       console.log(this.signatureUrl)
+      var me = this;
+      var reader = new FileReader();
+      reader.onload = function(e){
+          me.signContent = e.target.result
+      }
+      if(this.signatureObject){
+          reader.readAsDataURL(this.signatureObject);
+      }
     }
   }
 }

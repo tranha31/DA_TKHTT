@@ -1,15 +1,18 @@
 <template>
     <div :class="clas">
         <div v-if="hasTitle" class="title-input">{{title}}&nbsp;&nbsp;<span v-if="msrequire">*</span></div>
-        <div class="main-autocomplete" :class="error? 'error' : ''" :title="message" v-title>
+        <div v-if="disable" class="main-autocomplete" :class="error? 'error' : ''" :title="message" :notNull="notNull" v-title style="border-bottom: 1px solid #babec5;">
             <div v-if="hasImage" class="img" :class="classImage"></div>
-            <ejs-autocomplete :dataSource='dataItem' :fields='dataFields' 
+            <input  disabled class="w-full" style="height:33px; border:unset; border-radius: 0;padding-left: 10px;" v-model="contents"/>
+        </div>
+        <div v-else class="main-autocomplete" :class="error? 'error' : ''" :title="message" :notNull="notNull" v-title>
+            <div v-if="hasImage" class="img" :class="classImage"></div>
+            <ejs-autocomplete  :dataSource='dataItem' :fields='dataFields' 
             v-model="contents"
             :placeholder="placeholder"
             @blur="blurCbb">
             </ejs-autocomplete>
         </div>
-        
     </div>
 </template>
 
@@ -33,6 +36,9 @@ export default {
         read : Boolean,
         hasImage: Boolean,
         classImage: String,
+        disable: Boolean,
+        index : Number,
+        index2: Number,
     },
     data(){
         return{
@@ -58,18 +64,35 @@ export default {
                     this.message = e.NotNull;
                 }
                 else{
-                    this.error = false;
-                    this.message = "";
+                    var datafield = this.dataFields.value
+                    var item = this.dataItem.filter(x=>x[datafield] == this.contents)
+                    if(item.length == 0){
+                        this.error = true;
+                        this.message = e.NotExist;
+                    }
+                    else{
+                        this.error = false;
+                        this.message = "";
+                    }
+                    
                     
                 }
             }
-            this.$emit("returnValue", this.contents);
+            if(this.index != undefined && this.index2 == undefined){
+                this.$emit("returnValue", this.contents, this.index);
+            }
+            else if(this.index != undefined && this.index2 != undefined){
+                this.$emit("returnValue", this.contents, this.index, this.index2);
+            }
+            else{
+                this.$emit("returnValue", this.contents);
+            }
         },
     }
 }
 </script>
 
-<style>
+<style scoped>
 @import url(https://cdn.syncfusion.com/ej2/material.css);
 
 .main-autocomplete{
@@ -91,4 +114,5 @@ export default {
     padding-left: 10px !important;
     height: 23px !important;
 }
+
 </style>
