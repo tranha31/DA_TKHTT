@@ -11,7 +11,6 @@ class UserRepository(DLBase):
         cursor.execute(sql, (email,))
         users = cursor.fetchall()
         return users
-        
 
     def insertNewUser(self, email, password, username, phone, identify, name, address, sign):
         refID = str(uuid.uuid4())
@@ -42,4 +41,17 @@ class UserRepository(DLBase):
         cursor = self.conn.cursor(dictionary=True)
         cursor.execute(sql, (Password, UserID, ))
         self.conn.commit()
-        
+
+    def getInfo(self, id):
+        sql = "SELECT * FROM user WHERE UserID = %s"
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute(sql, (id,))
+        users = cursor.fetchall()
+        return users
+
+    def getAllUsersByListID(self, ListUserID):
+        sql = "select * from user where UserID in (%s);"
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute(sql, (ListUserID, ))
+        users = cursor.fetchall()
+        return users

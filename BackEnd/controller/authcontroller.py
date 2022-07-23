@@ -39,8 +39,17 @@ def registerNewUser():
     address = _json['address']
     sign = _json['sign']
     result = authservice.register(email, password, username, phone, identify, name, address, sign)
-
     return Response(response=result, status=200, mimetype="application/json")
+
+@auth.route("/info", methods=['POST'])
+@cross_origin()
+def getInfo():
+    r = request
+    r = r.args
+    id = r.get("id")
+    result = authservice.getInfo(id)
+    return Response(response=result, status=200, mimetype="application/json")
+
 
 @auth.route("/auth/getUserById", methods=['POST'])
 @cross_origin()
@@ -79,3 +88,14 @@ def updatePassword():
     result = authservice.updatePassword(UserID, Password)
 
     return Response(response=result, status=200, mimetype="application/json")
+
+
+@auth.route("/auth/getAllUserById", methods=['POST'])
+@cross_origin()
+def getAllUserByListId():
+    _json = request.json
+    ListUserID = _json['ListUserID']
+
+    result = authservice.getUserByListId(ListUserID)
+
+    return jsonify(result)
