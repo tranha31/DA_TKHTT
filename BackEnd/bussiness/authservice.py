@@ -27,7 +27,7 @@ class AuthService:
         else:
             self.dl.insertNewUser(email, password, username, phone)
             return "Register new user success!"
-    
+
     def getInfo(self, id):
         return self.dl.getInfo(id)
 
@@ -49,3 +49,8 @@ class AuthService:
         self.dl.updatePassword(UserID, Password)
 
         return "Update password success!"
+
+    def getUserByListId(self, ListUserID):
+        result = self.dl.getAllUsersByListID(ListUserID)
+
+        return result

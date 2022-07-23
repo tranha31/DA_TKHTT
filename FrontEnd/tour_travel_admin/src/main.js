@@ -3,12 +3,17 @@ import App from './App.vue'
 import VueRouter from 'vue-router'
 import vTitle from 'vuejs-title'
 import Notifications from 'vue-notification'
+import VueSocketIO from "vue-socket.io"
 
 
 Vue.config.productionTip = false
 Vue.use(VueRouter);
 Vue.use(vTitle);
 Vue.use(Notifications)
+Vue.use(new VueSocketIO({
+  debug: true,
+  connection: 'http://localhost:3000',
+}))
 
 import Router from '../src/js/router/router.js'
 var route = new Router();

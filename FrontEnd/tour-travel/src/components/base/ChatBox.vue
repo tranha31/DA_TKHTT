@@ -1,5 +1,5 @@
 <template>
-  <div class="chat-box-container d-flex" :style="{'left': positionLeft, 'top': positionTop}">
+  <div class="chat-box-container d-flex">
     <div v-if="showChatBox" class="chat-box mr-12">
       <div class="chat-box-header d-flex">
         <label>Admin</label>
@@ -24,6 +24,7 @@
 
 <script>
 import {PerfectScrollbar} from 'vue2-perfect-scrollbar'
+import ChatApi from "@/js/api/ChatApi";
 export default {
   name: 'ChatBox',
   components: {
@@ -45,59 +46,66 @@ export default {
       currentMsg: null,
       sentMsg: [],
       receivedMsg: [],
-      allMsg: [
-        {
-          Content: 'Ha lau, kan wo',
-          Owner: 'user',
-          Time: '2022-07-15 10:10:10',
-          TypeOfContent: '0',
-          RoleInConversation: '1'
-        },
-        {
-          Content: 'Ni shi hai pa shen me',
-          Owner: 'user',
-          Time: '2022-07-15 10:10:12',
-          TypeOfContent: '0',
-          RoleInConversation: '1'
-        },
-        {
-          Content: 'shen me di lao tian huang. ji mo cai shuo ai dao di ai de gai bu gai',
-          Owner: 'admin',
-          Time: '2022-07-15 10:10:13',
-          TypeOfContent: '0',
-          RoleInConversation: '0'
-        },
-        {
-          Content: 'shen me ti jiu tian zhang',
-          Owner: 'user',
-          Time: '2022-07-15 10:10:14',
-          TypeOfContent: '0',
-          RoleInConversation: '1'
-        }
-      ],
+      allMsg: [],
     }
   },
   methods: {
-    sendMsg() {
-      this.allMsg.push({
+    async sendMsg() {
+      if (this.sentMsg.length <= 0) {
+        if (!this.$store.state.account.currentUser.ChatRoomID) {
+          await ChatApi.createNewChat({ UserID: this.$store.state.account.currentUser.UserID })
+          let newRoomResponse = await ChatApi.getUserChatRoom({ UserID: this.$store.state.account.currentUser.UserID })
+
+          if (newRoomResponse) {
+            this.$store.commit('account/setAccounts', {
+              UserID: this.$store.state.account.currentUser.UserID,
+              UserName: this.$store.state.account.currentUser.UserName,
+              ChatRoomID: newRoomResponse ? newRoomResponse.RefID : null
+            })
+
+            this.$socket.emit('requireConnect', newRoomResponse.RefID)
+            this.sentMsg.push(this.currentMsg)
+          } else {
+            this.$notify({
+              group: 'default',
+              title: 'Error',
+              text: 'Error when chat to Admin!',
+              duration: 4000,
+              type: 'error',
+              position: 'bottom right'
+            })
+          }
+        } else {
+          this.$socket.emit('userConnected', this.$store.state.account.currentUser.UserID)
+          this.sentMsg.push(this.currentMsg)
+        }
+      }
+
+      let willSendMsg = {
         Content: this.currentMsg,
         Owner: 'user',
         Time: new Date(),
         TypeOfContent: '0',
         RoleInConversation: '1'
+      }
+
+      this.allMsg.push(willSendMsg)
+      this.$socket.emit('toAdmin', {
+        UserID: this.$store.state.account.currentUser.UserID,
+        RoomID: this.$store.state.account.currentUser.RoomID,
+        message: willSendMsg
       })
-      this.$socket.emit('msg', this.currentMsg)
       this.currentMsg = null
     },
     async addFile() {
 
     },
     handleReceivedMsg(msg) {
-      console.log(msg)
+      this.allMsg.push(msg)
     }
   },
   mounted() {
-    this.sockets.subscribe('msg', msg => {
+    this.sockets.subscribe('toUser', msg => {
       this.handleReceivedMsg(msg)
     })
   }
@@ -106,8 +114,10 @@ export default {
 
 <style scoped>
 .chat-box-container {
-  position: absolute;
+  position: fixed;
   cursor: pointer;
+  top: 305px;
+  right: 100px;
 }
 
 .chat-action {
