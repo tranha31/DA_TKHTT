@@ -20,3 +20,11 @@ class ChatService:
         result = self.dl.createNewChatRoom(UserID)
 
         return "Create New Chat Room Success!"
+
+    def loadAllChatRoom(self):
+        result = self.dl.loadAllChatRoom()
+        return result
+
+    def loadAllChatRoomByAmount(self, amount):
+        result = self.dl.loadAllChatRoomByAmount(amount)
+        return result

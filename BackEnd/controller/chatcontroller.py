@@ -30,3 +30,22 @@ def createNewChatRoom():
     result = chatservice.createNewChatRoom(UserID)
 
     return Response(response=result, status=200, mimetype="application/json")
+
+
+@chat.route("/message/searchAll", methods=['GET'])
+@cross_origin()
+def getAllChatRoom():
+    result = chatservice.loadAllChatRoom()
+
+    return jsonify(result)
+
+
+@chat.route("/message/searchAll", methods=['GET'])
+@cross_origin()
+def getAllChatRoomByAmount():
+    args = request.args
+    amount = args["amount"]
+
+    result = chatservice.loadAllChatRoomByAmount(amount)
+
+    return jsonify(result)

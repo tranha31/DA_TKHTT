@@ -16,3 +16,19 @@ class ChatRepository(DLBase):
         sql = "insert into chatroom values (UUID(), %s, now());"
         cursor = self.conn.cursor(dictionary=True)
         cursor.execute(sql, (UserID, ))
+
+    def loadAllChatRoom(self):
+        sql = "Select * from chatroom;"
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute(sql, ())
+
+        rooms = cursor.fetchall()
+        return rooms
+
+    def loadAllChatRoomByAmount(self, amount):
+        sql = "Select * from chatroom limit %s;"
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute(sql, (amount, ))
+
+        rooms = cursor.fetchall()
+        return rooms
