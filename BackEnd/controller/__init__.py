@@ -5,6 +5,7 @@ from .hotelcontroller import hotel
 from .restaurantcontroller import restaurant
 from .roomcontroller import room
 from .destinationcontroller import destination
+from .chatcontroller import chat
 
 
 def create_app():
@@ -15,4 +16,5 @@ def create_app():
     app.register_blueprint(restaurant)
     app.register_blueprint(room)
     app.register_blueprint(destination)
+    app.register_blueprint(chat)
     return app

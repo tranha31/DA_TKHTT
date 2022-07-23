@@ -181,6 +181,7 @@ export default {
   },
   async created() {
     this.contents = await InfotypeApi.getAllHotels()
+    this.contents = this.contents.slice(0, 3)
     this.contents.forEach(hotel => {
       hotel.price = '8.000.000đ'
       hotel.imageUrl = "background-image: url('https://booking-static.vinpearl.com/tours/b018892921a94fa0b344a28fc2db0a99_DGH_2236_summer2.jpg')"

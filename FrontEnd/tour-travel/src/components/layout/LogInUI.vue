@@ -46,6 +46,7 @@
 <script>
 import InputInfoTemplate from "@/components/base/InputInfoTemplate";
 import AuthApi from "@/js/api/AuthApi";
+import ChatApi from "@/js/api/ChatApi";
 export default {
   name: 'LogIn',
   components: {
@@ -106,9 +107,11 @@ export default {
               type: 'success',
               position: 'bottom right'
             })
+            let chatRoomResponse = await ChatApi.getUserChatRoom({ UserID: signInResponse.UserID })
             this.$store.commit('account/setAccounts', {
               UserID: signInResponse.UserID,
-              UserName: signInResponse.UserName
+              UserName: signInResponse.UserName,
+              ChatRoomID: chatRoomResponse ? chatRoomResponse.RefID : null
             })
             this.$router.push({ path: '/tour'})
           }
