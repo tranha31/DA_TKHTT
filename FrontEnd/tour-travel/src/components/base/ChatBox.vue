@@ -46,36 +46,7 @@ export default {
       currentMsg: null,
       sentMsg: [],
       receivedMsg: [],
-      allMsg: [
-        {
-          Content: 'Ha lau, kan wo',
-          Owner: 'user',
-          Time: '2022-07-15 10:10:10',
-          TypeOfContent: '0',
-          RoleInConversation: '1'
-        },
-        {
-          Content: 'Ni shi hai pa shen me',
-          Owner: 'user',
-          Time: '2022-07-15 10:10:12',
-          TypeOfContent: '0',
-          RoleInConversation: '1'
-        },
-        {
-          Content: 'shen me di lao tian huang. ji mo cai shuo ai dao di ai de gai bu gai',
-          Owner: 'admin',
-          Time: '2022-07-15 10:10:13',
-          TypeOfContent: '0',
-          RoleInConversation: '0'
-        },
-        {
-          Content: 'shen me ti jiu tian zhang',
-          Owner: 'user',
-          Time: '2022-07-15 10:10:14',
-          TypeOfContent: '0',
-          RoleInConversation: '1'
-        }
-      ],
+      allMsg: [],
     }
   },
   methods: {
@@ -110,17 +81,19 @@ export default {
         }
       }
 
-      this.allMsg.push({
+      let willSendMsg = {
         Content: this.currentMsg,
         Owner: 'user',
         Time: new Date(),
         TypeOfContent: '0',
         RoleInConversation: '1'
-      })
+      }
+
+      this.allMsg.push(willSendMsg)
       this.$socket.emit('toAdmin', {
-        // UserID: this.$store.state.account.currentUser.UserID,
-        // RoomID: this.$store.state.account.currentUser.RoomID,
-        message: this.currentMsg
+        UserID: this.$store.state.account.currentUser.UserID,
+        RoomID: this.$store.state.account.currentUser.RoomID,
+        message: willSendMsg
       })
       this.currentMsg = null
     },
@@ -128,7 +101,7 @@ export default {
 
     },
     handleReceivedMsg(msg) {
-      console.log(msg)
+      this.allMsg.push(msg)
     }
   },
   mounted() {
