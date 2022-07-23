@@ -1,3 +1,4 @@
+from email.headerregistry import Address
 from flask import Blueprint, request
 from flask.wrappers import Response
 from bussiness.authservice import AuthService
@@ -33,18 +34,12 @@ def registerNewUser():
     password = _json['password']
     username = _json['username']
     phone = _json['phone']
+    identify = _json['identify']
+    name = _json['name']
+    address = _json['address']
+    sign = _json['sign']
+    result = authservice.register(email, password, username, phone, identify, name, address, sign)
 
-    result = authservice.register(email, password, username, phone)
-
-    return Response(response=result, status=200, mimetype="application/json")
-
-@auth.route("/info", methods=['POST'])
-@cross_origin()
-def getInfo():
-    r = request
-    r = r.args
-    id = r.get("id")
-    result = authservice.getInfo(id)
     return Response(response=result, status=200, mimetype="application/json")
 
 @auth.route("/auth/getUserById", methods=['POST'])
@@ -65,8 +60,11 @@ def updateUserInfos():
     UserID = _json['UserID']
     Email = _json['Email']
     PhoneNumber = _json['PhoneNumber']
+    Identify = _json['Identification']
+    Name = _json["Name"]
+    Address = _json["Address"]
 
-    result = authservice.updateGeneralInformations(UserID, Email, PhoneNumber)
+    result = authservice.updateGeneralInformations(UserID, Email, PhoneNumber, Identify, Name, Address)
 
     return Response(response=result, status=200, mimetype="application/json")
 

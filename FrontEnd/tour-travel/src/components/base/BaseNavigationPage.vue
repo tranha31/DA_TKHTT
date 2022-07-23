@@ -202,7 +202,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
     @import url(../../css/common/nav.css);
     
 </style>
