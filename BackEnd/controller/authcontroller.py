@@ -73,3 +73,14 @@ def updatePassword():
     result = authservice.updatePassword(UserID, Password)
 
     return Response(response=result, status=200, mimetype="application/json")
+
+
+@auth.route("/auth/getAllUserById", methods=['POST'])
+@cross_origin()
+def getAllUserByListId():
+    _json = request.json
+    ListUserID = _json['ListUserID']
+
+    result = authservice.getUserByListId(ListUserID)
+
+    return jsonify(result)

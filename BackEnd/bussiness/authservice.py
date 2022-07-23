@@ -46,3 +46,8 @@ class AuthService:
         self.dl.updatePassword(UserID, Password)
 
         return "Update password success!"
+
+    def getUserByListId(self, ListUserID):
+        result = self.dl.getAllUsersByListID(ListUserID)
+
+        return result

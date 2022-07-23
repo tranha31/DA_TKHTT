@@ -34,3 +34,10 @@ class UserRepository(DLBase):
         sql = "update user set Password = %s where UserID = %s;"
         cursor = self.conn.cursor(dictionary=True)
         cursor.execute(sql, (Password, UserID, ))
+
+    def getAllUsersByListID(self, ListUserID):
+        sql = "select * from user where UserID in (%s);"
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute(sql, (ListUserID, ))
+        users = cursor.fetchall()
+        return users
