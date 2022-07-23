@@ -1,6 +1,8 @@
 from cmath import atan, cos
 from traceback import print_tb
+from numpy import imag
 from repository.tourrepository import TourRepository
+from repository.destinationrepository import DestinationRepository
 import xml.etree.ElementTree as et
 from datetime import datetime
 import lxml.html
@@ -25,7 +27,7 @@ class TourService:
             return False
 
     def checkDuplicate(self, data):
-        return self.dl.checkDuplicate()
+        return self.dl.checkDuplicate(data)
 
     def createDataXML(self, data):
         doc = self.dl.getDefaultTourXML()
@@ -285,7 +287,12 @@ class TourService:
         return result
             
     def deleteTemplate(self, id):
-        self.dl.deleteTemplate(id)
+        tour = self.dl.getTourInCart(id)
+        if len(tour) > 0:
+            return False
+        else:
+            self.dl.deleteTemplate(id)
+            return True
 
     def updateStatusTemplate(self, id, status):
         self.dl.updateStatusTemplate(id, status)
@@ -295,12 +302,14 @@ class TourService:
         # doc = et.parse(xml)
         root = et.fromstring(xml)
 
-        data = {"Master" : {}, "Contract" : {}, "Destination": [], "Schedule": [], "CustomerRequest" : [], "AttachOption" : [], "RefundPolicy" : [], "Tutorial": [], "Info": {}}
+        data = {"Master" : {}, "Contract" : {}, "Destination": [], "Schedule": [], "CustomerRequest" : [], "AttachOption" : [], "RefundPolicy" : [], "Tutorial": [], "Info": {}, "Image": []}
+        listDestinationID = []
 
         data["Master"]["ContractCode"] = root.find("ContractCode").text
         data["Master"]["CreatedTime"] = root.find("CreatedTime").text
         data["Master"]["TotalCost"] = root.find("TotalCost").text
         data["Master"]["TourName"] = root.find("TourName").text
+        data["Master"]["ContractCode"] = root.find("ContractCode").text
         data["Master"]["ProvinceStartID"] = root.find("ProvinceStartID").text
         data["Master"]["ProvinceStartName"] = root.find("ProvinceStartName").text
         data["Master"]["ProvinceDestinationID"] = root.find("ProvinceDestinationID").text
@@ -327,6 +336,8 @@ class TourService:
                 },
                 "RefID" : des.find("DestinationID").text
             })
+
+            listDestinationID.append(des.find("DestinationID").text)
 
         schedule = root.find("./ContractData/Schedule")
         day = schedule.findall("Day")
@@ -396,4 +407,109 @@ class TourService:
         data["Info"]["Status"] = dataSQL["Status"]
         data["Info"]["IsPayment"] = dataSQL["IsPayment"]
 
+        oDL = DestinationRepository()
+        lstImage = oDL.getImageOfDestinations(listDestinationID)
+        data["Image"] = lstImage
+
         return data
+
+    def getListTourSideUser(self, search, destinationID, startID, timeOfTour, price, size, page):
+        lstTour = self.dl.getListTourSideUser(search, destinationID, startID, timeOfTour, price)
+        totalPage = 0
+        totalRecord = 0
+        if len(lstTour) > 0:
+            totalRecord = len(lstTour)
+            totalPage = math.ceil(totalRecord / size)
+            if page+1 == totalPage:
+                lstTour = lstTour[page : ]
+            else:
+                lstTour = lstTour[page : page + size]
+        
+        lstImage = []
+
+        for item in lstTour:
+            item["StartTime"] = item["StartTime"].strftime("%d/%m/%Y")
+            id = item["TourID"]
+            xml = self.dl.getContentXML(id)
+            img = self.extractDestinationTourID(xml, id)
+            lstImage.append(img)
+
+        result = {
+            "data" : lstTour,
+            "totalRecord" : totalRecord,
+            "totalPage" : totalPage,
+            "listImage" : lstImage
+        }
+        
+        return result
+
+    def extractDestinationTourID(self, xml, tourID):
+        root = et.fromstring(xml)
+        destination = root.find("./ContractData/DestinationItem")
+        image = {
+            "TourID" : tourID,
+            "Image" : []
+        }
+        for des in destination.findall("Destination"):
+            id = des.find("DestinationID").text
+            oDL = DestinationRepository()
+            lstImage = oDL.getImageOfDestination(id)
+            image["Image"] = lstImage
+
+        return image
+
+    def getListTourSuggest(self, tourID, toID):
+        lstTour = self.dl.getListTourSuggest(tourID, toID)
+        lstImage = []
+        for item in lstTour:
+            item["StartTime"] = item["StartTime"].strftime("%d/%m/%Y")
+            id = item["TourID"]
+            xml = self.dl.getContentXML(id)
+            img = self.extractDestinationTourID(xml, id)
+            lstImage.append(img)
+
+        result = {
+            "data" : lstTour,
+            "listImage" : lstImage
+        }
+        return result
+
+    def addToCart(self, tourID, userID):
+        return self.dl.addToCart(tourID, userID)
+
+    def deleteInCart(self, tourID, userID):
+        self.dl.deleteInCart(tourID, userID)
+
+    def getTourUserInCart(self, userID):
+        lstTour = self.dl.getTourUserInCart(userID)
+        lstImage = []
+        for item in lstTour:
+            item["StartTime"] = item["StartTime"].strftime("%d/%m/%Y")
+            id = item["TourID"]
+            xml = self.dl.getContentXML(id)
+            img = self.extractDestinationTourID(xml, id)
+            lstImage.append(img)
+
+        result = {
+            "data" : lstTour,
+            "listImage" : lstImage
+        }
+
+        return result
+
+    def getListOrder(self, userID):
+        lstTour = self.dl.getListOrder(userID)
+        lstImage = []
+        for item in lstTour:
+            item["StartTime"] = item["StartTime"].strftime("%d/%m/%Y")
+            id = item["TourID"]
+            xml = self.dl.getContentXML(id)
+            img = self.extractDestinationTourID(xml, id)
+            lstImage.append(img)
+
+        result = {
+            "data" : lstTour,
+            "listImage" : lstImage
+        }
+
+        return result

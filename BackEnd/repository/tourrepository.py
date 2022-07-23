@@ -35,10 +35,13 @@ class TourRepository(DLBase):
         sample = int(data["Info"].get("Sample"))
         status = int(data["Info"].get("Status"))
         isPayment = int(data["Info"].get("IsPayment"))
-        sql = "INSERT INTO tour(TourID, UserID, TourCode, TourName, StartTime, TimeOfTour, IsSample, Status, IsPayment) VALUES(%s, %s, %s, %s, NOW(), %s, %s, %s, %s)"
+        toID = data["Master"].get("ProvinceDestinationID")
+        fromID = data["Master"].get("ProvinceStartID")
+        price = data["Master"].get("TotalCost")
+        sql = "INSERT INTO tour(TourID, UserID, TourCode, TourName, StartTime, TimeOfTour, IsSample, Status, IsPayment, ToID, FromID, Price) VALUES(%s, %s, %s, %s, NOW(), %s, %s, %s, %s, %s, %s, %s)"
         
         cursor = self.conn.cursor(dictionary=True)
-        cursor.execute(sql, (refId, userID, tourCode, tourName, timeOfTour, sample, status, isPayment))
+        cursor.execute(sql, (refId, userID, tourCode, tourName, timeOfTour, sample, status, isPayment, toID, fromID, price))
         self.conn.commit()
         
 
@@ -60,10 +63,13 @@ class TourRepository(DLBase):
         sample = int(data["Info"].get("Sample"))
         status = int(data["Info"].get("Status"))
         isPayment = int(data["Info"].get("IsPayment"))
-        sql = "UPDATE tour SET TourName = %s ,TimeOfTour = %s ,Status = %s ,IsPayment = %s WHERE TourID = %s;"
+        toID = data["Master"].get("ProvinceDestinationID")
+        fromID = data["Master"].get("ProvinceStartID")
+        price = data["Master"].get("TotalCost")
+        sql = "UPDATE tour SET TourName = %s ,TimeOfTour = %s ,Status = %s ,IsPayment = %s ,ToID = %s ,FromID = %s ,Price = %s WHERE TourID = %s;"
         
         cursor = self.conn.cursor(dictionary=True)
-        cursor.execute(sql, (tourName, timeOfTour, status, isPayment, refId))
+        cursor.execute(sql, (tourName, timeOfTour, status, isPayment, toID, fromID, price, refId))
         self.conn.commit()
         
         contentXML = base64.b64encode(bytes(content, 'utf-8'))
@@ -76,7 +82,6 @@ class TourRepository(DLBase):
     def checkDuplicate(self, data):
         refId = data["Info"].get("RefID")
         tourName = data["Master"].get("TourName")
-
         sql = "SELECT * FROM tour t WHERE t.RefID <> %s AND LOWER(t.TourName) = %s"
         cursor = self.conn.cursor(dictionary=True)
         cursor.execute(sql, (refId, tourName.lower()))
@@ -171,6 +176,13 @@ class TourRepository(DLBase):
             result = list(filter(lambda x: x["TourID"] in lstTourID, result))
             return result
 
+    def getTourInCart(self, id):
+        sql = "SELECT * FROM cart WHERE TourID = %s"
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute(sql, (id, ))
+        records = cursor.fetchall()
+        return records
+
     def deleteTemplate(self, id):
         sql = "DELETE FROM tour WHERE TourID = %s"
         cursor = self.conn.cursor(dictionary=True)
@@ -192,3 +204,100 @@ class TourRepository(DLBase):
         cursor.execute(sql, (id, ))
         records = cursor.fetchall()
         return records[0]
+
+    def getListTourSideUser(self, search, destinationID, startID, timeOfTour, price):
+        cursor = self.conn.cursor(dictionary=True)
+        sql = ""
+        if timeOfTour == None or timeOfTour == "":
+            timeOfTour = 365
+        else:
+            timeOfTour = int(timeOfTour)
+
+        if price == None or price == "":
+            price = 10000000000000000
+        else:
+            price = int(price)
+
+        if search != None and search != "":
+            if (destinationID == None or destinationID == "" ) and (startID == None or startID == "" ):
+                sql = "SELECT * FROM tour t WHERE ((t.Status = 1 AND t.IsSample =1) OR (t.Status = 2 AND t.IsSample = 0)) AND (MATCH(t.TourName) AGAINST (%s) OR t.TourCode = %s) AND t.TimeOfTour <= %s AND t.Price <= %s ORDER BY t.TourCode DESC"
+                cursor.execute(sql, (search, search, timeOfTour, price))
+                records = cursor.fetchall()
+                return records
+            elif (destinationID != None and destinationID != "" ) and (startID == None or startID == "" ):
+                sql = "SELECT * FROM tour t WHERE ((t.Status = 1 AND t.IsSample =1) OR (t.Status = 2 AND t.IsSample = 0)) AND (MATCH(t.TourName) AGAINST (%s) OR t.TourCode = %s) AND t.TimeOfTour <= %s AND t.Price <= %s AND t.ToID = %s ORDER BY t.TourCode DESC"
+                cursor.execute(sql, (search, search, timeOfTour, price, destinationID))
+                records = cursor.fetchall()
+                return records
+            elif (destinationID == None or destinationID == "" ) and (startID != None and startID != "" ):
+                sql = "SELECT * FROM tour t WHERE ((t.Status = 1 AND t.IsSample =1) OR (t.Status = 2 AND t.IsSample = 0)) AND (MATCH(t.TourName) AGAINST (%s) OR t.TourCode = %s) AND t.TimeOfTour <= %s AND t.Price <= %s AND t.FromID = %s ORDER BY t.TourCode DESC"
+                cursor.execute(sql, (search, search, timeOfTour, price, startID))
+                records = cursor.fetchall()
+                return records
+            else:
+                sql = "SELECT * FROM tour t WHERE ((t.Status = 1 AND t.IsSample =1) OR (t.Status = 2 AND t.IsSample = 0)) AND (MATCH(t.TourName) AGAINST (%s) OR t.TourCode = %s) AND t.TimeOfTour <= %s AND t.Price <= %s AND t.ToID = %s AND t.FromID = %s ORDER BY t.TourCode DESC"
+                cursor.execute(sql, (search, search, timeOfTour, price, destinationID, startID))
+                records = cursor.fetchall()
+                return records
+        else:
+            if (destinationID == None or destinationID == "" ) and (startID == None or startID == "" ):
+                sql = "SELECT * FROM tour t WHERE ((t.Status = 1 AND t.IsSample =1) OR (t.Status = 2 AND t.IsSample = 0)) AND t.TimeOfTour <= %s AND t.Price <= %s ORDER BY t.TourCode DESC"
+                cursor.execute(sql, (timeOfTour, price))
+                records = cursor.fetchall()
+                return records
+            elif (destinationID != None and destinationID != "" ) and (startID == None or startID == "" ):
+                sql = "SELECT * FROM tour t WHERE ((t.Status = 1 AND t.IsSample =1) OR (t.Status = 2 AND t.IsSample = 0)) AND t.TimeOfTour <= %s AND t.Price <= %s AND t.ToID = %s ORDER BY t.TourCode DESC"
+                cursor.execute(sql, (timeOfTour, price, destinationID))
+                records = cursor.fetchall()
+                return records
+            elif (destinationID == None or destinationID == "" ) and (startID != None and startID != "" ):
+                sql = "SELECT * FROM tour t WHERE ((t.Status = 1 AND t.IsSample =1) OR (t.Status = 2 AND t.IsSample = 0)) AND t.TimeOfTour <= %s AND t.Price <= %s AND t.FromID = %s ORDER BY t.TourCode DESC"
+                cursor.execute(sql, (timeOfTour, price, startID))
+                records = cursor.fetchall()
+                return records
+            else:
+                sql = "SELECT * FROM tour t WHERE ((t.Status = 1 AND t.IsSample =1) OR (t.Status = 2 AND t.IsSample = 0)) AND t.TimeOfTour <= %s AND t.Price <= %s AND t.ToID = %s AND t.FromID = %s ORDER BY t.TourCode DESC"
+                cursor.execute(sql, (timeOfTour, price, destinationID, startID))
+                records = cursor.fetchall()
+                return records
+
+    def getListTourSuggest(self, tourID, toID):
+        cursor = self.conn.cursor(dictionary=True)
+        sql = "SELECT * FROM tour WHERE TourID <> %s AND ToID = %s LIMIT 5"
+        cursor.execute(sql, (tourID, toID))
+        records = cursor.fetchall()
+        return records
+
+    def addToCart(self, tourID, userID):
+        cursor = self.conn.cursor(dictionary=True)
+        sql = "Select * from cart where UserID = %s AND TourID = %s"
+        cursor.execute(sql, (userID, tourID))
+        records = cursor.fetchall()
+        if len(records) > 0:
+            return False
+        else:
+            sql = "Insert into cart Values(UUID(), %s, %s)"
+            cursor.execute(sql, (userID, tourID))
+            self.conn.commit()
+            return True
+
+    def deleteInCart(self, tourID, userID):
+        sql = "Delete from cart Where UserID = %s And TourID = %s"
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute(sql, (userID, tourID))
+        self.conn.commit()
+    
+    def getTourUserInCart(self, userID):
+        cursor = self.conn.cursor(dictionary=True)
+        sql = "SELECT t.* FROM cart c, tour t WHERE c.TourID = t.TourID AND c.UserID = %s "
+        cursor.execute(sql, (userID,))
+        records = cursor.fetchall()
+        return records
+
+    def getListOrder(self, userID):
+        cursor = self.conn.cursor(dictionary=True)
+        sql = "SELECT * FROM tour t WHERE t.UserID = %s ORDER BY t.TourCode DESC;"
+        cursor.execute(sql, (userID,))
+        records = cursor.fetchall()
+        return records
+        
