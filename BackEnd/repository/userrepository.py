@@ -1,5 +1,5 @@
 from .dlbase import DLBase
-
+import uuid
 
 class UserRepository(DLBase):
     def __init__(self) -> None:
@@ -12,11 +12,16 @@ class UserRepository(DLBase):
         users = cursor.fetchall()
         return users
 
-    def insertNewUser(self, email, password, username, phone):
-        sql = "insert into user values (UUID(), %s, %s, %s, %s, LEFT(UUID(), 20));"
+    def insertNewUser(self, email, password, username, phone, identify, name, address, sign):
+        refID = str(uuid.uuid4())
+        sql = "insert into user values (%s, %s, %s, %s, %s, %s, %s, %s);"
         cursor = self.conn.cursor(dictionary=True)
-        cursor.execute(sql, (username, password, email, phone, ))
+        cursor.execute(sql, (refID, username, password, email, phone, identify, name, address))
         self.conn.commit()
+
+        collection = self.dbMongo["UserSignature"]
+        dic = {"_id": str(uuid.uuid4()), "UserID": refID, "ContentSign": sign}
+        collection.insert_one(dic)
 
     def getUserInformationsById(self, UserID):
         sql = "select * from user where UserID = %s;"
@@ -25,10 +30,10 @@ class UserRepository(DLBase):
         users = cursor.fetchall()
         return users
 
-    def updateUserInformations(self, UserID, Email, PhoneNumber):
-        sql = "update user set Email = %s, PhoneNumber = %s where UserID = %s;"
+    def updateUserInformations(self, UserID, Email, PhoneNumber, Identify, Name, Address):
+        sql = "update user set Email = %s, PhoneNumber = %s, IdentityNumber = %s, Name = %s, Address = %s where UserID = %s;"
         cursor = self.conn.cursor(dictionary=True)
-        cursor.execute(sql, (Email, PhoneNumber, UserID, ))
+        cursor.execute(sql, (Email, PhoneNumber, UserID, Identify, Name, Address))
         self.conn.commit()
 
     def updatePassword(self, UserID, Password):

@@ -292,19 +292,30 @@ export default {
             this.type = "warning";
             var tourCocde = this.listTour.filter(e=>e.TourID == id)[0].TourCode
             this.message = "Bạn có chắc chắn muốn xóa tour " + tourCocde + " không?"
+            this.optionPopUp = [true, false]
         },
 
         async confirmDelete(){
             this.showPopUp = false;
             var id = this.idDelete
             await TourAPI.deleteTemplate(id)
-            .then(()=>{
-                var checkNotUse = document.getElementById("checkBoxFilterNotUse").checked;
-                var isStop = 0;
-                if(checkNotUse){
-                    isStop = 1;
+            .then(res=>{
+                if(res.data.error == "ExistInCart"){
+                    this.showPopUp = true;
+                    this.type = "warning";
+                    this.message = "Tour đã có người dùng thêm vào giỏ hàng. Không thể xóa."
+                    this.optionPopUp = [false, false]
+                    this.idDelete = ""
                 }
-                this.filter(this.searchKey, this.pageSize, this.currentPage-1, isStop)
+                else{
+                    var checkNotUse = document.getElementById("checkBoxFilterNotUse").checked;
+                    var isStop = 0;
+                    if(checkNotUse){
+                        isStop = 1;
+                    }
+                    this.filter(this.searchKey, this.pageSize, this.currentPage-1, isStop)
+                }
+                
             })
             .catch(()=>{
                 this.toast({

@@ -153,3 +153,20 @@ class DestinationRepository(DLBase):
         cursor.execute(sql, (id,))
         records = cursor.fetchall()
         return records
+
+    def getImageOfDestination(self, id):
+        collection = self.dbMongo["TourDestinationImage"]
+        image = collection.find({"TourDestinationID" : id})
+        lstImgae = []
+        for item in image:
+            lstImgae.append(item.get("ContentImage"))
+
+        return lstImgae
+
+    def getImageOfDestinations(self, lstID):
+        collection = self.dbMongo["TourDestinationImage"]
+        image = collection.find({"TourDestinationID" : { "$in" : lstID }})
+        lstImgae = []
+        for item in image:
+            lstImgae.append(item.get("ContentImage"))
+        return lstImgae

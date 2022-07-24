@@ -3,6 +3,7 @@
     width: 100vw;
     height: 100vh;
     top: 0;
+    left: 0;
     align-items: center;
     z-index: 999999;
 }
@@ -36,6 +37,7 @@
     position: sticky;
     top: 0;
     background-color: #dfe0e3;
+    z-index: 100;
 }
 
 .form-container .form-main .icon-close{
@@ -72,17 +74,21 @@
     font-weight: 600;
 }
 
+.form-container .form-main .content{
+    overflow: auto;
+}
+
 .form-container .form-main .common-infor{
     padding: 10px 20px;
     border-bottom: 1px solid #babec5;
 }
 
-.form-container .form-main .time-line{
+.form-container .form-main .time-line, .destination{
     padding: 10px 20px;
     border-bottom: 1px solid #babec5;
 }
 
-.form-container .form-main .time-line .title{
+.form-container .form-main .time-line .title, .destination .title{
     font-size: 18px;
     font-weight: 600;
 }
@@ -104,31 +110,31 @@
     padding-bottom: unset;
 }
 
-table{
+.form-container table{
     width: 80%;
     border-spacing: 0;
     border-top: 1px solid #babec5;
     border-left: 1px solid #babec5;
 }
 
-td, th{
+.form-container td, th{
     border: 1px solid #babec5;
     padding: 10px;
     border-left: unset;
     border-top: unset;
 }
 
-table .location{
+.form-container table .location{
     width: 350px;
 }
 
-table td.function{
+.form-container table td.function{
     color: blue;
     cursor: pointer;
     width: 40px;
 }
 
-table td.function:hover{
+.form-container table td.function:hover{
     text-decoration: underline;
 }
 
@@ -177,11 +183,15 @@ table td.function:hover{
 }
 
 .form-container .form-main .other-infor .other-infor-item{
-    width: 50%;
+    width: 80%;
 }
 
-.form-container .form-main .other-infor .other-infor-item table{
+.form-container .form-main .other-infor .other-infor-item table.disable{
     margin-bottom: 12px;
+    background-color: #dfe0e3;
+}
+
+.form-container .form-main table.disable{
     background-color: #dfe0e3;
 }
 
@@ -198,4 +208,34 @@ table td.function:hover{
     height: 40px;
     width: auto;
     margin-left: 20px;
+}
+
+.form-container .form-main .policy textarea{
+    padding: 10px;
+    height: 150px;
+    border: 1px solid #babec5;
+    border-radius: 5px;
+    resize: none;
+}
+
+.form-container .form-main .note{
+    border-top: 1px solid #babec5;
+    padding: 10px 20px 50px 20px;
+}
+
+.form-container .form-main .note .title{
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.form-container .form-main .note textarea{
+    padding: 10px;
+    height: 150px;
+    border: 1px solid #babec5;
+    border-radius: 5px;
+    resize: none;
+}
+
+.form-container .form-main .note textarea:focus{
+    border-color: #e89327;
 }

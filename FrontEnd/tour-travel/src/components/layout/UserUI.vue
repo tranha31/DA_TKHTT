@@ -18,9 +18,9 @@
             </div>
           </div>
           <div class="history-items d-flex flex-column">
-            <div class="d-flex">
+            <div class="d-flex" @click="choosePurchareOrder" >
               <div class="history-items-icon"></div>
-              <label>Purchase Order</label>
+              <label style="cursor:pointer;">Purchase Order</label>
             </div>
             <div class="list-items">
               <div class="choose-edit" @click="chooseEditCart" :style="{'font-weight': editCart? 'bold' : 'lighter'}">Cart</div>
@@ -63,8 +63,23 @@
                 :can-editing="true"
                 input-type="number"
                 display-inline="inline-block"
+                v-model="userInfos.IdentityNumber"
             />
-            <div>
+            <InputInfoTemplate
+                item="Name"
+                :can-editing="true"
+                input-type="text"
+                display-inline="inline-block"
+                v-model="userInfos.Name"
+            />
+            <InputInfoTemplate
+                item="Address"
+                :can-editing="true"
+                input-type="text"
+                display-inline="inline-block"
+                v-model="userInfos.Address"
+            />
+            <!-- <div>
               <span style="margin-right: 115px; padding: 16px 0px 6px 20px; font-size: 16px;">Gender</span>
               <input type="radio" id="male" value="male" v-model="gender" />
               <label for="male" class="gender">Male</label>
@@ -72,12 +87,12 @@
               <label for="female" class="gender">Female</label>
               <input type="radio" id="other" value="other" v-model="gender" />
               <label for="other" class="gender">Other</label>
-            </div>
-            <InputInfoTemplate
+            </div> -->
+            <!-- <InputInfoTemplate
                 item="Birthday"
                 :can-editing="true"
                 display-inline="inline-block"
-            />
+            /> -->
             <div class="profile-detail-img"></div>
           </div>
           <div class="profile-detail-footer">
@@ -142,16 +157,65 @@
             </div>
           </div>
         </div>
-        <div class="edit-cart detail-container" v-if="editCart">
-          <div class="edit-cart-list d-flex flex-column" v-for="item in historyTour" :key="item.id">
-            <div class="tour-img" :style="{'background-image': item.img}"></div>
-            <div class="cart-action d-flex flex-column">
+        <div class="edit-purchase detail-container" v-if="editPurchase">
+          <div class="edit-cart-list d-flex w-full mb-30" v-for="item in listOrder" :key="item.id">
+            <img class="tour-img w-half" :src="item.img">
+            <div class="cart-action d-flex flex-column" style="padding-left:15px">
               <label class="tour-info">{{ item.info }}</label>
-              <div>
+              <div class="flex-1"></div>
+              <div class="d-flex">
+                <div>
+                  <button
+                      class="btn-default"
+                      @click="viewContract(item)"
+                      style="position:unset"
+                  >
+                    View
+                  </button>
+                </div>
+                <div>
+                  <button
+                      class="btn-default"
+                      @click="editTour(item)"
+                      style="position:unset"
+                  >
+                    Edit
+                  </button>
+                </div>
+                <div v-if="item.status == 0">
+                  <button
+                      class="btn-default"
+                      @click="deleteOrder(item)"
+                      style="position:unset"
+                  >
+                    Delete
+                  </button>
+                </div>
+                <div v-else>
+                  <button
+                      class="btn-default"
+                      @click="cancelOrder(item)"
+                      style="position:unset"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="edit-cart detail-container" v-if="editCart">
+          <div class="edit-cart-list d-flex w-full mb-30" v-for="item in historyTour" :key="item.id">
+            <img class="tour-img w-half" :src="item.img">
+            <div class="cart-action d-flex flex-column" style="padding-left:15px">
+              <label class="tour-info">{{ item.info }}</label>
+              <div class="flex-1"></div>
+              <div class="d-flex">
                 <div>
                   <button
                       class="btn-default"
                       @click="showHistoryTourDetail(item)"
+                      style="position:unset"
                   >
                     Detail
                   </button>
@@ -160,6 +224,7 @@
                   <button
                       class="btn-default"
                       @click="removeHistoryTour(item)"
+                      style="position:unset"
                   >
                     Remove
                   </button>
@@ -171,32 +236,54 @@
       </div>
     </div>
     <Footer />
+
+    <TheCreateTour v-if="showForm"
+    :oTour="oTour"
+    :mode="2"
+    :oData="oData"
+    :TitleTour="'Khởi tạo tour'"
+    v-on:closeForm="closeForm"
+    />
+    <BaseLoad :load="showLoad"/>
   </div>
 </template>
 <script>
 import InputInfoTemplate from "@/components/base/InputInfoTemplate";
 import Footer from "@/components/layout/TheFooter";
+import TheCreateTour from '../../components/form/TheCreateTour.vue'
+import BaseLoad from '../../components/base/BaseLoad.vue'
 import AuthApi from "@/js/api/AuthApi";
+import TourAPI from "@/js/api/tourapi";
+import Tour from '../../js/entity/tour';
 export default {
   name: 'User',
   components: {
     InputInfoTemplate,
-    Footer
+    Footer,
+    TheCreateTour,
+    BaseLoad
   },
   data() {
     return {
       editProfile: false,
       editPassword: false,
       editCart: false,
+      editPurchase: false,
       gender: null,
       allowEnterCode: false,
       historyTour: [],
+      listOrder: [],
       userInfos: null,
       userInfosClone: null,
       editPasswordOld: null,
       editPasswordNew: null,
       editPasswordConf: null,
-      verityCode: null
+      verityCode: null,
+
+      showLoad: false,
+      showForm : false,
+      oTour : new Tour(),
+      oData: null,
     }
   },
   methods: {
@@ -205,7 +292,10 @@ export default {
         let updateResponse = await AuthApi.updateGeneralInfos({
           UserID: this.userInfos.UserID,
           Email: this.userInfos.Email,
-          PhoneNumber: this.userInfos.PhoneNumber
+          PhoneNumber: this.userInfos.PhoneNumber,
+          Identification : this.userInfos.IdentityNumber,
+          Name : this.userInfos.Name,
+          Address: this.userInfos.Address
         })
         if (updateResponse) {
           this.$notify({
@@ -272,25 +362,85 @@ export default {
       this.editPassword = true
       this.editProfile = false
       this.editCart = false
+      this.editPurchase = false
     },
     chooseEditProfile() {
       this.editPassword = false
       this.editProfile = true
       this.editCart = false
+      this.editPurchase = false
     },
     chooseEditCart() {
       this.editPassword = false
       this.editProfile = false
       this.editCart = true
+      this.editPurchase = false
     },
-    getHistoryTour() {
-      // call api get history tour of this user and assign to historyTour array
+    choosePurchareOrder(){
+      this.editPassword = false
+      this.editProfile = false
+      this.editCart = false
+      this.editPurchase = true
     },
+    async getHistoryTour() {
+      await TourAPI.getInCart(this.$store.state.account.currentUser.UserID)
+      .then(res=>{
+        this.historyTour = []
+        var data = res.data.data
+        var image = res.data.listImage
+        for(var i=0; i<data.length; i++){
+            var item = data[i]
+            var img = image[i].Image
+            var randIndex = Math.floor(Math.random() * img.length)
+            var object = {
+                id: item.TourID,
+                img: img[randIndex],
+                info: item.TourName,
+                
+            };
+            this.historyTour.push(object)
+        }
+      })
+    },
+
+    async getListOrder(){
+      await TourAPI.getTourOrder(this.$store.state.account.currentUser.UserID)
+      .then(res=>{
+        this.listOrder = []
+        var data = res.data.data
+        var image = res.data.listImage
+        for(var i=0; i<data.length; i++){
+            var item = data[i]
+            var img = image[i].Image
+            var randIndex = Math.floor(Math.random() * img.length)
+            var object = {
+                id: item.TourID,
+                img: img[randIndex],
+                info: item.TourName,
+                status: item.Status,
+            };
+            this.listOrder.push(object)
+        }
+      })
+    },
+
     showHistoryTourDetail(tour) {
-      console.log(tour)
+      this.$router.push({ path: '/tour/'+tour.id})
     },
-    removeHistoryTour(tour) {
-      console.log(tour)
+    async removeHistoryTour(tour) {
+      await TourAPI.deleteInCart(tour.id, this.$store.state.account.currentUser.UserID)
+      .then(()=>{
+        this.getHistoryTour()
+      })
+      .catch(()=>{
+        this.$notify({
+          group: 'default',
+          title: 'Error',
+          text: 'Has error. Please try again!',
+          type: 'error',
+          position: 'bottom right'
+        })
+      })
     },
     async loadUserInformation() {
       this.userInfos = await AuthApi.getUserInformation({
@@ -298,7 +448,93 @@ export default {
       })
 
       this.userInfosClone = JSON.parse(JSON.stringify(this.userInfos))
-    }
+    },
+
+    viewContract(tour){
+      window.open("http://127.0.0.1:5000/tour/gettourtemp?id="+tour.id)
+    },
+
+    /**
+     * Show form tạo tour
+     */
+    async editTour(tour){
+      var id = tour.id
+      this.showLoad = true
+      await TourAPI.getByID(id)
+      .then(res=>{
+          var data = res.data
+          var tour = new Tour();
+          this.oTour = tour;
+          this.oTour.Name = data.Master.TourName
+          this.oTour.TourCode = data.Master.ContractCode
+          this.oTour.CreatedTime = data.Master.CreatedTime
+          this.oTour.TotalAmount = Number.parseInt(data.Master.TotalCost)
+          this.oTour.Departure = data.Master.ProvinceDestinationName
+          this.oTour.DepartureID = data.Master.ProvinceDestinationID
+          this.oTour.StartPoint = data.Master.ProvinceStartName
+          this.oTour.StartPointID = data.Master.ProvinceStartID
+          this.oTour.PickUpPoint = data.Master.PickupAdress
+          this.oTour.NumberAdult = Number.parseInt(data.Contract.NumberAdult)
+          this.oTour.NumberChild = Number.parseInt(data.Contract.NumberChild)
+          this.oTour.NumberBaby = Number.parseInt(data.Contract.NumberBaby)
+          this.oTour.TotalDay = Number.parseInt(data.Contract.TotalHour)
+
+          var pickupTime = new Date(data.Master.PickupTime)
+          var startTime = new Date(data.Contract.StartTime)
+          var endTime = new Date(data.Contract.EndTime)
+          this.oTour.PickUpTime = new Date(pickupTime.setTime(pickupTime.getTime() - (7*60*60*1000)))
+          this.oTour.StartTime = new Date(startTime.setTime(startTime.getTime() - (7*60*60*1000)))
+          this.oTour.EndTime = new Date(endTime.setTime(endTime.getTime() - (7*60*60*1000)))
+          
+          this.oTour.Sample = data.Info.Sample
+          this.oTour.Status = data.Info.Status
+          this.oTour.IsPayment = data.Info.IsPayment
+          this.oTour.TourID = data.Info.RefID
+          
+          data.Schedule.forEach(e=>{
+              e.Morning.forEach(k=>{
+                  var time = new Date(k.Time)
+                  k.Time = new Date(time.setTime(time.getTime() - (7*60*60*1000)))
+              })
+
+              e.Afternoon.forEach(k=>{
+                  var time = new Date(k.Time)
+                  k.Time = new Date(time.setTime(time.getTime() - (7*60*60*1000)))
+              })
+
+              e.Evening.forEach(k=>{
+                  var time = new Date(k.Time)
+                  k.Time = new Date(time.setTime(time.getTime() - (7*60*60*1000)))
+              })
+          })
+
+          data.AttachOption.forEach(e=>{
+              e.Price = e.Price.toString()
+                              .replace(/\D/g, "")
+                              .replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+          })
+
+          this.oData = data
+          this.showForm = true;
+
+          this.showLoad = false
+      })
+      .catch(()=>{
+          this.showLoad = false
+          this.$notify({
+            group: 'default',
+            title: 'Error',
+            text: 'Has error. Please try again!',
+            type: 'error',
+            position: 'bottom right'
+          })
+      })
+    },
+
+    closeForm(){
+      this.showForm = false;
+      this.getListOrder()
+    },
   },
   async mounted() {
     if (!this.$store.state.account.currentUser || (this.$store.state.account.currentUser && !this.$store.state.account.currentUser.UserID)) {
@@ -315,7 +551,8 @@ export default {
     await this.loadUserInformation()
 
     this.editProfile = true
-    this.getHistoryTour()
+    await this.getHistoryTour()
+    await this.getListOrder()
   }
 }
 </script>
@@ -383,7 +620,7 @@ h3 {
 }
 
 .profile-detail-body {
-  height: 370px;
+  /* height: 370px; */
   padding: 10px 20px;
 }
 
@@ -466,8 +703,13 @@ h3 {
   bottom: 43px;
 }
 
-.edit-cart-list {
+.edit-cart, .edit-purchase{
+  height: 650px;
+  overflow: auto;
+}
 
+.edit-cart-list {
+  height: 300px;
 }
 
 .password-detail-body {

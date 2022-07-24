@@ -41,21 +41,25 @@
     <div class="login-background d-flex flex-column">
 <!--      <img src="../../assets/imgs/Image/bg_login.jpg">-->
     </div>
+    <BaseLoad :load="showLoad"/>
   </div>
 </template>
 <script>
 import InputInfoTemplate from "@/components/base/InputInfoTemplate";
+import BaseLoad from "@/components/base/BaseLoad";
 import AuthApi from "@/js/api/AuthApi";
 import ChatApi from "@/js/api/ChatApi";
 export default {
   name: 'LogIn',
   components: {
-    InputInfoTemplate
+    InputInfoTemplate,
+    BaseLoad
   },
   data() {
     return {
       email: null,
-      password: null
+      password: null,
+      showLoad: false,
     }
   },
   methods: {
@@ -85,10 +89,12 @@ export default {
             position: 'bottom right'
           })
         } else {
+          this.showLoad = true
           let signInResponse = await AuthApi.signIn({
             email: this.email,
             password: this.password
           })
+          this.showLoad = false
           if (signInResponse === 'No account with email existed!' || signInResponse === 'Wrong password!' || !signInResponse) {
             this.$notify({
               group: 'default',

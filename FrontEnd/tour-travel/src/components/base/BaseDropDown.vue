@@ -1,7 +1,7 @@
 <template>
 <div class="container" style="position:relative" >
     <div class="dropdown-container" :class="clas">
-        <input type="text" :class="read?'read-only':''" class="dropdown-content" readonly :value="value" :id="id" v-on:keyup.38="selectItem" v-on:keyup.40="selectItemDown" v-on:keyup.13="enterChoose" :tabindex="tabindex">
+        <input type="text" name="date" :class="read?'read-only':''" class="dropdown-content" readonly :value="value" :id="id" v-on:keyup.38="selectItem" v-on:keyup.40="selectItemDown" v-on:keyup.13="enterChoose" :tabindex="tabindex">
         <div class="button" @click="showOption" v-click-outside="hiddenOption">
             <div class="mi mi-16 dropdown-button" :class="[isShow? 'choose' : '']"></div>
         </div>
@@ -218,5 +218,9 @@ export default {
     }
     .container.read{
         background-color: #f3f3f3 !important;
+    }
+    label{
+        font-size: 13px !important;
+        margin-left: 0px !important;
     }
 </style>

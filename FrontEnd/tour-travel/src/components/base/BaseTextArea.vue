@@ -1,25 +1,24 @@
 <template>
-    <div class="main-input" :class="clas" :style="stylE">
+  <div class="main-input" :class="clas" >
         <div v-if="hasTitle" class="title-input">{{title}}&nbsp;&nbsp;<span v-if="msrequire">*</span></div>
         <div v-if="hasImage" class="img" :class="classImage"></div>
-        <input type="text"
-        class="base-input"
-        :class="[isNumber? 'input-right':'', error? 'error' : '', read? 'read' : '']"
-        :placeholder="placeholder"
-        :readonly="read"
-        :title="message" v-title
-        :disabled="disabled"
-        :maxlength="maxLengtH"
-        :notNull="notNull"
-        autocomplete="off"
-        v-model="contents"
-        @keypress="input($event)"
-        @input="sendContent"
-        @blur="checkValidate"
-        @change="sendData"
-        v-on:keyup.enter="sendData"
-        ref="Input"
-        >
+        <textarea type="text"
+            class="base-input"
+            :class="[isNumber? 'input-right':'', error? 'error' : '', read? 'read' : '']"
+            :placeholder="placeholder"
+            :readonly="read"
+            :title="message" v-title
+            :disabled="disabled"
+            :maxlength="maxLength"
+            :notNull="notNull"
+            autocomplete="off"
+            v-model="contents"
+            @keypress="input($event)"
+            @input="sendContent"
+            @blur="checkValidate"
+            @change="sendData"
+            ref="Input"
+        ></textarea>
     </div>
 </template>
 
@@ -27,8 +26,6 @@
 import Error from '../../js/entity/error.js'
 import Vue from"vue"
 export default {
-    created(){
-    },
     props:{
         clas: String,
         placeholder: String,
@@ -43,21 +40,17 @@ export default {
         classImage: String,
         disabled : Boolean,
         maxLength : Number,
-        stylE : String,
         index: Number,
+        index2: Number,
     },
     data(){
         return{
             contents : this.content,
             error : false,
             message : "",
-            maxLengtH : 200,
         }
     },
     watch:{
-        maxLength: function(){
-            this.maxLengtH = this.maxLength;
-        },
         content: function(){
             this.contents = this.content;
         },
@@ -118,7 +111,6 @@ export default {
                     this.message = "";
                 }
             }
-            
         },
         /**
          * Đặt nội dung lỗi
@@ -135,39 +127,32 @@ export default {
 
         sendData(){
             if(this.isNumber){
-                if(this.index != undefined){
-                    if(this.contents){
-                        this.$emit("changeData", this.contents.replaceAll(".", ""), this.index);
-                    }
-                    else{
-                        this.$emit("changeData", this.contents, this.index);
-                    }
-                }
-                else{
-                    if(this.contents){
-                        this.$emit("changeData", this.contents.replaceAll(".", ""));
-                    }
-                    else{
-                        this.$emit("changeData", this.contents);
-                    }
-                }
+                this.$emit("changeData", this.contents.replaceAll(".", ""));
             }
             else{
-                if(this.index != undefined){
+                if(this.index != undefined && this.index2 != undefined){
+                    this.$emit("changeData", this.contents, this.index, this.index2);
+                }
+                else if(this.index != undefined){
                     this.$emit("changeData", this.contents, this.index);
                 }
                 else{
                     this.$emit("changeData", this.contents);
                 }
+                
             }
         }
     }
 }
 </script>
 
-<style >
+<style scoped>
     .main-input{
         position: relative;
+    }
+
+    .main-input textarea{
+        resize: none;
     }
 
     .main-input .img{
@@ -175,10 +160,6 @@ export default {
         left: 5px;
         top: 25%;
         z-index: 1;
-    }
-
-    .main-input .title-input + .img{
-        top: 57%;
     }
 
     .title-input{
@@ -192,14 +173,13 @@ export default {
     .base-input{
         border: 1px solid #babec5;
         width: 100%;
-        height: 34px;
+        height: auto;
         font-size: 13px;
         color: inherit;
         position: relative;
         border-radius: 2px;
         box-sizing: border-box;
         padding: 6px 10px;
-        background-color: #fff;
     }
     .base-input::placeholder{
         color: #949494;
@@ -216,5 +196,8 @@ export default {
     }
     .input-right{
         text-align: right;
+    }
+    textarea:disabled{
+        background-color: #dfe0e3;
     }
 </style>
