@@ -1,16 +1,6 @@
 <template>
   <div class="list-template">
     <div class="header d-flex">
-        <BaseInput
-        :hasTitle="false"
-        :msrequire="false"
-        :notNull="false"
-        :placeholder="'Nhập mã tour, tên tour để tìm kiếm'"
-        :clas="'w-30'"
-        :content="searchKey"
-        v-on:changeData="filterData"
-        />
-
         <div class="flex-1"></div>
         <div class="option-button d-flex">
             <div class="reload" @click="reloadData"></div>
@@ -18,27 +8,27 @@
     </div>
 
     <div class="grid-detail">
-        <table class="tabel-detail" cellspacing="0">
+        <table class="tabel-detail" cellspacing="0" id="gridTourOrder">
             <thead>
                 <tr>
-                    <th class="order">STT</th>
                     <th>Mã tour</th>
                     <th>Tên tour</th>
                     <th>Người đặt</th>
-                    <th>Ngày khởi hành</th>
+                    <th>Số điện thoại</th>
+                    <th>Thời gian hủy</th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="(item, index) in listTour" v-bind:key="index">
-                    <td class="order">{{index+1}}</td>
                     <td>{{item.TourCode}}</td>
                     <td>{{item.TourName}}</td>
-                    <td>{{item.UserName}}</td>
-                    <td class="time">{{item.StartTime}}</td>
+                    <td>{{item.Name}}</td>
+                    <td>{{item.PhoneNumber}}</td>
+                    <td>{{item.TimeCancel}}</td>
                     <td class="function">
                         <div class="d-flex flex-column lst-option">
-                            <div class="option" @click="showFormRequest(item.TourID)">Xem yêu cầu</div>
+                            <div class="option" @click="viewContract(item.TourID)">Xem hợp đồng</div>
                         </div>
                     </td>
                 </tr>
@@ -58,27 +48,16 @@
 
     <div id="toast"></div>
     <BaseLoad :load="showLoad"/>
-    
-    <TheRequestTour
-    v-if="showForm"
-    :oTour="oTour"
-    :mode="2"
-    :oData="oData"
-    :TitleTour="titleForm"
-    v-on:closeForm="closeForm"
-    />
+
   </div>
 </template>
 
 <script>
-import BaseInput from '../../components/base/BaseInput.vue'
 import BaseLoad from '../../components/base/BaseLoad.vue'
 import BaseNavigationPage from '../../components/base/BaseNavigationPage.vue'
-import TheRequestTour from '../../components/form/TheRequestTour.vue'
-import Tour from '../../js/entity/tour'
 import TourAPI from "../../js/api/tourapi.js"
 export default {
-    components: { BaseInput, BaseNavigationPage, TheRequestTour, BaseLoad },
+    components: { BaseNavigationPage, BaseLoad },
     data(){
         return{
             totalRecord : 0,
@@ -91,16 +70,12 @@ export default {
                 {value: 3, class: ""},
                 {value: 5, class: ""},
             ],
-
-            oTour : new Tour(),
-
-            showForm : false,
-            listTour : [],
+            showSingleCancel : false,
+            showMultiCancel: false,
 
             showLoad: false,
             searchKey : "",
-            oData: null,
-            titleForm: "Chỉnh sửa",
+            listTour : [],
         }
     },
     mounted() {
@@ -110,12 +85,12 @@ export default {
         }
     },
     async created(){
-        await this.filter("", 20, 0, 0);
+        await this.filter(20, 0);
     },
     methods:{
-        async filter(search, size, page, isStop){
+        async filter(size, page){
             this.showLoad = true
-            await TourAPI.filter(search, size, page, isStop, 2)
+            await TourAPI.getListCancel(size, page)
             .then(res=>{
                 this.listTour = [];
                 this.listTour = res.data.data;
@@ -193,12 +168,7 @@ export default {
             }
         },
         reloadData(){
-            this.filter(this.searchKey, this.pageSize, 0, 0)
-        },
-
-        filterData(value){
-            this.searchKey = value;
-            this.filter(this.searchKey, this.pageSize, 0, 0)
+            this.filter(this.pageSize, 0)
         },
 
         /**
@@ -211,7 +181,7 @@ export default {
             this.currentPage = page;
             this.numberPage = list;
             
-            this.filter(this.searchKey, this.pageSize, this.currentPage-1, 0)
+            this.filter(this.pageSize, this.currentPage-1)
         },
 
         /**
@@ -222,88 +192,14 @@ export default {
             this.pageSize = size;
             this.currentPage = 1;
             
-            this.filter(this.searchKey, this.pageSize, this.currentPage-1, 0)
-        },
-        /**
-         * Show form tạo tour
-         */
-        async showFormRequest(id){
-            this.showLoad = true
-            await TourAPI.getByID(id)
-            .then(res=>{
-                var data = res.data
-                var tour = new Tour();
-                this.oTour = tour;
-                this.oTour.Name = data.Master.TourName
-                this.oTour.TourCode = data.Master.ContractCode
-                this.oTour.CreatedTime = data.Master.CreatedTime
-                this.oTour.TotalAmount = Number.parseInt(data.Master.TotalCost)
-                this.oTour.Departure = data.Master.ProvinceDestinationName
-                this.oTour.DepartureID = data.Master.ProvinceDestinationID
-                this.oTour.StartPoint = data.Master.ProvinceStartName
-                this.oTour.StartPointID = data.Master.ProvinceStartID
-                this.oTour.PickUpPoint = data.Master.PickupAdress
-                this.oTour.NumberAdult = Number.parseInt(data.Contract.NumberAdult)
-                this.oTour.NumberChild = Number.parseInt(data.Contract.NumberChild)
-                this.oTour.NumberBaby = Number.parseInt(data.Contract.NumberBaby)
-                this.oTour.TotalDay = Number.parseInt(data.Contract.TotalHour)
-
-                var pickupTime = new Date(data.Master.PickupTime)
-                var startTime = new Date(data.Contract.StartTime)
-                var endTime = new Date(data.Contract.EndTime)
-                this.oTour.PickUpTime = new Date(pickupTime.setTime(pickupTime.getTime() - (7*60*60*1000)))
-                this.oTour.StartTime = new Date(startTime.setTime(startTime.getTime() - (7*60*60*1000)))
-                this.oTour.EndTime = new Date(endTime.setTime(endTime.getTime() - (7*60*60*1000)))
-                
-                this.oTour.Sample = data.Info.Sample
-                this.oTour.Status = data.Info.Status
-                this.oTour.IsPayment = data.Info.IsPayment
-                this.oTour.TourID = data.Info.RefID
-                
-                data.Schedule.forEach(e=>{
-                    e.Morning.forEach(k=>{
-                        var time = new Date(k.Time)
-                        k.Time = new Date(time.setTime(time.getTime() - (7*60*60*1000)))
-                    })
-
-                    e.Afternoon.forEach(k=>{
-                        var time = new Date(k.Time)
-                        k.Time = new Date(time.setTime(time.getTime() - (7*60*60*1000)))
-                    })
-
-                    e.Evening.forEach(k=>{
-                        var time = new Date(k.Time)
-                        k.Time = new Date(time.setTime(time.getTime() - (7*60*60*1000)))
-                    })
-                })
-
-                data.AttachOption.forEach(e=>{
-                    e.Price = e.Price.toString()
-                                    .replace(/\D/g, "")
-                                    .replace(/\B(?=(\d{3})+(?!\d))/g, ".")
-                })
-
-                this.oData = data
-                this.titleForm = "Chỉnh sửa"
-                this.showForm = true;
-                this.mode = 2;
-
-                this.showLoad = false
-            })
-            .catch(()=>{
-                this.showLoad = false
-                this.toast({
-                    title: "Có lỗi xảy ra. Vui lòng thử lại",
-                    type: "error",
-                    duration: 3000,
-                });
-            })
+            this.filter(this.pageSize, this.currentPage-1)
         },
 
-        closeForm(){
-            this.showForm = false;
-            this.filter(this.searchKey, this.pageSize, this.currentPage-1, 0)
+        viewContract(id){
+            window.open("http://127.0.0.1:5000/tour/gettourtemp?id="+id)
         },
+
+        
     }
   
 }

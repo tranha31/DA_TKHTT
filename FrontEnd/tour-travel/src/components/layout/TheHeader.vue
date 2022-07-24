@@ -4,7 +4,7 @@
       <div class="flex-1"></div>
       <div class="header-container w-half d-flex">
         <div class="header-item-list d-flex">
-          <router-link class="router-link" to="/test">
+          <router-link class="router-link" to="/place">
             <div class="item-link">Danh lam</div>
           </router-link>
           <router-link class="router-link" to="/tour">

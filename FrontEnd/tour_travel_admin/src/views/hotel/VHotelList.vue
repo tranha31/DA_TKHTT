@@ -160,7 +160,14 @@ export default {
         }
     },
     async mounted() {
-      await this.initData()
+        if (!sessionStorage.getItem("idAdmin")) {
+            this.$router.push({ path: '/admin/login'})
+            return
+        }
+        else{
+            await this.initData()
+        }
+      
     }
   
 }
