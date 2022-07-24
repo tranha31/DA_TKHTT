@@ -140,6 +140,12 @@ export default {
             titleForm: "Thêm mới",
         }
     },
+    mounted() {
+        if (!sessionStorage.getItem("idAdmin")) {
+            this.$router.push({ path: '/admin/login'})
+            return
+        }
+    },
     async created(){
         await this.filter("", 20, 0, 0);
     },

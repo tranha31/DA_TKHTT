@@ -2,6 +2,8 @@ import VTour from "../../views/tour/VTour.vue"
 import VTourInfor from "../../views/tour/VTourInfor.vue"
 import VRoom from "../../views/room/VRoom.vue"
 import VHotel from "@/views/hotel/VHotel"
+import VPlace from "../../views/place/VPlace.vue"
+import VPlaceInfo from "../../views/place/VPlaceInfo.vue"
 import Hotel from "@/components/layout/Hotel"
 import LogInUI from "@/components/layout/LogInUI"
 import RegisterUI from "@/components/layout/RegisterUI"
@@ -18,5 +20,7 @@ export default class Router {
         { path: '/login', name: 'login', component: LogInUI },
         { path: '/register', name: 'register', component: RegisterUI },
         { path: '/user', name: 'user', component: UserUI },
+        { path: '/place', name: 'place', component: VPlace },
+        { path: '/place/:id', name: 'place-infor', component: VPlaceInfo },
     ]
 }

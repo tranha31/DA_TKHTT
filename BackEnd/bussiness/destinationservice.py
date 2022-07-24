@@ -58,11 +58,20 @@ class DestinationService:
                 lstDes = lstDes[page : ]
             else:
                 lstDes = lstDes[page : page + size]
+        listImage = []
+        for des in lstDes:
+            id = des["RefID"]
+            lstImage = self.dl.getImageOfDestination(id)
+            listImage.append({
+                "ID" : id,
+                "Image" : lstImage
+            })
 
         result = {
             "data" : lstDes,
             "totalRecord" : totalRecord,
-            "totalPage" : totalPage
+            "totalPage" : totalPage,
+            "image" : listImage
         }
 
         return result

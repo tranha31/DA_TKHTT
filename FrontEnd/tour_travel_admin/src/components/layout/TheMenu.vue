@@ -8,6 +8,7 @@
         <router-link class="tab-router level-2" to="/admin/tourtemplate" active-class="active">Danh sách tour mẫu</router-link>
         <router-link class="tab-router level-2" to="/admin/tourorder" active-class="active">Danh sách đặt tour</router-link>
         <router-link class="tab-router level-2" to="/admin/tourrequest" active-class="active">Danh sách chờ xác nhận</router-link>
+        <router-link class="tab-router level-2" to="/admin/tourcancel" active-class="active">Danh sách ND hủy</router-link>
     </div>
     <div class="menu-item">
         <router-link class="tab-router" to="/admin/hotel" active-class="active">Khách sạn</router-link>
@@ -18,6 +19,7 @@
     <div class="menu-item">
         <router-link class="tab-router" to="/admin/place" active-class="active">Điểm du lịch</router-link>
     </div>
+    
   </div>
 </template>
 

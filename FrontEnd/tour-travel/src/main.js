@@ -46,4 +46,7 @@ new Vue({
   render: h => h(App),
   router,
   store,
+  created(){
+    this.$router.push({path : '/tour'});
+  }
 }).$mount('#app')

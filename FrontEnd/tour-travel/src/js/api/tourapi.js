@@ -60,6 +60,18 @@ class TourAPI{
     getTourOrder(userID){
         return Repository.get(`${this.controler}/getlistorder?userID=${userID}`);
     }
+
+    deleteTourByUser(userID, tourID){
+        return Repository.delete(`${this.controler}/deletetour?userID=${userID}&tourID=${tourID}`)
+    }
+
+    cancelTourByUser(userID, tourID){
+        return Repository.get(`${this.controler}/canceltour?userID=${userID}&tourID=${tourID}`)
+    }
+
+    confitmTourByUser(userID, tourID){
+        return Repository.post(`${this.controler}/confirmtouser?userID=${userID}&tourID=${tourID}`)
+    }
 }
 
 export default new TourAPI();

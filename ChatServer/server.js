@@ -33,6 +33,7 @@ io.on('connection', (socket) => {
 	// bên user sẽ bắt event toUser
 	socket.on('toUser', data => {
 		let receiver = users[data.UserID]
+		console.log('receiver:', receiver)
 		io.to(receiver).emit('toUser', data.message)
 	})
 })

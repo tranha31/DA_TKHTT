@@ -101,6 +101,7 @@ export default {
 
     },
     handleReceivedMsg(msg) {
+      console.log('msg:', msg)
       this.allMsg.push(msg)
     }
   },

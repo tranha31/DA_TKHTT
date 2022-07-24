@@ -1,14 +1,19 @@
 from cmath import atan, cos
 from traceback import print_tb
+from turtle import ht
+from cv2 import sepFilter2D
 from numpy import imag
 from repository.tourrepository import TourRepository
 from repository.destinationrepository import DestinationRepository
+from repository.userrepository import UserRepository
+from .sendemail import SendEmail
 import xml.etree.ElementTree as et
 from datetime import datetime
 import lxml.html
 from lxml import etree
 import math
 from datetime import datetime
+import base64
 
 class TourService:
     dl = None
@@ -237,16 +242,33 @@ class TourService:
 
     # Lấy nội dung html của tour
     def getTourHTML(self, id):
+        html = "<html></html>"
         xslt_doc = etree.parse("./repository/Template/template_tour_contract.xslt")
-        xslt_transformer = etree.XSLT(xslt_doc)
-        xml = self.dl.getContentXML(id)
-        if xml is not None:
-            source_doc = etree.fromstring(xml)
-            output_doc = xslt_transformer(source_doc)
-            html = str(output_doc)
-            return html
+        tour = self.dl.getByID(id)
+        if tour.get("Status") == 2 or tour.get("Status") == 3:
+            html = self.dl.getHTML(id)
         else:
-            return "<html></html>"
+            xslt_transformer = etree.XSLT(xslt_doc)
+            xml = self.dl.getContentXML(id)
+            if xml is not None:
+                source_doc = etree.fromstring(xml)
+                output_doc = xslt_transformer(source_doc)
+                html = str(output_doc)
+
+            if tour.get("Status") == 1:
+                oDlU = UserRepository()
+                adminSign = oDlU.getSignAdmin()
+                html = html.replace(".seller-sign-content{background-image: url()}",
+                ".seller-sign-content{background-image: url('"+ adminSign +"')}")
+
+        if tour.get("Status") == 3:
+            oDlU = UserRepository()
+            cancel = oDlU.getCancel()
+
+            html = html.replace(".content-block{background-image: url()}",
+            ".content-block{background-image: url('"+ cancel +"');background-repeat: no-repeat;}")
+
+        return html
 
     def getNewTourCode(self):
         lastCode = self.dl.getLastTourCode()
@@ -274,16 +296,37 @@ class TourService:
         
         for item in lstTour:
             item["StartTime"] = item["StartTime"].strftime("%d/%m/%Y")
-            if item["Status"] == 1:
-                item["Status"] = "Đang sử dụng"
-            else:
-                item["Status"] = "Ngừng sử dụng"
+            if item["IsSample"] == 1:
+                if item["Status"] == 1:
+                    item["Status"] = "Đang sử dụng"
+                else:
+                    item["Status"] = "Ngừng sử dụng"
         result = {
             "data" : lstTour,
             "totalRecord" : totalRecord,
             "totalPage" : totalPage
         }
 
+        return result
+
+    def getListCancel(self, size, page):
+        lstTour = self.dl.getListCancel()
+        totalPage = 0
+        totalRecord = 0
+        if len(lstTour) > 0:
+            totalRecord = len(lstTour)
+            totalPage = math.ceil(totalRecord / size)
+            if page+1 == totalPage:
+                lstTour = lstTour[page : ]
+            else:
+                lstTour = lstTour[page : page + size]
+        for item in lstTour:
+            item["TimeCancel"] = item["TimeCancel"].strftime("%d/%m/%Y")
+        result = {
+            "data" : lstTour,
+            "totalRecord" : totalRecord,
+            "totalPage" : totalPage
+        }
         return result
             
     def deleteTemplate(self, id):
@@ -513,3 +556,48 @@ class TourService:
         }
 
         return result
+
+    def deleteTourByUser(self, userID, tourID):
+        check = self.dl.checkCanDelete(userID, tourID)
+        if check == True:
+            self.deleteTemplate(tourID)
+            return True
+        else:
+            return False
+
+    def cancelTourByUser(self, userID, tourID):
+        self.dl.cancelTourByUser(userID, tourID)
+
+    def cancelTourByAdmin(self, id):
+        self.dl.cancelTourByAdmin(id)
+        tour = self.dl.getInfoToSendEmail(id)[0]
+        sendBL = SendEmail()
+        sendBL.sendEmailCancelTour(tour["TourCode"], tour)
+
+    def confirmTourByAdmin(self, id):
+        check = self.dl.checkExist(id)
+        if check == True:
+            self.dl.confirmTourByAdmin(id)
+
+            tour = self.dl.getInfoToSendEmail(id)[0]
+            sendBL = SendEmail()
+            sendBL.sendEmailConfirmTour(tour["TourCode"], tour)
+        else:
+            return False
+
+    def confirmTourByUser(self, id, usrID):
+        html = self.getTourHTML(id)
+        oDlU = UserRepository()
+        sign = oDlU.getSignUser(usrID)
+        adminSign = oDlU.getSignAdmin()
+
+        html = html.replace(".buyer-sign-content{background-image: url()}",
+                ".buyer-sign-content{background-image: url('"+ sign +"')}")
+
+        html = html.replace(".seller-sign-content{background-image: url()}",
+                ".seller-sign-content{background-image: url('"+ adminSign +"')}")
+        self.dl.confirmTourByUser(id)
+        self.dl.saveContract(html, usrID, id)
+
+
+

@@ -130,6 +130,12 @@ export default {
             isView : false,
         }
     },
+    mounted() {
+        if (!sessionStorage.getItem("idAdmin")) {
+            this.$router.push({ path: '/admin/login'})
+            return
+        }
+    },
     async created(){
         await this.filter("", 20, 0);
     },
