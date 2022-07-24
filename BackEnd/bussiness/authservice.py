@@ -54,3 +54,15 @@ class AuthService:
         result = self.dl.getAllUsersByListID(ListUserID)
 
         return result
+
+    def validateLoginAdmin(self, username, password):
+        result = self.dl.getAdmin(username)
+
+        if (result is None or len(result) <= 0):
+            return "No account with username existed!"
+        else:
+            admin = result[0]
+            if (admin['Password'].__eq__(password)):
+                return admin
+            else:
+                return "Wrong password!"

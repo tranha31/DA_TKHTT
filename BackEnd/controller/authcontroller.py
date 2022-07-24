@@ -5,6 +5,7 @@ from bussiness.authservice import AuthService
 from flask_cors import CORS
 from flask_cors.decorator import cross_origin
 from flask import jsonify
+import json
 
 auth = Blueprint("auth", __name__)
 cors = CORS(auth, resources={r"/api/*": {"origins": "*"}})
@@ -99,3 +100,22 @@ def getAllUserByListId():
     result = authservice.getUserByListId(ListUserID)
 
     return jsonify(result)
+
+@auth.route("/auth/admin/login", methods=['POST'])
+@cross_origin()
+def loginAdmin():
+    _json = request.json
+    username = _json['username']
+    password = _json['password']
+
+    result = authservice.validateLoginAdmin(username, password)
+    serviceResult = {
+        "error" : "",
+        "data" : {}
+    }
+    if (type(result) == str):
+        serviceResult["error"] = result
+    else:
+        serviceResult["data"] = result
+    serviceResult = json.dumps(serviceResult)
+    return Response(response=serviceResult, status=200, mimetype="application/json")

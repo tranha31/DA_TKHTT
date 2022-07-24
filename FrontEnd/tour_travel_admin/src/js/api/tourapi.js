@@ -33,6 +33,17 @@ class TourAPI{
         return Repository.get(`${this.controler}/getbyid?id=${id}`);
     }
 
+    confirmTour(id){
+        return Repository.post(`${this.controler}/confirmTour?id=${id}`);
+    }
+
+    getListCancel(size, page){
+        return Repository.get(`${this.controler}/listCancel?size=${size}&page=${page}`);
+    }
+
+    cancelTour(id){
+        return Repository.get(`${this.controler}/cancelTourA?id=${id}`);
+    }
 }
 
 export default new TourAPI();

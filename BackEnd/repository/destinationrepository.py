@@ -138,6 +138,8 @@ class DestinationRepository(DLBase):
 
         return result
 
+    
+
     def deleteDestination(self, id):
         sql = "DELETE FROM tourdestination WHERE RefID = %s"
         cursor = self.conn.cursor(dictionary=True)
