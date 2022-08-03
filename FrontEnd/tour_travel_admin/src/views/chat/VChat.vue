@@ -8,6 +8,7 @@
     </div>
     <div class="content-chat flex-1">
         <div class="content d-flex flex-column">
+          <perfect-scrollbar>
             <div
                 class="message d-flex w-full"
                 v-for="(message, index) in allMsg"
@@ -20,6 +21,7 @@
               </div>
               <div class="flex-1" v-if="message.Owner === 'user'"></div>
             </div>
+          </perfect-scrollbar>
         </div>
         <div class="input-message d-flex">
             <div class="attach"></div>
@@ -33,8 +35,12 @@
 <script>
 import ChatAPI from '../../js/api/chat'
 import UserAPI from '../../js/api/user'
+import {PerfectScrollbar} from 'vue2-perfect-scrollbar'
 export default {
   name: 'VChat',
+  components: {
+    PerfectScrollbar
+  },
   data() {
     return {
       allMsg: [],
