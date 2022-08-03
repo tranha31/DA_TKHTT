@@ -7,13 +7,15 @@
         :notNull="false"
         :placeholder="'Nhập mã tour, tên tour để tìm kiếm'"
         :clas="'w-30'"
+        :content="searchKey"
+        v-on:changeData="filterData"
         />
 
-        <div class="cancel-multi" @click="showFormCancelMulti">Hủy hàng loạt</div>
+        <!-- <div class="cancel-multi" @click="showFormCancelMulti">Hủy hàng loạt</div> -->
 
         <div class="flex-1"></div>
         <div class="option-button d-flex">
-            <div class="reload"></div>
+            <div class="reload" @click="reloadData"></div>
         </div>
     </div>
 
@@ -21,10 +23,9 @@
         <table class="tabel-detail" cellspacing="0" id="gridTourOrder">
             <thead>
                 <tr>
-                    <th class="order">
+                    <!-- <th class="order">
                         <input type="checkbox" @change="selectedItem($event)"/>
-                    </th>
-                    <th>Mã đơn hàng</th>
+                    </th> -->
                     <th>Mã tour</th>
                     <th>Tên tour</th>
                     <th>Người đặt</th>
@@ -34,20 +35,19 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="(item, index) in 100" v-bind:key="index">
-                    <td class="order">
+                <tr v-for="(item, index) in listTour" v-bind:key="index">
+                    <!-- <td class="order">
                         <input type="checkbox"/>
-                    </td>
-                    <td>SP001</td>
-                    <td>T001</td>
-                    <td>Tour du lịch HN</td>
-                    <td>TQHA</td>
-                    <td class="time">20/06/2022</td>
-                    <td>Đã thanh toán</td>
+                    </td> -->
+                    <td>{{item.TourCode}}</td>
+                    <td>{{item.TourName}}</td>
+                    <td>{{item.UserName}}</td>
+                    <td class="time">{{item.StartTime}}</td>
+                    <td>{{item.IsPayment}}</td>
                     <td class="function">
                         <div class="d-flex flex-column lst-option">
-                            <div class="option">Xem hợp đồng</div>
-                            <div class="option" @click="showFormCancelSingle">Hủy tour</div>
+                            <div class="option" @click="viewContract(item.TourID)">Xem hợp đồng</div>
+                            <div v-if="item.Status != 3" class="option" @click="closeSingleCancel(item.TourID)">Hủy tour</div>
                         </div>
                     </td>
                 </tr>
@@ -77,20 +77,25 @@
     v-on:closeForm="closeMultiCancel"
     />
 
+    <div id="toast"></div>
+    <BaseLoad :load="showLoad"/>
+
   </div>
 </template>
 
 <script>
 import BaseInput from '../../components/base/BaseInput.vue'
+import BaseLoad from '../../components/base/BaseLoad.vue'
 import BaseNavigationPage from '../../components/base/BaseNavigationPage.vue'
 import TheCancel from '../../components/form/TheCancel.vue'
 import TheCancelMulti from '../../components/form/TheCancelMulti.vue'
+import TourAPI from "../../js/api/tourapi.js"
 export default {
-    components: { BaseInput, BaseNavigationPage, TheCancel, TheCancelMulti },
+    components: { BaseInput, BaseNavigationPage, TheCancel, TheCancelMulti, BaseLoad },
     data(){
         return{
-            totalRecord : 500,
-            totalPage: 5,
+            totalRecord : 0,
+            totalPage: 1,
             currentPage: 1,
             pageSize : 20,
             numberPage: [
@@ -101,9 +106,118 @@ export default {
             ],
             showSingleCancel : false,
             showMultiCancel: false,
+
+            showLoad: false,
+            searchKey : "",
+            listTour : [],
         }
     },
+    mounted() {
+        if (!sessionStorage.getItem("idAdmin")) {
+            this.$router.push({ path: '/admin/login'})
+            return
+        }
+    },
+    async created(){
+        await this.filter("", 20, 0);
+    },
     methods:{
+        async filter(search, size, page){
+            this.showLoad = true
+            await TourAPI.filter(search, size, page, 0, 3)
+            .then(res=>{
+                this.listTour = [];
+                this.listTour = res.data.data;
+                this.listTour.forEach(e=>{
+                    if(e.IsPayment){
+                        e.IsPayment = "Đã thanh toán"
+                    }
+                    else{
+                        e.IsPayment = "Chưa thanh toán"
+                    }
+                })
+                this.totalRecord = res.data.totalRecord;
+                this.totalPage = res.data.totalPage;
+                this.numberPage = [];
+                var me = this;
+                if(me.totalPage > 4){
+                    me.numberPage = [
+                        {value: 1, class: "active"},
+                        {value: 2, class: ""},
+                        {value: 3, class: ""},
+                        {value: this.totalPage, class: ""},
+                    ];
+                }
+                else{
+                    for(var i=1; i<= me.totalPage; i++){
+                        if(i == 1){
+                            me.numberPage.push({
+                                value: 1,
+                                class: "active"
+                            });
+                        }
+                        else{
+                            me.numberPage.push({value:i, class: ""});
+                        }
+                        
+                    }
+                }
+            })
+            .catch(()=>{
+                this.toast({
+                    title: "Có lỗi xảy ra. Vui lòng thử lại",
+                    type: "error",
+                    duration: 3000,
+                });
+            })
+            this.showLoad = false;
+        },
+
+        toast({ title, type, duration }) {
+            const main = document.getElementById("toast");
+            if (main) {
+                const toast = document.createElement("div");
+                //auto remove toast
+                const autoRemove = setTimeout(function () {
+                main.removeChild(toast);
+                }, duration + 1000);
+
+                toast.onclick = function (e) {
+                if (e.target.closest(".delete-toast")) {
+                    main.removeChild(toast);
+                    clearTimeout(autoRemove);
+                }
+                };
+                const delay = (duration / 1000).toFixed(2);
+                // const icons = {
+                //     success: `'fas', 'check-circle'`,
+                //     info: 'fas fa-info-circle',
+                //     warning: 'fas fa-exclamation-circle',
+                //     error: 'fas fa-exclamation-triangle',
+
+                // }
+                toast.classList.add("toast-message");
+                toast.style.animation = `slideInLeft ease .5s, fadeOut linear 1s ${delay}s forwards`;
+                toast.innerHTML = `
+                    <div class="icon-toast icon-toast-${type}" id="icon-toast">
+                        
+                    </div>
+                    <div class="content-toast" id="content-toast">${title}</div>
+                    <div class="delete-toast delete-toast-${type}" id="delete-toast">
+                        
+                    </div>`;
+                main.appendChild(toast);
+            }
+        },
+        reloadData(){
+            this.filter(this.searchKey, this.pageSize, 0)
+        },
+
+        filterData(value){
+            this.searchKey = value;
+            this.filter(this.searchKey, this.pageSize, 0)
+        },
+
         /**
          * Chọn trang
          * @param {Number} page: trang hiện tại
@@ -114,11 +228,7 @@ export default {
             this.currentPage = page;
             this.numberPage = list;
             
-            this.toast({
-                title: "Test toast message",
-                type: "error",
-                duration: 3000,
-            });
+            this.filter(this.searchKey, this.pageSize, this.currentPage-1)
         },
 
         /**
@@ -129,7 +239,7 @@ export default {
             this.pageSize = size;
             this.currentPage = 1;
             
-            //await this.loadData(p, this.condition);
+            this.filter(this.searchKey, this.pageSize, this.currentPage-1)
         },
 
         selectedItem(e){
@@ -146,6 +256,10 @@ export default {
             }
         },
 
+        viewContract(id){
+            window.open("http://127.0.0.1:5000/tour/gettourtemp?id="+id)
+        },
+
         /**
          * Show form tạo tour
          */
@@ -153,8 +267,20 @@ export default {
             this.showSingleCancel = true;
         },
 
-        closeSingleCancel(){
-            this.showSingleCancel = false;
+        async closeSingleCancel(id){
+            this.showLoad = true
+            await TourAPI.cancelTour(id)
+            .then(()=>{
+                this.filter(this.searchKey, this.pageSize, this.currentPage-1)
+            })
+            .catch(()=>{
+                this.toast({
+                    title: "Có lỗi xảy ra. Vui lòng thử lại",
+                    type: "error",
+                    duration: 3000,
+                });
+            })
+            this.showLoad = false
         },
 
         showFormCancelMulti(){

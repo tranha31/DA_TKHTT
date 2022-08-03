@@ -199,3 +199,76 @@ def getListOrder():
     result = bl.getListOrder(userID)
     result = json.dumps(result, ensure_ascii=False)
     return Response(response=result, status=201, mimetype="application/json")
+
+@tour.route("/tour/canceltour", methods=['GET'])
+@cross_origin()
+def cancelTourByUser():
+    r = request
+    r = r.args
+    userID = r.get("userID")
+    tourId = r.get("tourID")
+    bl.cancelTourByUser(userID, tourId)
+    result = None
+    return Response(response=result, status=201, mimetype="application/json")
+
+@tour.route("/tour/cancelTourA", methods=['GET'])
+@cross_origin()
+def cancelTourByAdmin():
+    r = request
+    r = r.args
+    id = r.get("id")
+    bl.cancelTourByAdmin(id)
+    result = None
+    return Response(response=result, status=201, mimetype="application/json")
+
+@tour.route("/tour/deletetour", methods=['DELETE'])
+@cross_origin()
+def deleteTourByUser():
+    r = request
+    r = r.args
+    userID = r.get("userID")
+    tourId = r.get("tourID")
+    result = bl.deleteTourByUser(userID, tourId)
+    serviceResult = {
+        "error" : ""
+    }
+    if result == False:
+        serviceResult["error"] = "CannotDelete"
+    serviceResult = json.dumps(serviceResult)
+    return Response(response=serviceResult, status=201, mimetype="application/json")
+
+@tour.route("/tour/confirmTour", methods=['POST'])
+@cross_origin()
+def confirmTourByAdmin():
+    r = request
+    r = r.args
+    id = r.get("id")
+    result = bl.confirmTourByAdmin(id)
+    serviceResult = {
+        "error" : ""
+    }
+    if result == False:
+        serviceResult["error"] = "TourNotExist"
+    serviceResult = json.dumps(serviceResult)
+    return Response(response=serviceResult, status=201, mimetype="application/json")
+
+@tour.route("/tour/confirmtouser", methods=['POST'])
+@cross_origin()
+def confirmTourByUser():
+    r = request
+    r = r.args
+    id = r.get("tourID")
+    usrId = r.get("userID")
+    bl.confirmTourByUser(id, usrId)
+    return Response(response=None, status=201, mimetype="application/json")
+
+@tour.route("/tour/listCancel", methods=['GET'])
+@cross_origin()
+def getListCancel():
+    r = request
+    r = r.args
+    size = int(r.get("size"))
+    page = int(r.get("page"))
+    result = bl.getListCancel(size, page)
+    result = json.dumps(result, ensure_ascii=False)
+    return Response(response=result, status=201, mimetype="application/json")

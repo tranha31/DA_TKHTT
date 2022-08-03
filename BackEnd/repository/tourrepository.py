@@ -101,6 +101,15 @@ class TourRepository(DLBase):
             content = base64.b64decode(data["ContentDataXML"]).decode("utf-8")
         return content 
 
+    def getHTML(self, id):
+        collection = self.dbMongo["TourContract"]
+        data = collection.find_one({"TourID" : id})
+        content = None
+        if data is not None:
+            content = data.get("ContentContract")
+            content = base64.b64decode(data["ContentContract"]).decode("utf-8")
+        return content 
+
     def getLastTourCode(self):
         sql = "SELECT MAX(CAST(SUBSTRING(t.TourCode, 2, LENGTH(t.TourCode)) AS SIGNED)) AS LASTCODE FROM tour t;"
         cursor = self.conn.cursor(dictionary=True)
@@ -132,11 +141,11 @@ class TourRepository(DLBase):
                 return records
         elif mode == 2:
             if search != None and search != "":
-                sql = "SELECT t.*, u.Name AS UserName FROM tour t, user u WHERE t.UserID = u.UserID AND t.IsSample = 0 AND (MATCH(t.TourName) AGAINST (%s) OR t.TourCode = %s) ORDER BY t.TourCode DESC"
+                sql = "SELECT t.*, u.Name AS UserName FROM tour t, user u WHERE t.UserID = u.UserID AND t.IsSample = 0 AND (t.Status = 0 OR t.Status = 1) AND (MATCH(t.TourName) AGAINST (%s) OR t.TourCode = %s) ORDER BY t.TourCode DESC"
                 cursor.execute(sql, (search,search))
             else:
-                sql = "SELECT t.*, u.Name AS UserName FROM tour t, user u WHERE t.UserID = u.UserID AND t.IsSample = 0 ORDER BY t.TourCode DESC"
-                cursor.execute(sql, (search,search))
+                sql = "SELECT t.*, u.Name AS UserName FROM tour t, user u WHERE t.UserID = u.UserID AND t.IsSample = 0 AND (t.Status = 0 OR t.Status = 1) ORDER BY t.TourCode DESC"
+                cursor.execute(sql)
     
             records = cursor.fetchall()
             result = records
@@ -155,11 +164,11 @@ class TourRepository(DLBase):
 
         else:
             if search != None and search != "":
-                sql = "SELECT t.*, u.Name AS UserName FROM tour t, user u WHERE t.UserID = u.UserID AND t.IsSample = 0 AND (MATCH(t.TourName) AGAINST (%s) OR t.TourCode = %s) ORDER BY t.TourCode DESC"
+                sql = "SELECT t.*, u.Name AS UserName FROM tour t, user u WHERE t.UserID = u.UserID AND t.IsSample = 0 AND t.Status >= 2 AND (MATCH(t.TourName) AGAINST (%s) OR t.TourCode = %s) ORDER BY t.TourCode DESC"
                 cursor.execute(sql, (search,search))
             else:
-                sql = "SELECT t.*, u.Name AS UserName FROM tour t, user u WHERE t.UserID = u.UserID AND t.IsSample = 0 ORDER BY t.TourCode DESC"
-                cursor.execute(sql, (search,search))
+                sql = "SELECT t.*, u.Name AS UserName FROM tour t, user u WHERE t.UserID = u.UserID AND t.IsSample = 0 AND t.Status >= 2 ORDER BY t.TourCode DESC"
+                cursor.execute(sql)
     
             records = cursor.fetchall()
             result = records
@@ -300,4 +309,90 @@ class TourRepository(DLBase):
         cursor.execute(sql, (userID,))
         records = cursor.fetchall()
         return records
+
+    def checkCanDelete(self, userID, tourID):
+        cursor = self.conn.cursor(dictionary=True)
+        sql = "SELECT * FROM tour t WHERE t.UserID = %s AND t.TourID = %s AND t.Status = 0"
+        cursor.execute(sql, (userID, tourID))
+        records = cursor.fetchall()
+        if len(records) > 0:
+            return True
+        else:
+            return False
+
+    def cancelTourByUser(self, userID, tourID):
+        cursor = self.conn.cursor(dictionary=True)
+        sql = "SELECT t.*, u.Name AS UName, u.PhoneNumber AS Phone FROM tour t, user u WHERE t.UserID = %s AND t.TourID = %s AND t.UserID = u.UserID"
+        cursor.execute(sql, (userID, tourID))
+        records = cursor.fetchall()
+
+        tour = records[0]
+        sql = "UPDATE tour SET Status = 3 WHERE TourID = %s AND UserID = %s"
+        cursor.execute(sql, (tourID, userID))
+        self.conn.commit()
         
+        sql = "INSERT INTO listcanceltour Value(UUID(), %s, %s, %s, %s, %s, NOW(), %s)"
+        cursor.execute(sql, (userID, tourID, tour["UName"], tour["TourName"], tour["TourCode"], tour["Phone"]))
+        self.conn.commit()
+
+        collection = self.dbMongo["TourContractXML"]
+        myquery = { "TourID": tourID }
+        newvalues = { "$set": { "IsCancel": 1 } }
+        collection.update_one(myquery, newvalues)
+
+    def cancelTourByAdmin(self, id):
+        cursor = self.conn.cursor(dictionary=True)
+        sql = "UPDATE tour SET Status = 3 WHERE TourID = %s"
+        cursor.execute(sql, (id,))
+        self.conn.commit()
+
+        collection = self.dbMongo["TourContractXML"]
+        myquery = { "TourID": id }
+        newvalues = { "$set": { "IsCancel": 1 } }
+        collection.update_one(myquery, newvalues)
+
+    def checkExist(self, id):
+        cursor = self.conn.cursor(dictionary=True)
+        sql = "SELECT * FROM tour Where TourID = %s"
+        cursor.execute(sql, (id,))
+        records = cursor.fetchall()
+        return len(records) > 0
+
+    def confirmTourByAdmin(self, id):
+        cursor = self.conn.cursor(dictionary=True)
+        sql = "Update tour Set Status = 1 Where TourID = %s"
+        cursor.execute(sql, (id,))
+        self.conn.commit()
+
+    def getInfoToSendEmail(self, id):
+        cursor = self.conn.cursor(dictionary=True)
+        sql = "SELECT t.*, u.Name, u.Email FROM tour t, user u Where t.TourID = %s AND t.UserID = u.UserID"
+        cursor.execute(sql, (id,))
+        records = cursor.fetchall()
+        return records
+        
+    def confirmTourByUser(self, id):
+        cursor = self.conn.cursor(dictionary=True)
+        sql = "Update tour Set Status = 2 Where TourID = %s"
+        cursor.execute(sql, (id,))
+        self.conn.commit()
+
+        collection = self.dbMongo["TourContractXML"]
+        myquery = { "TourID": id }
+        newvalues = { "$set": { "IsCreatedContract": 1 } }
+        collection.update_one(myquery, newvalues)
+
+    def saveContract(self, html, userID, tourID):
+        collection = self.dbMongo["TourContract"]
+        now = datetime.now()
+        dt_string = now.strftime("%d-%m-%Y %H:%M:%S")
+        content = base64.b64encode(bytes(html, 'utf-8'))
+        post = {"_id": str(uuid.uuid4()), "UserID": userID, "TourID": tourID, "CreatedTime": dt_string, "ContentContract": content}
+        collection.insert_one(post)
+
+    def getListCancel(self):
+        cursor = self.conn.cursor(dictionary=True)
+        sql = "Select * FROM listcanceltour l ORDER BY TimeCancel DESC"
+        cursor.execute(sql)
+        records = cursor.fetchall()
+        return records

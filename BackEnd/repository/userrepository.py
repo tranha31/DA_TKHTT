@@ -55,3 +55,25 @@ class UserRepository(DLBase):
         cursor.execute(sql, (ListUserID, ))
         users = cursor.fetchall()
         return users
+
+    def getSignUser(self, id):
+        collection = self.dbMongo["UserSignature"]
+        data = collection.find_one({"UserID" : id})
+        return data.get("ContentSign")
+
+    def getSignAdmin(self):
+        collection = self.dbMongo["UserSignature"]
+        data = collection.find_one({"_id" : 1})
+        return data.get("ContentSign")
+
+    def getCancel(self):
+        collection = self.dbMongo["UserSignature"]
+        data = collection.find_one({"_id" : 2})
+        return data.get("ContentSign")
+
+    def getAdmin(self, username):
+        sql = "Select * from admin where Username = %s"
+        cursor = self.conn.cursor(dictionary=True)
+        cursor.execute(sql, (username,))
+        users = cursor.fetchall()
+        return users

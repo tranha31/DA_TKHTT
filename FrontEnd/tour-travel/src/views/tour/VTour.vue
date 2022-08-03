@@ -124,7 +124,6 @@
     />
     <div id="toast"></div>
     <BaseLoad :load="showLoad"/>
-
     <ThePageInfo/>
   </div>
   
@@ -192,6 +191,7 @@ export default {
     
   },
   async created(){
+    this.showLoad = true
     this.search = this.$route.params.search;
     this.toID = this.$route.params.toId;
 
@@ -214,6 +214,7 @@ export default {
     })
 
     await this.filter(this.search,this.toID,"", this.tourTime, this.priceRange, 20, 0)
+    this.showLoad = false
   },
 
   methods:{
@@ -263,29 +264,29 @@ export default {
       }
 
       this.numberPage = [];
-        var me = this;
-        if(me.totalPage > 4){
-            me.numberPage = [
-                {value: 1, class: "active"},
-                {value: 2, class: ""},
-                {value: 3, class: ""},
-                {value: this.totalPage, class: ""},
-            ];
-        }
-        else{
-          for(i=1; i<= me.totalPage; i++){
-            if(i == 1){
-                me.numberPage.push({
-                    value: 1,
-                    class: "active"
-                });
-            }
-            else{
-                me.numberPage.push({value:i, class: ""});
-            }
-            
+      var me = this;
+      if(me.totalPage > 4){
+          me.numberPage = [
+              {value: 1, class: "active"},
+              {value: 2, class: ""},
+              {value: 3, class: ""},
+              {value: this.totalPage, class: ""},
+          ];
+      }
+      else{
+        for(i=1; i<= me.totalPage; i++){
+          if(i == 1){
+              me.numberPage.push({
+                  value: 1,
+                  class: "active"
+              });
           }
+          else{
+              me.numberPage.push({value:i, class: ""});
+          }
+          
         }
+      }
     },
 
     filterData(){

@@ -162,6 +162,7 @@
             <img class="tour-img w-half" :src="item.img">
             <div class="cart-action d-flex flex-column" style="padding-left:15px">
               <label class="tour-info">{{ item.info }}</label>
+              <label class="tour-info">{{ item.tourCode }}</label>
               <div class="flex-1"></div>
               <div class="d-flex">
                 <div>
@@ -173,7 +174,7 @@
                     View
                   </button>
                 </div>
-                <div>
+                <div v-if="item.status == 0">
                   <button
                       class="btn-default"
                       @click="editTour(item)"
@@ -191,7 +192,16 @@
                     Delete
                   </button>
                 </div>
-                <div v-else>
+                <div v-else-if="item.status == 1">
+                  <button
+                      class="btn-default"
+                      @click="confirmTour(item)"
+                      style="position:unset"
+                  >
+                    Confirm tour
+                  </button>
+                </div>
+                <div v-else-if="item.status == 2">
                   <button
                       class="btn-default"
                       @click="cancelOrder(item)"
@@ -245,6 +255,20 @@
     v-on:closeForm="closeForm"
     />
     <BaseLoad :load="showLoad"/>
+
+    <BasePopUp
+    :isShow="showPopUp"
+        :type="type"
+        :message="message"
+        :title="titleP"
+        :action1="action1"
+        :action2="action2"
+        :action3="action3"
+        :show="optionPopUp"
+        v-on:confirmAction="confirmDelete"
+        v-on:cancelAction="()=>{this.showPopUp = false; this.idCancel = ''}"
+        v-on:confirmAction3="()=>{this.showPopUp = false;}"
+    />
   </div>
 </template>
 <script>
@@ -252,6 +276,7 @@ import InputInfoTemplate from "@/components/base/InputInfoTemplate";
 import Footer from "@/components/layout/TheFooter";
 import TheCreateTour from '../../components/form/TheCreateTour.vue'
 import BaseLoad from '../../components/base/BaseLoad.vue'
+import BasePopUp from '../../components/base/BasePopUp.vue'
 import AuthApi from "@/js/api/AuthApi";
 import TourAPI from "@/js/api/tourapi";
 import Tour from '../../js/entity/tour';
@@ -261,7 +286,8 @@ export default {
     InputInfoTemplate,
     Footer,
     TheCreateTour,
-    BaseLoad
+    BaseLoad,
+    BasePopUp,
   },
   data() {
     return {
@@ -284,6 +310,16 @@ export default {
       showForm : false,
       oTour : new Tour(),
       oData: null,
+
+      showPopUp : false,
+      type: "error",
+      message: null,
+      titleP: null,
+      action1: "Hủy",
+      action2 : "Đóng",
+      action3 : "Xác nhận",
+      optionPopUp : [true, false],
+      idCancel : ""
     }
   },
   methods: {
@@ -418,6 +454,7 @@ export default {
                 img: img[randIndex],
                 info: item.TourName,
                 status: item.Status,
+                tourCode: item.TourCode
             };
             this.listOrder.push(object)
         }
@@ -438,6 +475,7 @@ export default {
           title: 'Error',
           text: 'Has error. Please try again!',
           type: 'error',
+          duration: 3000,
           position: 'bottom right'
         })
       })
@@ -526,14 +564,75 @@ export default {
             title: 'Error',
             text: 'Has error. Please try again!',
             type: 'error',
+            duration: 3000,
             position: 'bottom right'
           })
       })
     },
 
+    async deleteOrder(tour){
+      this.showLoad = true
+      await TourAPI.deleteTourByUser(tour.UserID, tour.TourID)
+      .then(res=>{
+        if(res.data.error == "CannotDelete"){
+          this.$notify({
+            group: 'default',
+            title: 'Error',
+            text: 'Cannot delete this tour!',
+            type: 'error',
+            duration: 3000,
+            position: 'bottom right'
+          })
+        }
+        else{
+          this.listOrder()
+        }
+      })
+
+      this.showLoad = false
+    },
+
+    cancelOrder(tour){
+      this.idCancel = tour.id
+      this.showPopUp = true;
+      this.type = "warning";
+      var tourCode = tour.tourCode
+      this.message = "Bạn sẽ chịu trách nhiệm về các điều trong mục Chinh sách hoàn hủy đã ký trong hợp đồng. Bên công ty sẽ liên hệ với bạn qua điện thoại sau khi bạn quyết định hủy để thực thi hợp đồng. Bạn có chắc chắn muốn hủy tour " + tourCode + " không?"
+      this.optionPopUp = [true, false]
+    },
+
+    async confirmDelete(){
+      this.showPopUp = false
+      var userID = this.$store.state.account.currentUser.UserID
+      await TourAPI.cancelTourByUser(userID, this.idCancel)
+      
+      await this.getListOrder()
+      
+    },
+
     closeForm(){
       this.showForm = false;
       this.getListOrder()
+    },
+
+    async confirmTour(tour){
+      this.showLoad = true
+      var userID = this.$store.state.account.currentUser.UserID
+      await TourAPI.confitmTourByUser(userID, tour.id)
+      .then(()=>{
+        this.getListOrder()
+      })
+      .catch(()=>{
+        this.$notify({
+            group: 'default',
+            title: 'Error',
+            text: 'Cannot delete this tour!',
+            type: 'error',
+            duration: 3000,
+            position: 'bottom right'
+          })
+      })
+      this.showLoad = false
     },
   },
   async mounted() {
@@ -543,6 +642,7 @@ export default {
         title: 'Error',
         text: 'Please completed login first!',
         type: 'error',
+        duration: 3000,
         position: 'bottom right'
       })
       this.$router.push({ path: '/login'})

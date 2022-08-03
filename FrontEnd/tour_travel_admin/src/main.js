@@ -5,7 +5,6 @@ import vTitle from 'vuejs-title'
 import Notifications from 'vue-notification'
 import VueSocketIO from "vue-socket.io"
 
-
 Vue.config.productionTip = false
 Vue.use(VueRouter);
 Vue.use(vTitle);
@@ -44,4 +43,7 @@ Vue.directive("click-outside", {
 new Vue({
   render: h => h(App),
   router,
+  created(){
+    this.$router.push({path : '/admin/login'});
+  }
 }).$mount('#app')

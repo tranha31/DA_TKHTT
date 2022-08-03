@@ -329,12 +329,20 @@
 					}
 					
 					.buyer-sign-content{
-					<!--##CONTENT_BUYER_SIGN##-->background-image: url()<!--##CONTENT_BUYER_SIGN##-->
+					background-size:100% 100%;
+					background-repeat: no-repeat;
 					}
+
+					.buyer-sign-content{background-image: url()}
 					
 					.seller-sign-content{
-					<!--##CONTENT_SELLER_SIGN##-->background-image: url()<!--##CONTENT_SELLER_SIGN##-->
+					background-size:100% 100%;
+					background-repeat: no-repeat;
 					}
+
+					.seller-sign-content{background-image: url()}
+
+					.content-block{background-image: url()}
 					
 					@media print {
 						.content-block{
@@ -897,12 +905,12 @@
 								</div>
 							</div>
 
-							<div class="sign-xml-block width-full" style="margin-top: 20px">
+							<div class="sign-xml-block width-full" style="margin-top: 20px; padding-bottom:100px">
 								<div class="d-flex width-full">
 									<div class="flex-column width-half" data-field="BuyerSign">
 										<div class="font-bold width-full" style="">ĐẠI DIỆN BÊN A</div>
 										<div class="sign-content buyer-sign-content width-full" style="">
-										
+											
 										</div>
 									</div>
 									<div class="flex-column width-half" data-field="SellerSign" style="margin-left: 50px">
