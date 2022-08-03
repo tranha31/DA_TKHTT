@@ -7,8 +7,12 @@
       </div>
       <div class="chat-box-body d-flex">
         <perfect-scrollbar>
-          <div v-for="(msg, index) in allMsg" :key="index" :class="{'msg-user': msg.Owner === 'user', 'msg-admin': msg.Owner === 'admin'}">
-            {{ msg.Content }}
+          <div v-for="(msg, index) in allMsg" :key="index" class="msg-wrapper d-flex">
+            <div v-if="msg.Owner === 'user'"></div>
+            <div  :class="{'msg-user': msg.Owner === 'user', 'msg-admin': msg.Owner === 'admin'}">
+              {{ msg.Content }}
+            </div>
+            <div v-if="msg.Owner === 'admin'"></div>
           </div>
         </perfect-scrollbar>
       </div>
@@ -64,6 +68,9 @@ export default {
             })
 
             this.$socket.emit('requireConnect', newRoomResponse.RefID)
+            this.sockets.subscribe('toUser', msg => {
+              this.handleReceivedMsg(msg)
+            })
             this.sentMsg.push(this.currentMsg)
           } else {
             this.$notify({
@@ -101,14 +108,24 @@ export default {
 
     },
     handleReceivedMsg(msg) {
-      console.log('msg:', msg)
       this.allMsg.push(msg)
     }
   },
-  mounted() {
-    this.sockets.subscribe('toUser', msg => {
-      this.handleReceivedMsg(msg)
-    })
+  async mounted() {
+    let newRoomResponse = await ChatApi.getUserChatRoom({ UserID: this.$store.state.account.currentUser.UserID })
+
+    if (newRoomResponse) {
+      this.$store.commit('account/setAccounts', {
+        UserID: this.$store.state.account.currentUser.UserID,
+        UserName: this.$store.state.account.currentUser.UserName,
+        ChatRoomID: newRoomResponse ? newRoomResponse.RefID : null
+      })
+
+      this.$socket.emit('requireConnect', newRoomResponse.RefID)
+      this.sockets.subscribe('toUser', msg => {
+        this.handleReceivedMsg(msg)
+      })
+    }
   }
 }
 </script>
@@ -186,6 +203,11 @@ export default {
   background-size: cover;
   width: 20px;
   height: 20px;
+}
+
+.msg-wrapper {
+  width: 280px;
+  justify-content: space-between;
 }
 
 .msg-user {
